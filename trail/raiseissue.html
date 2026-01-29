@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raise Issue - UrbanPulse</title>
+    <link rel="stylesheet" href="raiseissue.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar (consistent with dashboard.html) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>UrbanPulse</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span>&#128202;</span> Dashboard</a></li>
+                    <li><a href="raiseissue.html" class="active"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="#"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="#"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="#"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="#"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="#"><span>&#128682;</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Report a New Civic Issue</h2>
+                    <p>Your detailed report helps us assign and resolve issues faster.</p>
+                </div>
+                
+                <form action="#" method="POST" class="issue-form">
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="issue-title">Issue Title <span class="required-star">*</span></label>
+                        <input type="text" id="issue-title" name="issue-title" placeholder="e.g., Broken streetlight on Main St" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="issue-category">Issue Category <span class="required-star">*</span></label>
+                            <select id="issue-category" name="issue-category" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="garbage">Garbage</option>
+                                <option value="road-damage">Road Damage</option>
+                                <option value="street-light">Street Light</option>
+                                <option value="water-leakage">Water Leakage</option>
+                                <option value="drainage">Drainage</option>
+                                <option value="public-safety">Public Safety</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Location / Address <span class="required-star">*</span></label>
+                            <input type="text" id="location" name="location" placeholder="Enter address or cross-streets" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="description">Description <span class="required-star">*</span></label>
+                        <textarea id="description" name="description" placeholder="Provide as much detail as possible." required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                         <div class="form-group">
+                            <label for="image-upload">Upload Image</label>
+                            <div class="upload-area">
+                                <span>📤</span>
+                                <p>Click or drag image to upload</p>
+                            </div>
+                            <div class="image-preview">Preview</div>
+                        </div>
+
+                        <div class="form-group">
+                             <label for="contact-phone">Contact Phone</label>
+                             <input type="tel" id="contact-phone" name="contact-phone" placeholder="Optional: For follow-up questions">
+                             
+                             <label style="margin-top: 20px;">Priority</label>
+                             <div class="priority-badge">Auto-Detected</div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Submit Issue</button>
+                        <button type="button" class="btn btn-secondary">Save as Draft</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Issues - UrbanPulse</title>
+    <link rel="stylesheet" href="myissues.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header"><h1>UrbanPulse</h1></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span>&#128202;</span> Dashboard</a></li>
+                    <li><a href="raiseissue.html"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="myissues.html" class="active"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="#"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="#"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="#"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="#"><span>&#128682;</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="page-wrapper">
+            <!-- Header -->
+            <header class="top-header">
+                <h1>My Issues</h1>
+                <div class="user-profile">
+                    <div class="avatar"></div>
+                    <span>Admin User</span>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <nav class="breadcrumb"><a href="dashboard.html">Dashboard</a> / My Issues</nav>
+
+                <!-- Summary Cards -->
+                <section class="summary-cards">
+                    <div class="card total"><div class="card-title">Total Issues</div><div class="card-number">24</div></div>
+                    <div class="card pending"><div class="card-title">Pending</div><div class="card-number">3</div></div>
+                    <div class="card in-progress"><div class="card-title">In Progress</div><div class="card-number">5</div></div>
+                    <div class="card resolved"><div class="card-title">Resolved</div><div class="card-number">16</div></div>
+                </section>
+
+                <!-- Controls -->
+                <section class="controls-card">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search by title or issue ID...">
+                    </div>
+                    <select><option disabled selected>Status</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select>
+                    <select><option disabled selected>Category</option><option>Road Damage</option><option>Street Light</option><option>Garbage</option></select>
+                    <select><option disabled selected>Sort By</option><option>Newest</option><option>Oldest</option><option>Priority</option></select>
+                </section>
+
+                <!-- Issues List -->
+                <section class="issues-list-container">
+                    <table class="issues-table">
+                        <thead>
+                            <tr>
+                                <th>Issue ID</th><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Issue ID">#7565</td>
+                                <td data-label="Title" class="issue-title">Waste Management Overflow</td>
+                                <td data-label="Category"><span class="badge category">Garbage</span></td>
+                                <td data-label="Date">2026-01-27</td>
+                                <td data-label="Status"><span class="badge status-assigned">Assigned</span></td>
+                                <td data-label="Actions" class="action-buttons">
+                                    <button>View Details</button>
+                                    <button>Track</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Issue ID">#7564</td>
+                                <td data-label="Title" class="issue-title">Streetlight Outage on 5th Ave</td>
+                                <td data-label="Category"><span class="badge category">Street Light</span></td>
+                                <td data-label="Date">2026-01-27</td>
+                                <td data-label="Status"><span class="badge status-in-progress">In Progress</span></td>
+                                <td data-label="Actions" class="action-buttons">
+                                    <button>View Details</button>
+                                    <button>Track</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Issue ID">#7563</td>
+                                <td data-label="Title" class="issue-title">Pothole on Market Street</td>
+                                <td data-label="Category"><span class="badge category">Road Damage</span></td>
+                                <td data-label="Date">2026-01-28</td>
+                                <td data-label="Status"><span class="badge status-resolved">Resolved</span></td>
+                                <td data-label="Actions" class="action-buttons">
+                                    <button>View Details</button>
+                                    <button>Track</button>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td data-label="Issue ID">#7566</td>
+                                <td data-label="Title" class="issue-title">Broken Sidewalk at Central Park</td>
+                                <td data-label="Category"><span class="badge category">Road Damage</span></td>
+                                <td data-label="Date">2026-01-26</td>
+                                <td data-label="Status"><span class="badge status-pending">Pending</span></td>
+                                <td data-label="Actions" class="action-buttons">
+                                    <button>View Details</button>
+                                    <button>Track</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Static Modal UI (hidden by default) -->
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <h3>Issue #7564: Streetlight Outage on 5th Ave</h3>
+            
+            <section class="modal-section">
+                <h4>Progress</h4>
+                <div class="progress-tracker">
+                    <div class="progress-step completed"><div class="step-circle">✓</div><div class="step-name">Reported</div></div>
+                    <div class="progress-step completed"><div class="step-circle">✓</div><div class="step-name">Assigned</div></div>
+                    <div class="progress-step completed"><div class="step-circle">...</div><div class="step-name">In Progress</div></div>
+                    <div class="progress-step"><div class="step-circle"></div><div class="step-name">Resolved</div></div>
+                    <div class="progress-step"><div class="step-circle"></div><div class="step-name">Closed</div></div>
+                </div>
+            </section>
+
+            <section class="modal-section">
+                <h4>Details</h4>
+                <p><strong>Description:</strong> The streetlight at the corner of 5th Avenue and Pine Street has been off for three nights. It's a dark corner and feels unsafe.</p>
+                <p><strong>Assigned to:</strong> John Doe (City Electric)</p>
+            </section>
+
+            <section class="modal-section">
+                <h4>Media</h4>
+                <div class="modal-image-preview">Uploaded Image Placeholder</div>
+            </section>
+            
+            <section class="modal-section">
+                <h4>Worker Notes</h4>
+                <div class="worker-notes">
+                    <p><strong>[2026-01-28]</strong> Awaiting part delivery. Expected arrival tomorrow.</p>
+                </div>
+            </section>
+            
+            <section class="modal-section">
+                <h4>Rate Resolution</h4>
+                <div class="rating-section">
+                    <div class="stars">
+                        <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>☆</span>
+                    </div>
+                    <textarea placeholder="Add your feedback..."></textarea>
+                    <button>Submit Feedback</button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanPulse - Citizen Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>UrbanPulse</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active"><span>&#128202;</span> Dashboard</a></li>
+                    <li><a href="#"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="#"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="#"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="#"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="#"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="#"><span>&#128682;</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="navbar-title">
+                    <h2>Citizen Dashboard</h2>
+                </div>
+                <div class="navbar-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search...">
+                        <button>&#128269;</button>
+                    </div>
+                    <div class="notification-bell">
+                        <span>&#128276;</span>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="https://i.pravatar.cc/40" alt="User Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Summary Cards -->
+            <section class="summary-cards">
+                <div class="card">
+                    <div class="card-border-left blue"></div>
+                    <div class="card-content">
+                        <p class="card-title">Total Issues</p>
+                        <p class="card-number">1,250</p>
+                        <p class="card-subtitle">All time</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-border-left gray"></div>
+                    <div class="card-content">
+                        <p class="card-title">Pending Issues</p>
+                        <p class="card-number">50</p>
+                        <p class="card-subtitle">Awaiting action</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-border-left orange"></div>
+                    <div class="card-content">
+                        <p class="card-title">In Progress</p>
+                        <p class="card-number">12</p>
+                        <p class="card-subtitle">Currently being worked on</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-border-left green"></div>
+                    <div class="card-content">
+                        <p class="card-title">Resolved</p>
+                        <p class="card-number">1,188</p>
+                        <p class="card-subtitle">Completed and closed</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Issues Table -->
+            <section class="recent-issues">
+                <h2>Recent Issues</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Issue ID</th>
+                                <th>Issue Type</th>
+                                <th>Area</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#7563</td>
+                                <td>Pothole</td>
+                                <td>Downtown</td>
+                                <td>2026-01-28</td>
+                                <td><span class="status-badge resolved">Resolved</span></td>
+                            </tr>
+                            <tr>
+                                <td>#7564</td>
+                                <td>Streetlight Outage</td>
+                                <td>North Park</td>
+                                <td>2026-01-27</td>
+                                <td><span class="status-badge in-progress">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td>#7565</td>
+                                <td>Waste Management</td>
+                                <td>Eastside</td>
+                                <td>2026-01-27</td>
+                                <td><span class="status-badge assigned">Assigned</span></td>
+                            </tr>
+                            <tr>
+                                <td>#7566</td>
+                                <td>Broken Sidewalk</td>
+                                <td>Uptown</td>
+                                <td>2026-01-26</td>
+                                <td><span class="status-badge pending">Pending</span></td>
+                            </tr>
+                             <tr>
+                                <td>#7567</td>
+                                <td>Graffiti</td>
+                                <td>West End</td>
+                                <td>2026-01-25</td>
+                                <td><span class="status-badge resolved">Resolved</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

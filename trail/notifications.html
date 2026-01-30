@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - UrbanPulse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="notifications.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>UrbanPulse</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span>&#128202;</span> Dashboard</a></li>
+                    <li><a href="myissues.html"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="raiseissue.html"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="mapview.html"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="#"><span>&#128200;</span> Analytics</a></li>
+                    <li><a href="notifications.html" class="active"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="#"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="#"><span>&#128682;</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h2>Notifications</h2>
+                    <nav class="breadcrumb">
+                        <a href="dashboard.html">Dashboard</a> / <span>Notifications</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-avatar">
+                        <img src="https://i.pravatar.cc/40" alt="User Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Filters -->
+            <section class="filters-card">
+                <div class="filter-toggles">
+                    <button class="toggle-btn active">All</button>
+                    <button class="toggle-btn">Unread</button>
+                    <button class="toggle-btn">Resolved</button>
+                </div>
+                <div class="filter-controls">
+                    <select id="status-filter" aria-label="Filter by status">
+                        <option>Status</option>
+                        <option>Pending</option>
+                        <option>Assigned</option>
+                        <option>In Progress</option>
+                        <option>Resolved</option>
+                        <option>Closed</option>
+                    </select>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search by title or ID..." aria-label="Search notifications">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications Feed -->
+            <section class="notifications-feed">
+                <!-- Unread Notification with Image -->
+                <div class="notification-card unread">
+                    <div class="notification-content">
+                        <h3><a href="#">Issue #7565: Waste Management Overflow</a></h3>
+                        <p>Your issue has been <strong>assigned to a worker</strong>. You will be notified when progress is made.</p>
+                        <div class="notification-meta">
+                            <span class="category-badge">Garbage</span>
+                            <span class="status-badge assigned">Assigned</span>
+                            <span class="timestamp">2 hours ago</span>
+                        </div>
+                    </div>
+                    <div class="notification-right">
+                        <div class="notification-image">
+                            <img src="https://via.placeholder.com/150/f2f2f2/333?text=Issue+Image" alt="Issue thumbnail">
+                        </div>
+                        <button class="btn-details">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Unread Notification -->
+                <div class="notification-card unread">
+                    <div class="notification-content">
+                        <h3><a href="#">Issue #7564: Streetlight Outage</a></h3>
+                        <p>A city worker has updated the status to <strong>In Progress</strong>. The estimated resolution is 2 days.</p>
+                        <div class="notification-meta">
+                            <span class="category-badge">Street Light</span>
+                            <span class="status-badge in-progress">In Progress</span>
+                            <span class="timestamp">1 day ago</span>
+                        </div>
+                    </div>
+                     <div class="notification-right">
+                        <button class="btn-details">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Read Notification -->
+                <div class="notification-card read">
+                    <div class="notification-content">
+                        <h3><a href="#">Issue #7563: Pothole on Market Street</a></h3>
+                        <p>This issue has been successfully <strong>Resolved</strong>. Thank you for your contribution.</p>
+                        <div class="notification-meta">
+                            <span class="category-badge">Road Damage</span>
+                            <span class="status-badge resolved">Resolved</span>
+                            <span class="timestamp">3 days ago</span>
+                        </div>
+                    </div>
+                     <div class="notification-right">
+                        <button class="btn-details">View Details</button>
+                    </div>
+                </div>
+
+                 <!-- Read Notification -->
+                <div class="notification-card read">
+                    <div class="notification-content">
+                        <h3><a href="#">Welcome to UrbanPulse!</a></h3>
+                        <p>You can start by raising an issue or exploring the dashboard. Your reports help improve our city.</p>
+                        <div class="notification-meta">
+                            <span class="timestamp">1 week ago</span>
+                        </div>
+                    </div>
+                     <div class="notification-right">
+                        <button class="btn-details">View Details</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

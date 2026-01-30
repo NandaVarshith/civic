@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - UrbanPulse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="logout.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>UrbanPulse</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span>&#128202;</span> Dashboard</a></li>
+                    <li><a href="myissues.html"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="raiseissue.html"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="mapview.html"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="#"><span>&#128200;</span> Analytics</a></li>
+                    <li><a href="notifications.html"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="profile.html"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="logout.html" class="active"><span>&#128682;</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h2>Logout</h2>
+                    <nav class="breadcrumb">
+                        <a href="dashboard.html">Dashboard</a> / <span>Logout</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-avatar">
+                        <img src="https://i.pravatar.cc/40?u=a042581f4e29026704d" alt="User Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Logout Confirmation -->
+            <div class="logout-container">
+                <div class="logout-card">
+                    <div class="logout-icon">
+                        <span>&#128682;</span>
+                    </div>
+                    <h2>Are you sure you want to logout?</h2>
+                    <p>You will be redirected to the login page.</p>
+                    <div class="logout-actions">
+                        <button class="btn btn-confirm">Confirm Logout</button>
+                        <button class="btn btn-cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

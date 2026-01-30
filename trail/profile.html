@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - UrbanPulse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>UrbanPulse</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span>&#128202;</span> Dashboard</a></li>
+                    <li><a href="myissues.html"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="raiseissue.html"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="mapview.html"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="#"><span>&#128200;</span> Analytics</a></li>
+                    <li><a href="notifications.html"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="profile.html" class="active"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="#"><span>&#128682;</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h2>Profile</h2>
+                    <nav class="breadcrumb">
+                        <a href="dashboard.html">Dashboard</a> / <span>Profile</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-avatar">
+                        <img src="https://i.pravatar.cc/40?u=a042581f4e29026704d" alt="User Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Profile Content -->
+            <div class="profile-container">
+                <!-- Profile Header Card -->
+                <section class="profile-header-card">
+                    <div class="profile-avatar">
+                        <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile Picture">
+                    </div>
+                    <div class="profile-summary">
+                        <h3 class="profile-name">Alex Doe</h3>
+                        <p class="profile-role">Citizen</p>
+                        <p class="profile-joindate">Member since Jan 15, 2025</p>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">18</span>
+                            <span class="stat-label">Issues Submitted</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Issues Resolved</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Profile Details Card -->
+                <section class="profile-details-card">
+                    <div class="card-header">
+                        <h4>Personal Information</h4>
+                        <button class="btn-edit">Edit</button>
+                    </div>
+                    <div class="card-content">
+                        <form action="#" method="POST">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="full-name">Full Name <span class="required-star">*</span></label>
+                                    <input type="text" id="full-name" value="Alex Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address <span class="required-star">*</span></label>
+                                    <input type="email" id="email" value="alex.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" value="+1 (555) 123-4567">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Save Information</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Security Card -->
+                <section class="profile-security-card">
+                    <div class="card-header">
+                        <h4>Password & Security</h4>
+                    </div>
+                     <div class="card-content">
+                        <form action="#" method="POST">
+                            <div class="form-group">
+                                <label for="old-password">Old Password</label>
+                                <input type="password" id="old-password" placeholder="Enter your old password">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password" placeholder="Enter a new password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm New Password</label>
+                                    <input type="password" id="confirm-password" placeholder="Confirm your new password">
+                                </div>
+                            </div>
+                             <div class="form-actions">
+                                <button type="submit" class="btn-primary">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

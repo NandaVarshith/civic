@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - UrbanPulse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="analytics.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>UrbanPulse</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><span>&#128202;</span> Dashboard</a></li>
+                    <li><a href="myissues.html"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="raiseissue.html"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="mapview.html"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="analytics.html" class="active"><span>&#128200;</span> Analytics</a></li>
+                    <li><a href="notifications.html"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="profile.html"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="logout.html"><span>&#128682;</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h2>Analytics</h2>
+                    <nav class="breadcrumb">
+                        <a href="dashboard.html">Dashboard</a> / <span>Analytics</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-avatar">
+                        <img src="https://i.pravatar.cc/40?u=a042581f4e29026704d" alt="User Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Analytics Content -->
+            <div class="analytics-container">
+                <!-- Summary Cards -->
+                <section class="summary-cards">
+                    <div class="card">
+                        <div class="card-border-left blue"></div>
+                        <div class="card-content">
+                            <p class="card-title">Total Issues</p>
+                            <p class="card-number">1,250</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-border-left gray"></div>
+                        <div class="card-content">
+                            <p class="card-title">Pending Issues</p>
+                            <p class="card-number">50</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-border-left green"></div>
+                        <div class="card-content">
+                            <p class="card-title">Resolved Issues</p>
+                            <p class="card-number">1,188</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-border-left orange"></div>
+                        <div class="card-content">
+                            <p class="card-title">Avg. Resolution Time</p>
+                            <p class="card-number">3.2 Days</p>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="analytics-grid">
+                    <!-- Issue Status Pie Chart -->
+                    <div class="chart-card">
+                        <h4>Issue Status</h4>
+                        <div class="pie-chart-container">
+                            <div class="pie-chart-placeholder"></div>
+                            <ul class="chart-legend">
+                                <li><span class="legend-dot pending"></span> Pending (15%)</li>
+                                <li><span class="legend-dot assigned"></span> Assigned (10%)</li>
+                                <li><span class="legend-dot in-progress"></span> In Progress (5%)</li>
+                                <li><span class="legend-dot resolved"></span> Resolved (65%)</li>
+                                <li><span class="legend-dot closed"></span> Closed (5%)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Issue by Category Bar Chart -->
+                    <div class="chart-card">
+                        <h4>Issues by Category</h4>
+                        <div class="bar-chart-placeholder">
+                            <div class="bar-item" style="height: 60%;"><span class="bar-label">Garbage</span></div>
+                            <div class="bar-item" style="height: 80%;"><span class="bar-label">Road</span></div>
+                            <div class="bar-item" style="height: 50%;"><span class="bar-label">Light</span></div>
+                            <div class="bar-item" style="height: 30%;"><span class="bar-label">Water</span></div>
+                            <div class="bar-item" style="height: 45%;"><span class="bar-label">Drainage</span></div>
+                            <div class="bar-item" style="height: 20%;"><span class="bar-label">Safety</span></div>
+                            <div class="bar-item" style="height: 15%;"><span class="bar-label">Other</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Worker Performance Table -->
+                     <div class="table-card">
+                        <h4>Worker Performance</h4>
+                         <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Worker Name</th>
+                                        <th>Issues Assigned</th>
+                                        <th>Issues Completed</th>
+                                        <th>Avg. Resolution Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>John Doe</td>
+                                        <td>25</td>
+                                        <td>22</td>
+                                        <td>2.8 Days</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jane Smith</td>
+                                        <td>30</td>
+                                        <td>28</td>
+                                        <td>2.5 Days</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mike Johnson</td>
+                                        <td>18</td>
+                                        <td>15</td>
+                                        <td>3.5 Days</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Area Heatmap Preview -->
+                    <div class="chart-card">
+                        <h4>Issue Hotspots</h4>
+                        <div class="map-placeholder">
+                             <div class="heatmap-dot" style="top: 20%; left: 30%; opacity: 0.8;"></div>
+                             <div class="heatmap-dot" style="top: 25%; left: 35%; opacity: 1;"></div>
+                             <div class="heatmap-dot" style="top: 60%; left: 70%; opacity: 0.9;"></div>
+                             <div class="heatmap-dot" style="top: 55%; left: 65%; opacity: 1;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

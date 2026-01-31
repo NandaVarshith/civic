@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - UrbanPulse Admin</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="settings.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>UrbanPulse</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="all-issues.html"><i class="fas fa-exclamation-circle"></i> All Issues</a></li>
+                    <li><a href="map-view.html"><i class="fas fa-map-marked-alt"></i> Map View</a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <li><a href="workers.html"><i class="fas fa-users"></i> Workers</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                 <div class="header-left">
+                    <h1 class="page-title">System Settings</h1>
+                    <p class="page-subtitle">Configure platform preferences</p>
+                </div>
+            </header>
+            
+            <div class="settings-grid">
+                <div class="card">
+                    <h3>General Settings</h3>
+                    <div class="setting-item">
+                        <label for="platform-name">Platform Name</label>
+                        <input type="text" id="platform-name" value="UrbanPulse">
+                    </div>
+                    <div class="setting-item">
+                        <label for="contact-email">Contact Email</label>
+                        <input type="email" id="contact-email" value="admin@urbanpulse.com">
+                    </div>
+                    <button class="btn btn-primary">Save Changes</button>
+                </div>
+
+                <div class="card">
+                    <h3>Security</h3>
+                    <div class="setting-item">
+                        <label>Password</label>
+                        <button class="btn">Change Admin Password</button>
+                    </div>
+                    <div class="setting-item toggle">
+                        <span>Two-Factor Authentication (2FA)</span>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Appearance</h3>
+                     <div class="setting-item">
+                        <label>Theme</label>
+                        <select>
+                            <option>Light</option>
+                            <option>Dark</option>
+                            <option>System</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

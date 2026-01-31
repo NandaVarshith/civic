@@ -70,8 +70,13 @@ body {
 }
 
 .sidebar-nav a:hover {
-    background-color: #34495e;
+
+    background-color: #4a5a6a; /* Slightly lighter shade for hover */
+
+    font-weight: bolder;
+
     padding-left: 25px;
+
 }
 
 .sidebar-nav a.active {

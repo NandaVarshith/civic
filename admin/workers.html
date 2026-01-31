@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workers Management - UrbanPulse Admin</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="workers.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>UrbanPulse</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="all-issues.html"><i class="fas fa-exclamation-circle"></i> All Issues</a></li>
+                    <li><a href="map-view.html"><i class="fas fa-map-marked-alt"></i> Map View</a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <li><a href="workers.html" class="active"><i class="fas fa-users"></i> Workers</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                 <div class="header-left">
+                    <h1 class="page-title">Workers Management</h1>
+                    <p class="page-subtitle">Manage field staff and assignments</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Worker</button>
+                    <button class="btn"><i class="fas fa-file-export"></i> Export List</button>
+                    <button class="btn"><i class="fas fa-filter"></i></button>
+                </div>
+            </header>
+
+            <section class="summary-cards">
+                <div class="summary-card">
+                    <div class="card-icon"><i class="fas fa-users"></i></div>
+                    <div class="card-info">
+                        <h2>124</h2>
+                        <p>Total Workers</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon"><i class="fas fa-user-clock"></i></div>
+                    <div class="card-info">
+                        <h2>98</h2>
+                        <p>Active Today</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="card-info">
+                        <h2>450</h2>
+                        <p>Tasks Assigned</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="card-info">
+                        <h2>85</h2>
+                        <p>Completed Today</p>
+                    </div>
+                </div>
+                 <div class="summary-card">
+                    <div class="card-icon"><i class="fas fa-hourglass-half"></i></div>
+                    <div class="card-info">
+                        <h2>2.5d</h2>
+                        <p>Avg. Resolution Time</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="workers-table-section">
+                <div class="table-filters">
+                    <input type="text" placeholder="Search by Name or ID...">
+                    <select><option>All Areas</option></select>
+                    <select><option>All Statuses</option></select>
+                    <button class="btn">Apply</button>
+                    <button class="btn btn-secondary">Reset</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Worker ID</th>
+                                <th>Name</th>
+                                <th>Assigned Area</th>
+                                <th>Active Tasks</th>
+                                <th>Efficiency</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#W001</td>
+                                <td>
+                                    <div class="worker-info">
+                                        <img src="assets/profile-avatar.svg" alt="Avatar">
+                                        <span>John Doe</span>
+                                    </div>
+                                </td>
+                                <td>Downtown</td>
+                                <td>5</td>
+                                <td>
+                                    <div class="progress-bar-container"><div class="progress-bar" style="width: 93%;"></div></div>
+                                </td>
+                                <td>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td class="actions">
+                                    <button class="action-btn view-btn" title="View Profile"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn assign-btn" title="Assign Task"><i class="fas fa-clipboard-list"></i></button>
+                                    <button class="action-btn edit-btn" title="Edit Worker"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn disable-btn" title="Disable Worker"><i class="fas fa-user-slash"></i></button>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td>#W002</td>
+                                <td>
+                                    <div class="worker-info">
+                                        <img src="assets/profile-avatar.svg" alt="Avatar">
+                                        <span>Jane Smith</span>
+                                    </div>
+                                </td>
+                                <td>North Park</td>
+                                <td>8</td>
+                                <td>
+                                    <div class="progress-bar-container"><div class="progress-bar" style="width: 88%;"></div></div>
+                                </td>
+                                <td>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge on-leave">On Leave</span></td>
+                                <td class="actions">
+                                    <button class="action-btn view-btn" title="View Profile"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn assign-btn" title="Assign Task"><i class="fas fa-clipboard-list"></i></button>
+                                    <button class="action-btn edit-btn" title="Edit Worker"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn disable-btn" title="Disable Worker"><i class="fas fa-user-slash"></i></button>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td>#W003</td>
+                                <td>
+                                    <div class="worker-info">
+                                        <img src="assets/profile-avatar.svg" alt="Avatar">
+                                        <span>Mike Johnson</span>
+                                    </div>
+                                </td>
+                                <td>West End</td>
+                                <td>2</td>
+                                <td>
+                                    <div class="progress-bar-container"><div class="progress-bar" style="width: 95%;"></div></div>
+                                </td>
+                                <td>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge offline">Offline</span></td>
+                                <td class="actions">
+                                    <button class="action-btn view-btn" title="View Profile"><i class="fas fa-eye"></i></button>
+                                    <button class="action-btn assign-btn" title="Assign Task"><i class="fas fa-clipboard-list"></i></button>
+                                    <button class="action-btn edit-btn" title="Edit Worker"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn disable-btn" title="Disable Worker"><i class="fas fa-user-slash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-pagination">
+                    <span>Showing 1–10 of 124 workers</span>
+                    <div class="pagination-controls">
+                        <button class="btn">&laquo;</button>
+                        <button class="btn active">1</button>
+                        <button class="btn">2</button>
+                        <button class="btn">3</button>
+                        <button class="btn">&raquo;</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="worker-detail-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <img src="assets/profile-avatar.svg" alt="Worker Avatar">
+                <h2>John Doe</h2>
+                <p>#W001</p>
+            </div>
+            <div class="modal-body">
+                <h4>Contact Information</h4>
+                <p><strong>Email:</strong> john.doe@urbanpulse.com</p>
+                <p><strong>Phone:</strong> (123) 456-7890</p>
+                
+                <h4>Assigned Zones</h4>
+                <div class="zones">
+                    <span class="zone-badge">Downtown</span>
+                    <span class="zone-badge">Midtown</span>
+                </div>
+
+                <h4>Performance Stats</h4>
+                <div class="stats-grid">
+                    <div><span>Completed Tasks</span><strong>258</strong></div>
+                    <div><span>Avg. Rating</span><strong>4.8 <i class="fas fa-star"></i></strong></div>
+                    <div><span>Efficiency</span><strong>93%</strong></div>
+                </div>
+                
+                <h4>Recent Tasks</h4>
+                <ul class="task-list">
+                    <li>Fixed Pothole on Main St <span>(Resolved)</span></li>
+                    <li>Replaced Streetlight on 5th Ave <span>(Resolved)</span></li>
+                    <li>Cleaned graffiti at Park South <span>(In Progress)</span></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">Assign New Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+        }
+        
+        // Basic modal toggle for demo
+        const viewBtns = document.querySelectorAll('.view-btn');
+        const modal = document.getElementById('worker-detail-modal');
+        const closeBtn = document.querySelector('.modal-close');
+        
+        viewBtns.forEach(btn => {
+            btn.addEventListener('click', () => modal.style.display = 'flex');
+        });
+        
+        if(closeBtn) {
+            closeBtn.addEventListener('click', () => modal.style.display = 'none');
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                 modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

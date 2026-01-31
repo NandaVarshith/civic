@@ -1,0 +1,114 @@
+:root {
+    --primary-color: #3a7bfd;
+    --danger-color: #dc3545;
+    --secondary-color: #6c757d;
+    --white-color: #ffffff;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.logout-container {
+    text-align: center;
+}
+
+.logout-card {
+    background: var(--white-color);
+    padding: 40px 50px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-width: 400px;
+    width: 90%;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.logout-icon {
+    font-size: 48px;
+    color: var(--danger-color);
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 0 0 10px;
+    font-weight: 500;
+}
+
+.message {
+    color: #495057;
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+.user-profile-preview {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+    text-align: left;
+}
+.user-profile-preview img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+.user-name {
+    display: block;
+    font-weight: 500;
+}
+.user-role {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    flex-grow: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-secondary {
+    background-color: #e9ecef;
+    color: #495057;
+    border: 1px solid #ced4da;
+}
+.btn-danger {
+    background-color: var(--danger-color);
+    color: var(--white-color);
+}
+
+.security-note {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+}

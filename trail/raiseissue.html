@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raise Issue - UrbanPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="raiseissue.css">
 </head>
@@ -15,85 +19,200 @@
                 <h1>UrbanPulse</h1>
             </div>
             <nav class="sidebar-nav">
-                <ul>
+                 <ul>
                     <li><a href="dashboard.html"><span>&#128202;</span> Dashboard</a></li>
-                    <li><a href="raiseissue.html" class="active"><span>&#128195;</span> Raise Issue</a></li>
-                    <li><a href="#"><span>&#128221;</span> My Issues</a></li>
-                    <li><a href="#"><span>&#128506;</span> Map View</a></li>
-                    <li><a href="#"><span>&#128276;</span> Notifications</a></li>
-                    <li><a href="#"><span>&#128100;</span> Profile</a></li>
-                    <li><a href="#"><span>&#128682;</span> Logout</a></li>
+                    <li><a href="myissues.html"><span>&#128221;</span> My Issues</a></li>
+                    <li><a href="raiseissue.html"><span>&#128195;</span> Raise Issue</a></li>
+                    <li><a href="mapview.html"><span>&#128506;</span> Map View</a></li>
+                    <li><a href="analytics.html"><span>&#128200;</span> Analytics</a></li>
+                    <li><a href="notifications.html"><span>&#128276;</span> Notifications</a></li>
+                    <li><a href="profile.html"><span>&#128100;</span> Profile</a></li>
+                    <li><a href="logout.html" class="active"><span>&#128682;</span> Logout</a></li>
                 </ul>
             </nav>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="form-container">
+            <div id="multiStepForm" class="form-container">
                 <div class="form-header">
                     <h2>Report a New Civic Issue</h2>
                     <p>Your detailed report helps us assign and resolve issues faster.</p>
                 </div>
+
+                <div class="progress-bar">
+                    <div class="progress-line"></div>
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-icon">1</div>
+                        <div class="step-label">Details</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-icon">2</div>
+                        <div class="step-label">Location & Image</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-icon">3</div>
+                        <div class="step-label">Confirmation</div>
+                    </div>
+                </div>
                 
                 <form action="#" method="POST" class="issue-form">
-
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="issue-title">Issue Title <span class="required-star">*</span></label>
-                        <input type="text" id="issue-title" name="issue-title" placeholder="e.g., Broken streetlight on Main St" required>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="issue-category">Issue Category <span class="required-star">*</span></label>
-                            <select id="issue-category" name="issue-category" required>
-                                <option value="" disabled selected>Select a category</option>
-                                <option value="garbage">Garbage</option>
-                                <option value="road-damage">Road Damage</option>
-                                <option value="street-light">Street Light</option>
-                                <option value="water-leakage">Water Leakage</option>
-                                <option value="drainage">Drainage</option>
-                                <option value="public-safety">Public Safety</option>
-                                <option value="other">Other</option>
-                            </select>
+                    <!-- Step 1: Issue Details -->
+                    <div class="form-step active" data-step="1">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="issue-title">Issue Title <span class="required-star">*</span></label>
+                            <input type="text" id="issue-title" name="issue-title" placeholder="e.g., Broken streetlight on Main St" required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="location">Location / Address <span class="required-star">*</span></label>
-                            <input type="text" id="location" name="location" placeholder="Enter address or cross-streets" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="description">Description <span class="required-star">*</span></label>
-                        <textarea id="description" name="description" placeholder="Provide as much detail as possible." required></textarea>
-                    </div>
-
-                    <div class="form-row">
-                         <div class="form-group">
-                            <label for="image-upload">Upload Image</label>
-                            <div class="upload-area">
-                                <span>📤</span>
-                                <p>Click or drag image to upload</p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="issue-category">Issue Category <span class="required-star">*</span></label>
+                                <select id="issue-category" name="issue-category" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option value="garbage">Garbage</option>
+                                    <option value="road-damage">Road Damage</option>
+                                    <option value="street-light">Street Light</option>
+                                    <option value="water-leakage">Water Leakage</option>
+                                    <option value="drainage">Drainage</option>
+                                    <option value="public-safety">Public Safety</option>
+                                    <option value="other">Other</option>
+                                </select>
                             </div>
-                            <div class="image-preview">Preview</div>
                         </div>
-
-                        <div class="form-group">
-                             <label for="contact-phone">Contact Phone</label>
-                             <input type="tel" id="contact-phone" name="contact-phone" placeholder="Optional: For follow-up questions">
-                             
-                             <label style="margin-top: 20px;">Priority</label>
-                             <div class="priority-badge">Auto-Detected</div>
+                        
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="description">Description <span class="required-star">*</span></label>
+                            <textarea id="description" name="description" placeholder="Provide as much detail as possible." required></textarea>
                         </div>
                     </div>
+
+                    <!-- Step 2: Location & Image -->
+                    <div class="form-step" data-step="2">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Location / Address <span class="required-star">*</span></label>
+                                <input type="text" id="location" name="location" placeholder="Enter address or cross-streets" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                             <div class="form-group">
+                                <label for="image-upload">Upload Image</label>
+                                <div class="upload-area">
+                                    <span>📤</span>
+                                    <p>Click or drag image to upload</p>
+                                </div>
+                                <div class="image-preview">Preview</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Confirmation -->
+                    <div class="form-step" data-step="3">
+                        <div class="confirmation">
+                            <h3>Review Your Report</h3>
+                            <p><strong>Title:</strong> <span id="confirm-title"></span></p>
+                            <p><strong>Category:</strong> <span id="confirm-category"></span></p>
+                            <p><strong>Description:</strong> <span id="confirm-description"></span></p>
+                            <p><strong>Location:</strong> <span id="confirm-location"></span></p>
+                            <div class="form-group">
+                                <label for="contact-phone">Contact Phone</label>
+                                <input type="tel" id="contact-phone" name="contact-phone" placeholder="Optional: For follow-up questions">
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Submit Issue</button>
-                        <button type="button" class="btn btn-secondary">Save as Draft</button>
+                        <button type="button" class="btn btn-secondary prev-step">Previous</button>
+                        <button type="button" class="btn btn-primary next-step">Next</button>
+                        <button type="submit" class="btn btn-primary submit-btn" style="display: none;">Submit Issue</button>
                     </div>
                 </form>
             </div>
         </main>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const multiStepForm = document.getElementById('multiStepForm');
+            const nextBtns = multiStepForm.querySelectorAll('.next-step');
+            const prevBtns = multiStepForm.querySelectorAll('.prev-step');
+            const formSteps = multiStepForm.querySelectorAll('.form-step');
+            const progressSteps = multiStepForm.querySelectorAll('.progress-step');
+            const progressLine = multiStepForm.querySelector('.progress-line');
+            const submitBtn = multiStepForm.querySelector('.submit-btn');
+
+            let currentStep = 1;
+
+            const updateFormStep = () => {
+                formSteps.forEach(step => {
+                    step.classList.remove('active');
+                    if (parseInt(step.dataset.step) === currentStep) {
+                        step.classList.add('active');
+                    }
+                });
+
+                progressSteps.forEach((step, index) => {
+                    if (index < currentStep ) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                    if (index < currentStep -1) {
+                        step.classList.add('completed');
+                    } else {
+                        step.classList.remove('completed');
+                    }
+                });
+                
+                const activeSteps = multiStepForm.querySelectorAll('.progress-step.active');
+                const progressWidth = ((activeSteps.length - 1) / (progressSteps.length - 1)) * 66.66;
+                progressLine.style.width = progressWidth + '%';
+
+
+                if (currentStep === 1) {
+                    multiStepForm.querySelector('.prev-step').style.display = 'none';
+                } else {
+                    multiStepForm.querySelector('.prev-step').style.display = 'inline-block';
+                }
+
+                if (currentStep === formSteps.length) {
+                    multiStepForm.querySelector('.next-step').style.display = 'none';
+                    submitBtn.style.display = 'inline-block';
+                    populateConfirmation();
+                } else {
+                    multiStepForm.querySelector('.next-step').style.display = 'inline-block';
+                    submitBtn.style.display = 'none';
+                }
+            };
+
+            nextBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentStep < formSteps.length) {
+                        currentStep++;
+                        updateFormStep();
+                    }
+                });
+            });
+
+            prevBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentStep > 1) {
+                        currentStep--;
+                        updateFormStep();
+                    }
+                });
+            });
+
+            const populateConfirmation = () => {
+                document.getElementById('confirm-title').textContent = document.getElementById('issue-title').value;
+                document.getElementById('confirm-category').textContent = document.getElementById('issue-category').value;
+                document.getElementById('confirm-description').textContent = document.getElementById('description').value;
+                document.getElementById('confirm-location').textContent = document.getElementById('location').value;
+            };
+
+            updateFormStep();
+        });
+    </script>
 </body>
 </html>

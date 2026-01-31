@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Exports - UrbanPulse Admin</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="reports.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>UrbanPulse</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="all-issues.html"><i class="fas fa-exclamation-circle"></i> All Issues</a></li>
+                    <li><a href="map-view.html"><i class="fas fa-map-marked-alt"></i> Map View</a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <li><a href="workers.html"><i class="fas fa-users"></i> Workers</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                 <div class="header-left">
+                    <h1 class="page-title">Reports & Exports</h1>
+                    <p class="page-subtitle">Generate and download system reports</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary"><i class="fas fa-cogs"></i> Generate Report</button>
+                    <button class="btn"><i class="fas fa-clock"></i> Schedule Report</button>
+                    <button class="btn"><i class="fas fa-sliders-h"></i></button>
+                </div>
+            </header>
+
+            <div class="reports-layout">
+                <div class="main-column">
+                    <section class="card report-generator">
+                        <h3>Create a New Report</h3>
+                        <form class="generator-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Report Type</label>
+                                    <select><option>Issues Summary</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date Range</label>
+                                    <input type="text" placeholder="Select dates...">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Area/Zone</label><select><option>All</option></select></div>
+                                <div class="form-group"><label>Category</label><select><option>All</option></select></div>
+                                <div class="form-group"><label>Status</label><select><option>All</option></select></div>
+                            </div>
+                             <div class="form-row">
+                                <div class="form-group">
+                                    <label>Format</label>
+                                    <div class="format-selection">
+                                        <label><input type="radio" name="format" checked> PDF</label>
+                                        <label><input type="radio" name="format"> Excel</label>
+                                        <label><input type="radio" name="format"> CSV</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Generate Report</button>
+                                <button type="button" class="btn">Preview</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </form>
+                    </section>
+
+                     <section class="visual-summary">
+                        <div class="card chart-placeholder"><div class="chart-mock">Monthly Issues</div></div>
+                        <div class="card chart-placeholder"><div class="chart-mock">Resolution Rate</div></div>
+                        <div class="card chart-placeholder"><div class="chart-mock">Category Distribution</div></div>
+                    </section>
+
+                    <section class="card report-history">
+                        <h3>Generated Reports History</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Report Name</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Format</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Weekly Issue Summary</td>
+                                    <td>Issues</td>
+                                    <td>2024-04-20</td>
+                                    <td><span class="status-badge ready">Ready</span></td>
+                                    <td><span class="format-badge pdf">PDF</span></td>
+                                    <td class="actions">
+                                        <button title="Download"><i class="fas fa-download"></i></button>
+                                        <button title="Preview"><i class="fas fa-eye"></i></button>
+                                        <button title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>Q1 Worker Performance</td>
+                                    <td>Performance</td>
+                                    <td>2024-04-18</td>
+                                    <td><span class="status-badge processing">Processing</span></td>
+                                    <td><span class="format-badge excel">Excel</span></td>
+                                    <td class="actions">
+                                        <button title="Download" disabled><i class="fas fa-download"></i></button>
+                                        <button title="Preview" disabled><i class="fas fa-eye"></i></button>
+                                        <button title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Downtown Area Hotspots</td>
+                                    <td>Area</td>
+                                    <td>2024-04-15</td>
+                                    <td><span class="status-badge failed">Failed</span></td>
+                                    <td><span class="format-badge csv">CSV</span></td>
+                                    <td class="actions">
+                                         <button title="Download" disabled><i class="fas fa-download"></i></button>
+                                        <button title="Preview" disabled><i class="fas fa-eye"></i></button>
+                                        <button title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <div class="side-column">
+                    <section class="card quick-templates">
+                        <h3>Quick Templates</h3>
+                        <div class="template-card">
+                            <i class="fas fa-calendar-day"></i>
+                            <div><h4>Daily Issues Report</h4><p>Summary of all issues from today.</p></div>
+                            <button class="btn"><i class="fas fa-play"></i></button>
+                        </div>
+                         <div class="template-card">
+                            <i class="fas fa-chart-line"></i>
+                            <div><h4>Weekly Performance</h4><p>Worker performance metrics.</p></div>
+                             <button class="btn"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="template-card">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div><h4>Critical Issues</h4><p>All unresolved critical issues.</p></div>
+                             <button class="btn"><i class="fas fa-play"></i></button>
+                        </div>
+                    </section>
+                     <section class="card scheduled-reports">
+                        <h3>Scheduled Reports</h3>
+                        <div class="scheduled-item">
+                            <div class="item-info">
+                                <h4>Weekly Summary</h4>
+                                <p>Next run: 2024-04-27</p>
+                            </div>
+                            <div class="item-controls">
+                               <span class="badge scheduled">Weekly</span>
+                               <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                               <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                            </div>
+                        </div>
+                        <div class="scheduled-item">
+                            <div class="item-info">
+                                <h4>Monthly Performance</h4>
+                                <p>Next run: 2024-05-01</p>
+                            </div>
+                             <div class="item-controls">
+                               <span class="badge scheduled">Monthly</span>
+                               <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                               <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

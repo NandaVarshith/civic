@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanPulse - All Issues</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="all-issues.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>UrbanPulse</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="all-issues.html" class="active"><i class="fas fa-exclamation-circle"></i> All Issues</a></li>
+                    <li><a href="map-view.html"><i class="fas fa-map-marked-alt"></i> Map View</a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <li><a href="workers.html"><i class="fas fa-users"></i> Workers</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <h1 class="page-title">All Reported Issues</h1>
+                </div>
+                <div class="header-right">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <img src="assets/profile-avatar.svg" alt="Admin Avatar" class="profile-avatar">
+                        <div class="profile-dropdown-content">
+                            <a href="#">Profile</a>
+                            <a href="#">Settings</a>
+                            <a href="#">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="page-header">
+                <div class="page-header-left">
+                    <p class="page-subtitle">View and manage all citizen complaints</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="btn btn-filter"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-export"><i class="fas fa-file-export"></i> Export</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus-circle"></i> Assign Issue</button>
+                </div>
+            </section>
+
+            <section class="filter-panel">
+                <div class="filter-group">
+                    <label for="search-issue">Search</label>
+                    <input type="text" id="search-issue" placeholder="Search by title or ID...">
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">Status</label>
+                    <select id="filter-status">
+                        <option value="">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-category">Category</label>
+                    <select id="filter-category">
+                        <option value="">All</option>
+                        <option value="roads">Roads</option>
+                        <option value="electrical">Electrical</option>
+                        <option value="vandalism">Vandalism</option>
+                        <option value="waste">Waste</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-priority">Priority</label>
+                    <select id="filter-priority">
+                        <option value="">All</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="date-from">Date From</label>
+                    <input type="date" id="date-from">
+                </div>
+                <div class="filter-group">
+                    <label for="date-to">Date To</label>
+                    <input type="date" id="date-to">
+                </div>
+                <div class="filter-group">
+                    <label for="filter-location">Location</label>
+                    <input type="text" id="filter-location" placeholder="Enter area...">
+                </div>
+                <div class="filter-buttons">
+                    <button class="btn btn-secondary">Reset</button>
+                    <button class="btn btn-primary">Apply</button>
+                </div>
+            </section>
+
+            <section class="issues-table-container">
+                <div class="table-header">
+                    <span>Showing 1–10 of 245 issues</span>
+                    <div class="rows-per-page">
+                        <label for="rows-per-page">Rows per page:</label>
+                        <select id="rows-per-page">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="issues-table">
+                    <thead>
+                        <tr>
+                            <th>Issue ID <i class="fas fa-sort"></i></th>
+                            <th>Title <i class="fas fa-sort"></i></th>
+                            <th>Category <i class="fas fa-sort"></i></th>
+                            <th>Reporter <i class="fas fa-sort"></i></th>
+                            <th>Location <i class="fas fa-sort"></i></th>
+                            <th>Date <i class="fas fa-sort"></i></th>
+                            <th>Priority <i class="fas fa-sort"></i></th>
+                            <th>Status <i class="fas fa-sort"></i></th>
+                            <th>Assigned To <i class="fas fa-sort"></i></th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1234</td>
+                            <td>Pothole on Main St</td>
+                            <td>Roads</td>
+                            <td>John Doe</td>
+                            <td>123 Main St</td>
+                            <td>2024-07-28</td>
+                            <td><span class="priority-high">High</span></td>
+                            <td><span class="status-pending">Pending</span></td>
+                            <td>Unassigned</td>
+                            <td class="action-buttons">
+                                <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Assign Worker"><i class="fas fa-user-plus"></i></button>
+                                <button class="action-btn" title="Change Status"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#5678</td>
+                            <td>Broken Streetlight</td>
+                            <td>Electrical</td>
+                            <td>Jane Smith</td>
+                            <td>456 Oak Ave</td>
+                            <td>2024-07-27</td>
+                            <td><span class="priority-medium">Medium</span></td>
+                            <td><span class="status-in-progress">In Progress</span></td>
+                            <td>Worker #1</td>
+                            <td class="action-buttons">
+                                <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Assign Worker"><i class="fas fa-user-plus"></i></button>
+                                <button class="action-btn" title="Change Status"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#9101</td>
+                            <td>Graffiti on Park Wall</td>
+                            <td>Vandalism</td>
+                            <td>Mike Johnson</td>
+                            <td>789 Pine Ln</td>
+                            <td>2024-07-26</td>
+                            <td><span class="priority-low">Low</span></td>
+                            <td><span class="status-resolved">Resolved</span></td>
+                            <td>Worker #2</td>
+                            <td class="action-buttons">
+                                <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Assign Worker"><i class="fas fa-user-plus"></i></button>
+                                <button class="action-btn" title="Change Status"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#1212</td>
+                            <td>Overflowing Dumpster</td>
+                            <td>Waste</td>
+                            <td>Emily White</td>
+                            <td>Elm Street Plaza</td>
+                            <td>2024-07-25</td>
+                            <td><span class="priority-high">High</span></td>
+                            <td><span class="status-critical">Critical</span></td>
+                            <td>Worker #3</td>
+                             <td class="action-buttons">
+                                <button class="action-btn" title="View Details"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn" title="Assign Worker"><i class="fas fa-user-plus"></i></button>
+                                <button class="action-btn" title="Change Status"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Add more dummy rows as needed -->
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <button class="pagination-btn">Prev</button>
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">2</a>
+                    <a href="#" class="page-link">3</a>
+                    <span>...</span>
+                    <a href="#" class="page-link">10</a>
+                    <button class="pagination-btn">Next</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

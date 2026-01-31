@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications Center - UrbanPulse Admin</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>UrbanPulse</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="all-issues.html"><i class="fas fa-exclamation-circle"></i> All Issues</a></li>
+                    <li><a href="map-view.html"><i class="fas fa-map-marked-alt"></i> Map View</a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <li><a href="workers.html"><i class="fas fa-users"></i> Workers</a></li>
+                    <li><a href="notifications.html"><i class="fas fa-bell"></i> Notifications</a></li>
+                    <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                 <div class="header-left">
+                    <h1 class="page-title">Notifications Center</h1>
+                    <p class="page-subtitle">System alerts and activity updates</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn"><i class="fas fa-check-double"></i> Mark All as Read</button>
+                    <button class="btn"><i class="fas fa-trash-alt"></i> Clear All</button>
+                    <button class="btn"><i class="fas fa-cog"></i></button>
+                </div>
+            </header>
+
+            <section class="notification-summary">
+                <div class="summary-card">
+                    <i class="fas fa-bell"></i>
+                    <h2>1,284</h2>
+                    <p>Total Notifications</p>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-envelope"></i>
+                    <h2>75</h2>
+                    <p>Unread</p>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>12</h2>
+                    <p>Critical Alerts</p>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-calendar-day"></i>
+                    <h2>48</h2>
+                    <p>Today's Updates</p>
+                </div>
+            </section>
+
+            <section class="notification-filters">
+                <input type="text" placeholder="Search notifications...">
+                <select><option>All Types</option></select>
+                <select><option>Any Priority</option></select>
+                <input type="date">
+                <button class="btn btn-primary">Apply</button>
+                <button class="btn">Reset</button>
+            </section>
+
+            <div class="notification-layout">
+                <div class="notification-feed">
+                    <h3 class="feed-group-title">Today</h3>
+                    <div class="notification-item unread critical-alert">
+                        <div class="notification-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="notification-content">
+                            <h4>Critical System Alert: Database at 95%</h4>
+                            <p>Immediate action required. The main database is nearing its capacity.</p>
+                            <span class="timestamp">5 min ago</span>
+                        </div>
+                        <div class="notification-actions">
+                            <span class="priority-badge critical">Critical</span>
+                            <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn" title="Mark as Read"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+                    <div class="notification-item issue-update">
+                        <div class="notification-icon"><i class="fas fa-exclamation-circle"></i></div>
+                        <div class="notification-content">
+                            <h4>New Issue Assigned to Worker #W002</h4>
+                            <p>Issue #I5821 (Broken Streetlight) assigned to Jane Smith.</p>
+                            <span class="timestamp">30 min ago</span>
+                        </div>
+                        <div class="notification-actions">
+                            <span class="priority-badge high">High</span>
+                            <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn" title="Mark as Read"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+
+                    <h3 class="feed-group-title">Yesterday</h3>
+                    <div class="notification-item worker-update">
+                        <div class="notification-icon"><i class="fas fa-users-cog"></i></div>
+                        <div class="notification-content">
+                            <h4>Worker John Doe completed a task</h4>
+                            <p>Issue #I5799 (Pothole on Main St) has been marked as resolved.</p>
+                            <span class="timestamp">1 day ago</span>
+                        </div>
+                        <div class="notification-actions">
+                            <span class="priority-badge medium">Medium</span>
+                            <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn" title="Mark as Read"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+                     <div class="notification-item system-message">
+                        <div class="notification-icon"><i class="fas fa-info-circle"></i></div>
+                        <div class="notification-content">
+                            <h4>System maintenance scheduled for tonight</h4>
+                            <p>The system will be offline for approximately 30 minutes at 2 AM.</p>
+                            <span class="timestamp">1 day ago</span>
+                        </div>
+                        <div class="notification-actions">
+                            <span class="priority-badge low">Low</span>
+                            <button class="action-btn" title="View"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn" title="Mark as Read"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-detail-panel">
+                    <h3>Notification Details</h3>
+                    <div class="detail-content">
+                        <h4>Critical System Alert: Database at 95%</h4>
+                        <p class="timestamp">5 min ago</p>
+                        <p>The main database `urbanpulse_prod` is currently at 95% of its allocated storage capacity. Please scale up the storage or archive old data to prevent service disruption.</p>
+                        <div class="related-info">
+                            <strong>Related Entity:</strong> System<br>
+                            <strong>Priority:</strong> Critical
+                        </div>
+                        <div class="detail-actions">
+                            <button class="btn btn-primary"><i class="fas fa-cogs"></i> Go to System Health</button>
+                            <button class="btn">Archive Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="pagination-footer">
+                <button class="btn btn-primary">Load More</button>
+            </div>
+        </main>
+    </div>
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        if(menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

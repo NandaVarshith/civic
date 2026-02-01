@@ -1,8 +1,12 @@
 import React from 'react'
 import './Dashboard.css'
-import { Link } from 'react-router-dom';
-import Sidebar from '../../componenets/Sidebar.jsx';
+import { useNavigate ,Link } from 'react-router-dom';
+
+import Sidebar from '../../components/Sidebar.jsx';
 function Dashboard() {
+    
+    const navigate = useNavigate();
+
   return (
     <>
           <div className="dashboard-container">
@@ -22,9 +26,9 @@ function Dashboard() {
                         <button>&#128269;</button>
                     </div>
                     <div className="notification-bell">
-                        <span onclick={() => window.location.href='notifications.html'} className="notification-icon">&#128276;</span>
+                        <span onClick={() => navigate('/notifications')} className="notification-icon">&#128276;</span>
                     </div>
-                    <div onclick={() => window.location.href='profile.html'} className="user-avatar">
+                    <div onClick={() => navigate('/profile')} className="user-avatar">
                         <img src="https://i.pravatar.cc/40" alt="User Avatar"/>
                     </div>
                 </div>

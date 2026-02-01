@@ -1,7 +1,7 @@
 import React from 'react'
 import './Profile.css'
 import {Link} from 'react-router-dom';  
-import Sidebar from '../../componenets/Sidebar';  
+import Sidebar from '../../components/Sidebar';  
 function Profile() {
   return (
     <>

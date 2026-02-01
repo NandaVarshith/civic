@@ -1,7 +1,7 @@
 import React from 'react'
 import './Analytics.css'
 import { Link } from 'react-router-dom';
-import Sidebar from '../../componenets/Sidebar.jsx';
+import Sidebar from '../../components/Sidebar.jsx';
 
 function Analytics() {
   return (

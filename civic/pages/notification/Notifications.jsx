@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Notifications.css';
 import { Link } from 'react-router-dom';
-import Sidebar from '../../componenets/Sidebar';
+import Sidebar from '../../components/Sidebar';
 
 // Mock Data
 const notificationsData = [
@@ -25,7 +25,7 @@ const NotificationIcon = ({ type }) => {
     return <div className="notification-icon">{icons[type] || icons.default}</div>;
 };
 
-function Notification() {
+function Notifications() {
   const [notifications, setNotifications] = useState(notificationsData);
   const [filter, setFilter] = useState('All');
 
@@ -92,4 +92,4 @@ function Notification() {
   )
 }
 
-export default Notification;
+export default Notifications;

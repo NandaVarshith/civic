@@ -1,6 +1,6 @@
 import React from 'react'
 import './Mapview.css'
-import Sidebar from '../../componenets/Sidebar'
+import Sidebar from '../../components/Sidebar'
 import { Link } from 'react-router-dom'
 
 function Mapview() {

@@ -10,7 +10,7 @@ function Sidebar() {
     { to: "/raiseissue", icon: <FiPlusSquare />, label: "Raise Issue" },
     { to: "/mapview", icon: <FiMap />, label: "Map View" },
     { to: "/analytics", icon: <FiBarChart2 />, label: "Analytics" },
-    { to: "/notification", icon: <FiBell />, label: "Notifications" },
+    { to: "/notifications", icon: <FiBell />, label: "Notifications" },
     { to: "/profile", icon: <FiUser />, label: "Profile" },
   ];
 

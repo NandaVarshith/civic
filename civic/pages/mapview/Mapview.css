@@ -1,0 +1,295 @@
+/* Import variables and base styles if they are in a separate file, otherwise redefine */
+:root {
+    --primary-color: #3a7bd5;
+    --sidebar-bg: #2c3e50;
+    --sidebar-text: #ecf0f1;
+    --sidebar-active: #3498db;
+    --card-bg: #ffffff;
+    --text-color: #333;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+
+    /* Status Colors */
+    --status-pending: #95a5a6;    /* Gray */
+    --status-assigned: #3498db;   /* Blue */
+    --status-in-progress: #f39c12; /* Orange */
+    --status-resolved: #2ecc71;   /* Green */
+    --status-closed: #2c3e50;     /* Dark Green/Blue */
+}
+
+/* Reusing dashboard layout classes for consistency */
+body, .dashboard-container, .sidebar, .sidebar-header, .sidebar-nav, .main-content {
+    /* Assuming styles from dashboard.css or a global styles.css are applied */
+    /* Add any specific overrides if necessary */
+}
+
+.sidebar-nav a[href="mapview.html"] {
+    background-color: var(--sidebar-active);
+    font-weight: bold;
+}
+
+/* Header Styles */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 24px;
+}
+
+.header-left h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.breadcrumb {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.breadcrumb a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.header-right .user-avatar img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Map View Container */
+.map-view-container {
+    width: 100%;
+}
+
+.map-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    position: relative;
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.map-placeholder {
+    flex-grow: 1;
+    background-color: #e9eef3;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    position: relative;
+}
+
+/* Map Filters */
+.map-filters {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.filter-group select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: #fff;
+    min-width: 150px;
+}
+
+/* Map Legend */
+.map-legend {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.map-legend h4 {
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.map-legend ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.map-legend li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.map-legend li:last-child {
+    margin-bottom: 0;
+}
+.map-legend li:hover {
+    color: var(--primary-color);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.legend-dot.pending { background-color: var(--status-pending); }
+.legend-dot.assigned { background-color: var(--status-assigned); }
+.legend-dot.in-progress { background-color: var(--status-in-progress); }
+.legend-dot.resolved { background-color: var(--status-resolved); }
+.legend-dot.closed { background-color: var(--status-closed); }
+
+/* Map Pins */
+.map-pin {
+    position: absolute;
+    z-index: 5;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+}
+.map-pin .pin-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid var(--card-bg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.map-pin.pending .pin-dot { background-color: var(--status-pending); }
+.map-pin.assigned .pin-dot { background-color: var(--status-assigned); }
+.map-pin.in-progress .pin-dot { background-color: var(--status-in-progress); }
+.map-pin.resolved .pin-dot { background-color: var(--status-resolved); }
+.map-pin.closed .pin-dot { background-color: var(--status-closed); }
+
+.pin-popup {
+    display: none;
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.map-pin:hover .pin-popup {
+    display: block;
+}
+
+/* Map Controls */
+.map-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.zoom-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.zoom-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .map-card {
+        height: 70vh;
+    }
+    .map-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 15px;
+    }
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .map-card {
+        height: 65vh;
+    }
+    .map-filters, .map-legend, .map-controls {
+        padding: 8px;
+    }
+    .filter-group select {
+        min-width: 120px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .map-filters {
+        top: 10px;
+        left: 10px;
+    }
+    .map-legend {
+        display: none; /* Hide legend on very small screens or redesign */
+    }
+    .map-controls {
+        bottom: 10px;
+        right: 10px;
+    }
+    .header-left h2 {
+        font-size: 1.5rem;
+    }
+}

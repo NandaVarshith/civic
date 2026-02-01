@@ -1,0 +1,184 @@
+/* Reusing variables from styles.css */
+:root {
+    --status-pending: #95a5a6;
+    --status-assigned: #3498db;
+    --status-in-progress: #f39c12;
+    --status-resolved: #2ecc71;
+    --status-closed: #2c3e50;
+}
+
+/* Header and Breadcrumb from mapview.css (for consistency) */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 24px;
+}
+.header-left h2 { margin: 0; font-size: 1.8rem; }
+.breadcrumb { font-size: 0.9rem; color: #777; }
+.breadcrumb a { color: var(--primary-color); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.header-right .user-avatar img { width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+
+
+/* Analytics Layout */
+.analytics-container .summary-cards {
+    margin-bottom: 24px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.chart-card,
+.table-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    padding: 24px;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card h4,
+.table-card h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Pie Chart Placeholder */
+.pie-chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-grow: 1;
+}
+.pie-chart-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--status-pending) 0% 15%,
+        var(--status-assigned) 15% 25%,
+        var(--status-in-progress) 25% 30%,
+        var(--status-resolved) 30% 95%,
+        var(--status-closed) 95% 100%
+    );
+}
+
+.chart-legend {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.chart-legend li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.legend-dot.pending { background-color: var(--status-pending); }
+.legend-dot.assigned { background-color: var(--status-assigned); }
+.legend-dot.in-progress { background-color: var(--status-in-progress); }
+.legend-dot.resolved { background-color: var(--status-resolved); }
+.legend-dot.closed { background-color: var(--status-closed); }
+
+
+/* Bar Chart Placeholder */
+.bar-chart-placeholder {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 12px;
+    border-bottom: 2px solid var(--border-color);
+    padding: 0 10px;
+}
+.bar-item {
+    background-color: var(--primary-color);
+    width: 30px;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+.bar-item:hover {
+    background-color: #2962a4;
+}
+.bar-label {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: #555;
+}
+
+
+/* Table Card */
+.table-card {
+    grid-column: span 2; /* Make table take full width on larger screens */
+}
+.table-card .table-container {
+    overflow-x: auto;
+    flex-grow: 1;
+}
+.table-card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-card th, .table-card td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+.table-card thead th {
+    background-color: #f9f9f9;
+}
+.table-card tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+
+/* Map Placeholder */
+.map-placeholder {
+    flex-grow: 1;
+    background-color: #e9eef3;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+.heatmap-dot {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(243, 156, 18, 0.5); /* Semi-transparent orange */
+    filter: blur(5px);
+    transform: translate(-50%, -50%);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .table-card {
+        grid-column: span 1;
+    }
+}
+@media (max-width: 768px) {
+    .pie-chart-container {
+        flex-direction: column;
+    }
+}

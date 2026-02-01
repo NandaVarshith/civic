@@ -60,16 +60,16 @@ function Profile() {
                         <form action="#" method="POST">
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label for="full-name">Full Name <span className="required-star">*</span></label>
+                                    <label htmlFor="full-name">Full Name <span className="required-star">*</span></label>
                                     <input type="text" id="full-name" value="Alex Doe" required />
                                 </div>
                                 <div className="form-group">
-                                    <label for="email">Email Address <span className="required-star">*</span></label>
+                                    <label htmlFor="email">Email Address <span className="required-star">*</span></label>
                                     <input type="email" id="email" value="alex.doe@email.com" required />
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label for="phone">Phone Number</label>
+                                <label htmlFor="phone">Phone Number</label>
                                 <input type="tel" id="phone" value="+1 (555) 123-4567" />
                             </div>
                             <div className="form-actions">
@@ -87,16 +87,16 @@ function Profile() {
                      <div className="card-content">
                         <form action="#" method="POST">
                             <div className="form-group">
-                                <label for="old-password">Old Password</label>
+                                <label htmlFor="old-password">Old Password</label>
                                 <input type="password" id="old-password" placeholder="Enter your old password"/>
                             </div>
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label for="new-password">New Password</label>
+                                    <label htmlFor="new-password">New Password</label>
                                     <input type="password" id="new-password" placeholder="Enter a new password"/>
                                 </div>
                                 <div className="form-group">
-                                    <label for="confirm-password">Confirm New Password</label>
+                                    <label htmlFor="confirm-password">Confirm New Password</label>
                                     <input type="password" id="confirm-password" placeholder="Confirm your new password"/>
                                 </div>
                             </div>

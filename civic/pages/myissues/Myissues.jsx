@@ -1,103 +1,97 @@
 import React from 'react'
-import './myissues.css'
-import {Link} from 'react-router-dom';
-import Sidebar from '../../componenets/Sidebar';
+import './Myissues.css'
+import { Link } from 'react-router-dom'
+import Sidebar from '../../componenets/Sidebar'
 
 function MyIssues() {
+  // Mock data for issues
+  const issues = [
+    { id: '#7565', title: 'Waste Management Overflow', category: 'Garbage', date: '2026-01-27', status: 'In Progress' },
+    { id: '#7564', title: 'Streetlight Outage on 5th Ave', category: 'Street Light', date: '2026-01-27', status: 'In Progress' },
+    { id: '#7563', title: 'Pothole on Market Street', category: 'Road Damage', date: '2026-01-28', status: 'Resolved' },
+    { id: '#7566', title: 'Broken Sidewalk at Central Park', category: 'Road Damage', date: '2026-01-26', status: 'Pending' },
+  ];
+
+  // Mock data for summary
+  const summary = {
+    total: 24,
+    pending: 3,
+    inProgress: 5,
+    resolved: 16,
+  };
+
   return (
     <>
-        <div className="dashboard-container">
-        
+      <div className="my-issues-page">
         <Sidebar />
+        <div className="page-content">
+          {/* New Page Header */}
+          <header className="page-header">
+            <div className="header-content">
+              <h1>My Reported Issues</h1>
+              <p>Track the status of issues you've reported and see updates from the community.</p>
+            </div>
+            <div className="header-actions">
+              <Link to="/raiseissue" className="btn-primary">Report New Issue</Link>
+            </div>
+          </header>
 
-        <div className="page-wrapper">
-            
-            <header className="top-header">
-                <h1 style={{color: '#3a7bd5'}}>My Reported Issues</h1>
-                <div className="user-profile">
-                    <div className="avatar"></div>
-                    <span>Admin User</span>
+          {/* New Main Content with 2-column Grid */}
+          <main className="main-grid">
+            <div className="issues-column">
+              {/* Filters */}
+              <section className="filter-controls">
+                <input type="text" placeholder="Search issues..." className="search-input" />
+                <div className="filter-group">
+                  <select><option disabled selected>Status</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select>
+                  <select><option disabled selected>Category</option><option>Road Damage</option><option>Street Light</option><option>Garbage</option></select>
                 </div>
-            </header>
+              </section>
 
-            
-            <main className="main-content">
-                <nav className="breadcrumb"><Link to="/dashboard">Dashboard</Link> / My Issues</nav>
-
-              
-                <section className="summary-cards">
-                    <div className="card total"><div className="card-title">Total Issues</div><div className="card-number">24</div></div>
-                    <div className="card pending"><div className="card-title">Pending</div><div className="card-number">3</div></div>
-                    <div className="card in-progress"><div className="card-title">In Progress</div><div className="card-number">5</div></div>
-                    <div className="card resolved"><div className="card-title">Resolved</div><div className="card-number">16</div></div>
-                </section>
-
-                
-                <section className="controls-card">
-                    <div className="search-box">
-                        <input type="text" placeholder="Search by title or issue ID..." />
+              {/* Issue Cards Grid */}
+              <div className="issue-cards-grid">
+                {issues.map(issue => (
+                  <div key={issue.id} className={`issue-card status-${issue.status.toLowerCase().replace(' ', '-')}`}>
+                    <div className="issue-card-header">
+                      <span className="issue-card-id">{issue.id}</span>
+                      <span className={`badge status-${issue.status.toLowerCase().replace(' ', '-')}`}>{issue.status}</span>
                     </div>
-                    <select><option disabled selected>Status</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select>
-                    <select><option disabled selected>Category</option><option>Road Damage</option><option>Street Light</option><option>Garbage</option></select>
-                    
-                </section>
+                    <div className="issue-card-body">
+                      <h3 className="issue-card-title">{issue.title}</h3>
+                    </div>
+                    <div className="issue-card-footer">
+                        <span className="badge category">{issue.category}</span>
+                        <span className="issue-card-date">{issue.date}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-                
-                <section className="issues-list-container">
-                    <table className="issues-table">
-                        <thead>
-                            <tr>
-                                <th>Issue ID</th><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td data-label="Issue ID">#7565</td>
-                                <td data-label="Title" className="issue-title">Waste Management Overflow</td>
-                                <td data-label="Category"><span className="badge category">Garbage</span></td>
-                                <td data-label="Date">2026-01-27</td>
-                                <td data-label="Status"><span className="badge status-in-progress">In Progress</span></td>
-                                <td data-label="Actions" className="action-buttons">
-                                    <button>View Details</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td data-label="Issue ID">#7564</td>
-                                <td data-label="Title" className="issue-title">Streetlight Outage on 5th Ave</td>
-                                <td data-label="Category"><span className="badge category">Street Light</span></td>
-                                <td data-label="Date">2026-01-27</td>
-                                <td data-label="Status"><span className="badge status-in-progress">In Progress</span></td>
-                                <td data-label="Actions" className="action-buttons">
-                                    <button>View Details</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td data-label="Issue ID">#7563</td>
-                                <td data-label="Title" className="issue-title">Pothole on Market Street</td>
-                                <td data-label="Category"><span className="badge category">Road Damage</span></td>
-                                <td data-label="Date">2026-01-28</td>
-                                <td data-label="Status"><span className="badge status-resolved">Resolved</span></td>
-                                <td data-label="Actions" className="action-buttons">
-                                    <button>View Details</button>
-                                </td>
-                            </tr>
-                             <tr>
-                                <td data-label="Issue ID">#7566</td>
-                                <td data-label="Title" className="issue-title">Broken Sidewalk at Central Park</td>
-                                <td data-label="Category"><span className="badge category">Road Damage</span></td>
-                                <td data-label="Date">2026-01-26</td>
-                                <td data-label="Status"><span className="badge status-pending">Pending</span></td>
-                                <td data-label="Actions" className="action-buttons">
-                                    <button>View Details</button>
-                                </td>
-                                
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </main>
+            <aside className="stats-column">
+              <h2>Issue Statistics</h2>
+              <div className="summary-card-stack">
+                <div className="summary-card total">
+                    <span className="card-title">Total Issues</span>
+                    <span className="card-number">{summary.total}</span>
+                </div>
+                <div className="summary-card pending">
+                    <span className="card-title">Pending</span>
+                    <span className="card-number">{summary.pending}</span>
+                </div>
+                <div className="summary-card in-progress">
+                    <span className="card-title">In Progress</span>
+                    <span className="card-number">{summary.inProgress}</span>
+                </div>
+                <div className="summary-card resolved">
+                    <span className="card-title">Resolved</span>
+                    <span className="card-number">{summary.resolved}</span>
+                </div>
+              </div>
+            </aside>
+          </main>
         </div>
-    </div>
+      </div>
     </>
   )
 }

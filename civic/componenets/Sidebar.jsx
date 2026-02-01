@@ -1,28 +1,49 @@
-import React from 'react'
-import {Link} from 'react-router-dom'; 
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { FiGrid, FiFileText, FiPlusSquare, FiMap, FiBarChart2, FiBell, FiUser, FiLogOut } from 'react-icons/fi';
+// Assuming sidebar styles are in a global css file, so no local import is needed.
 
 function Sidebar() {
+  const navLinks = [
+    { to: "/dashboard", icon: <FiGrid />, label: "Dashboard" },
+    { to: "/myissues", icon: <FiFileText />, label: "My Issues" },
+    { to: "/raiseissue", icon: <FiPlusSquare />, label: "Raise Issue" },
+    { to: "/mapview", icon: <FiMap />, label: "Map View" },
+    { to: "/analytics", icon: <FiBarChart2 />, label: "Analytics" },
+    { to: "/notification", icon: <FiBell />, label: "Notifications" },
+    { to: "/profile", icon: <FiUser />, label: "Profile" },
+  ];
+
   return (
-    <>
     <aside className="sidebar">
-            <div className="sidebar-header">
-                <h1>UrbanPulse</h1>
-            </div>
-            <nav className="sidebar-nav">
-                <ul>
-                    <li><Link to="/dashboard"><span>&#128202;</span> Dashboard</Link></li>
-                    <li><Link to="/myissues"><span>&#128221;</span> My Issues</Link></li>
-                    <li><Link to="/raiseissue"><span>&#128195;</span> Raise Issue</Link></li>
-                    <li><Link to="/mapview"><span>&#128506;</span> Map View</Link></li>
-                    <li><Link to="/analytics" className="active"><span>&#128200;</span> Analytics</Link></li>
-                    <li><Link to="/notification"><span>&#128276;</span> Notifications</Link></li>
-                    <li><Link to="/profile"><span>&#128100;</span> Profile</Link></li>
-                    <li><Link to="/logout"><span>&#128682;</span> Logout</Link></li>
-                </ul>
-            </nav>
-        </aside>
-    </>
-  )
+      <div className="sidebar-header">
+        <h1>UrbanPulse</h1>
+      </div>
+      <div className="sidebar-content">
+        <nav className="sidebar-nav">
+          <ul>
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <NavLink 
+                  to={link.to}
+                  className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+                >
+                  <span className="nav-icon">{link.icon}</span>
+                  <span className="nav-label">{link.label}</span>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="sidebar-footer">
+            <NavLink to="/logout" className="nav-link">
+                <span className="nav-icon"><FiLogOut /></span>
+                <span className="nav-label">Logout</span>
+            </NavLink>
+        </div>
+      </div>
+    </aside>
+  );
 }
 
-export default Sidebar
+export default Sidebar;

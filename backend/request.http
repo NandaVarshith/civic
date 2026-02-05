@@ -1,0 +1,22 @@
+###
+GET http://localhost:3000/user-api/users
+
+###
+POST http://localhost:3000/user-api/register
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "email": "newuser@example.com",
+    "password": "1234",
+    "role": "user"
+}
+
+###
+POST http://localhost:3000/user-api/login
+Content-Type: application/json
+
+{
+    "email": "newuser@example.com",
+    "password": "1234"
+}

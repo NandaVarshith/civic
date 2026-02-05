@@ -1,15 +1,28 @@
 const express = require('express');
-const usersRouter = require('./routes/users');
+const { connect } = require('mongoose');
+const userApp = require('./routes/UserAPI.js');
+const {config}  = require('dotenv') 
+config()
 const app = express();
-const port = 3000;
 
 app.use(express.json());
-app.use('/users', usersRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-}   );
+async function connectDB() {
+  try {
+    await connect(process.env.DB_URL);
+    console.log("connected to db");
+    // assign port and start server
+    app.listen(process.env.PORT, () => console.log("server listening on port 3000"));
+  } catch (err) {
+    console.log("error connecting to db", err);
+  }
+}
+connectDB();
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+
+app.use("/user-api", userApp);
+
+// error handling middleware
+app.use((err,req,res,next)=>{
+  res.status(500).json({Message:"error",reason:err.message})
+})

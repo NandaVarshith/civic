@@ -7,13 +7,18 @@ const router = express.Router();
 
 
 /* LOGIN */
-router.post("/login", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    // Find user by email, case-insensitively.
+    // It's common for email fields in a database schema to be set to lowercase.
+    // This ensures that a search for 'Test@email.com' finds the user 'test@email.com'.
+    // We must explicitly select the password, as it's likely excluded by default in the User model for security.
+    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      // Return a generic error to prevent attackers from knowing if a user email exists (user enumeration).
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -29,7 +34,7 @@ router.post("/login", async (req, res) => {
 
     res.json({ message: "Login successful", token });
   } catch (err) {
-    res.status(500).json({ message: "Login failed" });
+    next(err);
   }
 });
 

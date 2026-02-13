@@ -34,7 +34,7 @@ function Register() {
     try {
       
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.post(`${apiUrl}/api/register`, formData);
+      const response = await axios.post(`${apiUrl}/api/register`, formData,{withCredentials: true});
       
       setSuccess(response.data.message);
       console.log(response.data);

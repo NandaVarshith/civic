@@ -25,7 +25,7 @@ function Login() {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       // Assuming the API expects a POST request with email and password
-      const response = await axios.post(`${apiUrl}/api/login`, formData);
+      const response = await axios.post(`${apiUrl}/api/login`, formData,{withCredentials: true});
 
       // TODO: Handle successful login, e.g., store token, user data in context/local storage
       console.log(response.data); // Log success message or user data

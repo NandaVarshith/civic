@@ -11,13 +11,13 @@ router.post("/", async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // Find user by email, case-insensitively.
-    // It's common for email fields in a database schema to be set to lowercase.
-    // This ensures that a search for 'Test@email.com' finds the user 'test@email.com'.
-    // We must explicitly select the password, as it's likely excluded by default in the User model for security.
+    
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required." });
+    }
+
     const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
     if (!user) {
-      // Return a generic error to prevent attackers from knowing if a user email exists (user enumeration).
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
@@ -32,7 +32,15 @@ router.post("/", async (req, res, next) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ message: "Login successful", token });
+    // Set the token in a secure, httpOnly cookie.
+    res.cookie("token", token, {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === "production", 
+      sameSite: "lax",
+      maxAge: 3600000, 
+    });
+
+    res.status(200).json({ message: "Login successful" });
   } catch (err) {
     next(err);
   }

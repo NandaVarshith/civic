@@ -1,4 +1,3 @@
-
 /* General Styles */
 :root {
     --primary-color: #3a7bd5;
@@ -15,6 +14,17 @@
     --status-resolved: #2ecc71;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    height: 100%;
+    width: 100%;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -25,71 +35,93 @@ body {
 .dashboard-container {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
-/* Sidebar */
+/* --- New Sidebar Styles --- */
 .sidebar {
     width: 250px;
-    background-color: var(--sidebar-bg);
-    color: var(--sidebar-text);
+    background-color: #111827; /* A darker, more modern background */
+    color: #9ca3af;
     display: flex;
     flex-direction: column;
     position: fixed;
     height: 100%;
-    transition: width 0.3s;
+    transition: width 0.3s ease;
+    border-right: 1px solid #1f2937;
 }
 
 .sidebar-header {
-    padding: 20px;
+    padding: 1.5rem;
     text-align: center;
-    border-bottom: 1px solid #34495e;
+    border-bottom: 1px solid #1f2937;
 }
 
 .sidebar-header h1 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+    color: #fff;
+    font-weight: 700;
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 .sidebar-nav ul {
     list-style: none;
     padding: 0;
-    margin: 20px 0;
+    margin: 1rem 0;
 }
 
-.sidebar-nav a {
+.nav-link {
     display: flex;
     align-items: center;
-    padding: 15px 20px;
-    color: var(--sidebar-text);
+    padding: 0.85rem 1.5rem;
+    color: #d1d5db;
     text-decoration: none;
-    transition: background-color 0.3s, padding-left 0.3s;
+    font-weight: 500;
+    margin: 0.25rem 0.75rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.sidebar-nav a span {
-    margin-right: 15px;
-    font-size: 1.2rem;
+.nav-link:hover {
+    background-color: #1f2937;
+    color: #fff;
 }
 
-.sidebar-nav a:hover {
-
-    background-color: #4a5a6a; /* Slightly lighter shade for hover */
-
-    font-weight: bolder;
-
-    padding-left: 25px;
-
+.nav-link.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 4px 6px -1px rgba(58, 123, 213, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.sidebar-nav a.active {
-    background-color: var(--sidebar-active);
-    font-weight: bold;
+.nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.25rem;
 }
+
+.sidebar-footer {
+    padding: 1rem 0.75rem;
+    border-top: 1px solid #1f2937;
+}
+
 
 /* Main Content */
 .main-content {
     flex-grow: 1;
-    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-width: 0;
     padding: 20px;
+    margin-left: 250px;
     transition: margin-left 0.3s;
 }
 
@@ -263,7 +295,11 @@ tbody tr:hover {
     }
 
     .main-content {
+        width: 100%;
         margin-left: 0;
+    }
+
+    .dashboard-container {
     }
 
     .top-navbar {

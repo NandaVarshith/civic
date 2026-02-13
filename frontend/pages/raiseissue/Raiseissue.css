@@ -1,13 +1,11 @@
-.main-content {
-    flex-grow: 1;
-    padding: 20px;
-    margin-left: 250px;
+.raiseissue-content {
     background-color: #f0f2f5;
 }
 
 .form-container {
-    max-width: 800px;
-    margin: 2rem auto;
+    width: 100%;
+    max-width: none;
+    margin: 2rem 0;
     padding: 2rem;
     background-color: #ffffff;
     border-radius: 8px;

@@ -38,7 +38,7 @@ function Raiseissue() {
       <div className="dashboard-container">
         <Toaster />
         <Sidebar />
-        <main className="main-content">
+        <main className="main-content raiseissue-content">
           <div className="form-container">
             <header className="form-header">
               <h2>Report a New Civic Issue</h2>

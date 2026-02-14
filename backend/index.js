@@ -6,6 +6,8 @@ const {connectDB} = require('./dbconnection.js')
 const {register} = require('./routes/register.js')
 const {login} = require('./routes/login.js')  
 const {logout} = require('./routes/logout.js')
+const cookieParser = require('cookie-parser');
+const {auth} = require('./middlewares/authentication.js')
  
 config()
 
@@ -19,10 +21,12 @@ app.use(cors({
 }))
  // Enable All CORS Requests
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/register", register);
 app.use("/api/login", login);
-app.use("/api/logout",logout);
+app.use("/api/logout", auth, logout);
+
 
 // Error handling middleware
 app.use((err,req,res,next)=>{

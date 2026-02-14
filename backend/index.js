@@ -3,11 +3,12 @@ const cors = require('cors');
  
 const {config}  = require('dotenv') 
 const {connectDB} = require('./dbconnection.js')
-const {register} = require('./routes/register.js')
+const {UserRouter} = require('./routes/user.js')
 const {login} = require('./routes/login.js')  
 const {logout} = require('./routes/logout.js')
 const cookieParser = require('cookie-parser');
-const {auth} = require('./middlewares/authentication.js')
+const {auth} = require('./middlewares/authentication.js');
+const user = require('./routes/user.js');
  
 config()
 
@@ -23,9 +24,10 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/register", register);
+app.use("/api/user", UserRouter);
 app.use("/api/login", login);
 app.use("/api/logout", auth, logout);
+
 
 
 // Error handling middleware

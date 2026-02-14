@@ -28,6 +28,14 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+/**profile **/
+router.get('/',(req,res)=>{});
+
+//update profile
+router.put('/',(req,res)=>{});
+
+//delete profile
+router.delete('/',(req,res)=>{});
 
 
-module.exports = {register : router };
+module.exports = {UserRouter: router};

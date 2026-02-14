@@ -40,7 +40,7 @@ const userSchema = new Schema(
 
     profileImage: {
       type: String, // store image URL
-      default: "",
+      default: "https://i.pravatar.cc/150",
     },
 
     isActive: {

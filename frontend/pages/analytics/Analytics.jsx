@@ -1,7 +1,7 @@
 import React from 'react'
 import './Analytics.css'
-import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar.jsx';
+import CommonHeader from '../../components/CommonHeader.jsx';
 
 function Analytics() {
   return (
@@ -12,20 +12,7 @@ function Analytics() {
 
         
         <main className="main-content">
-           
-            <header className="top-header">
-                <div className="header-left">
-                    <h2>Analytics</h2>
-                    <nav className="breadcrumb">
-                        <Link to="/dashboard">Dashboard</Link> / <span>Analytics</span>
-                    </nav>
-                </div>
-                <div className="header-right">
-                    <div className="user-avatar">
-                        <img src="https://i.pravatar.cc/40?u=a042581f4e29026704d" alt="User Avatar"/>
-                    </div>
-                </div>
-            </header>
+            <CommonHeader title="Analytics" />
 
             
             <div className="analytics-container">

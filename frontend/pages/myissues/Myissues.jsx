@@ -2,6 +2,7 @@ import React from 'react'
 import './Myissues.css'
 import { Link } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar'
+import CommonHeader from '../../components/CommonHeader'
 
 function MyIssues() {
   // Mock data for issues
@@ -22,13 +23,12 @@ function MyIssues() {
 
   return (
     <>
-      <div className="my-issues-page">
+      <div className="dashboard-container">
         <Sidebar />
-        <div className="page-content">
-          {/* New Page Header */}
+        <main className="main-content myissues-content">
+          <CommonHeader title="My Issues" />
           <header className="page-header">
             <div className="header-content">
-              <h1>My Reported Issues</h1>
               <p>Track the status of issues you've reported and see updates from the community.</p>
             </div>
             <div className="header-actions">
@@ -36,10 +36,8 @@ function MyIssues() {
             </div>
           </header>
 
-          {/* New Main Content with 2-column Grid */}
           <main className="main-grid">
             <div className="issues-column">
-              {/* Filters */}
               <section className="filter-controls">
                 <input type="text" placeholder="Search issues..." className="search-input" />
                 <div className="filter-group">
@@ -48,7 +46,6 @@ function MyIssues() {
                 </div>
               </section>
 
-              {/* Issue Cards Grid */}
               <div className="issue-cards-grid">
                 {issues.map(issue => (
                   <div key={issue.id} className={`issue-card status-${issue.status.toLowerCase().replace(' ', '-')}`}>
@@ -90,7 +87,7 @@ function MyIssues() {
               </div>
             </aside>
           </main>
-        </div>
+        </main>
       </div>
     </>
   )

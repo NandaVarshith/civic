@@ -1,35 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import './Raiseissue.css';
 import Sidebar from '../../components/Sidebar';
 import toast, { Toaster } from 'react-hot-toast';
+import CommonHeader from '../../components/CommonHeader';
 
 function Raiseissue() {
   const [formData, setFormData] = useState({
-    issueTitle: '',
-    issueCategory: '',
+    title: '',
+    category: '',
+    priority: '',
     description: '',
-    location: '',
+    address: '',
+    latitude: '',
+    longitude: '',
+    remarks: '',
+    images: [],
   });
 
-  const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    // This will run when the component mounts and whenever formData changes
-    // It can be used to update the "Review Your Report" section dynamically
-  }, [formData]);
+  const summaryText = useMemo(
+    () => ({
+      title: formData.title || 'Not provided',
+      category: formData.category || 'Not selected',
+      priority: formData.priority || 'Not selected',
+      address: formData.address || 'Not provided',
+      description: formData.description || 'Not provided',
+      images: formData.images.length,
+    }),
+    [formData]
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    setFormData((prev) => ({ ...prev, images: files }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.issueTitle || !formData.issueCategory || !formData.description || !formData.location) {
+    if (!formData.title || !formData.category || !formData.priority || !formData.description || !formData.address) {
       toast.error('Please fill out all required fields.');
       return;
     }
-    setSubmitted(true);
     toast.success('Issue submitted successfully!');
   };
 
@@ -39,92 +54,184 @@ function Raiseissue() {
         <Toaster />
         <Sidebar />
         <main className="main-content raiseissue-content">
-          <div className="form-container">
-            <header className="form-header">
-              <h2>Report a New Civic Issue</h2>
-              <p>Your detailed report helps us assign and resolve issues faster.</p>
-            </header>
-            <form onSubmit={handleSubmit} className="form-grid">
-              <div className="form-group">
-                <label htmlFor="issue-title">Issue Title <span className="required-star">*</span></label>
-                <input
-                  type="text"
-                  id="issue-title"
-                  name="issueTitle"
-                  placeholder="e.g., Broken streetlight on Main St"
-                  required
-                  onChange={handleChange}
-                  value={formData.issueTitle}
-                />
-              </div>
+          <CommonHeader title="Raise Issue" />
 
-              <div className="form-group">
-                <label htmlFor="issue-category">Issue Category <span className="required-star">*</span></label>
-                <select
-                  id="issue-category"
-                  name="issueCategory"
-                  required
-                  onChange={handleChange}
-                  value={formData.issueCategory}
-                >
-                  <option value="" disabled>Select a category</option>
-                  <option value="Garbage">Garbage</option>
-                  <option value="Road Damage">Road Damage</option>
-                  <option value="Street Light">Street Light</option>
-                  <option value="Water Leakage">Water Leakage</option>
-                  <option value="Drainage">Drainage</option>
-                  <option value="Public Safety">Public Safety</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+          <section className="raiseissue-layout">
+            <form onSubmit={handleSubmit} className="form-container">
+              <header className="form-header">
+                <h3>Report Civic Issue</h3>
+                <p>Provide clear details so your issue can be prioritized and assigned quickly.</p>
+              </header>
 
-              <div className="form-group full-width">
-                <label htmlFor="description">Description <span className="required-star">*</span></label>
-                <textarea
-                  id="description"
-                  name="description"
-                  placeholder="Provide as much detail as possible."
-                  required
-                  onChange={handleChange}
-                  value={formData.description}
-                ></textarea>
-              </div>
+              <div className="form-section">
+                <h4>Issue Details</h4>
+                <div className="form-grid">
+                  <div className="form-group full-width">
+                    <label htmlFor="title">Title <span className="required-star">*</span></label>
+                    <input
+                      type="text"
+                      id="title"
+                      name="title"
+                      placeholder="e.g., Streetlight not working near Pine St"
+                      required
+                      maxLength={120}
+                      onChange={handleChange}
+                      value={formData.title}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="location">Location / Address <span className="required-star">*</span></label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  placeholder="Enter address or cross-streets"
-                  required
-                  onChange={handleChange}
-                  value={formData.location}
-                />
-              </div>
+                  <div className="form-group">
+                    <label htmlFor="category">Category <span className="required-star">*</span></label>
+                    <select id="category" name="category" required onChange={handleChange} value={formData.category}>
+                      <option value="" disabled>Select a category</option>
+                      <option value="Road Damage">Road Damage</option>
+                      <option value="Street Light">Street Light</option>
+                      <option value="Water Leakage">Water Leakage</option>
+                      <option value="Drainage">Drainage</option>
+                      <option value="Garbage">Garbage</option>
+                      <option value="Public Safety">Public Safety</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="image-upload">Upload Image</label>
-                <div className="upload-area">
-                  <span>📤</span>
-                  <p>Click or drag image to upload</p>
+                  <div className="form-group">
+                    <label htmlFor="priority">Priority <span className="required-star">*</span></label>
+                    <select id="priority" name="priority" required onChange={handleChange} value={formData.priority}>
+                      <option value="" disabled>Select priority</option>
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group full-width">
+                    <label htmlFor="description">Description <span className="required-star">*</span></label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      placeholder="Describe the issue, impact, and nearby landmarks."
+                      required
+                      rows={5}
+                      maxLength={500}
+                      onChange={handleChange}
+                      value={formData.description}
+                    />
+                    <span className="helper-text">{formData.description.length}/500</span>
+                  </div>
                 </div>
-                <div className="image-preview">Preview</div>
               </div>
 
-              <div className="confirmation-box">
-                <h3>Review Your Report</h3>
-                <p><strong>Title:</strong> {formData.issueTitle || '[Dynamic Title]'}</p>
-                <p><strong>Category:</strong> {formData.issueCategory || '[Dynamic Category]'}</p>
-                <p><strong>Description:</strong> {formData.description || '[Dynamic Description]'}</p>
-                <p><strong>Location:</strong> {formData.location || '[Dynamic Location]'}</p>
+              <div className="form-section">
+                <h4>Location</h4>
+                <div className="form-grid">
+                  <div className="form-group full-width">
+                    <label htmlFor="address">Address <span className="required-star">*</span></label>
+                    <input
+                      type="text"
+                      id="address"
+                      name="address"
+                      placeholder="House no, street, area, city"
+                      required
+                      onChange={handleChange}
+                      value={formData.address}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="latitude">Latitude</label>
+                    <input
+                      type="number"
+                      step="any"
+                      id="latitude"
+                      name="latitude"
+                      placeholder="e.g., 40.7128"
+                      onChange={handleChange}
+                      value={formData.latitude}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="longitude">Longitude</label>
+                    <input
+                      type="number"
+                      step="any"
+                      id="longitude"
+                      name="longitude"
+                      placeholder="e.g., -74.0060"
+                      onChange={handleChange}
+                      value={formData.longitude}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-section">
+                <h4>Attachments and Remarks</h4>
+                <div className="form-grid">
+                  <div className="form-group full-width">
+                    <label htmlFor="image-upload">Images</label>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageChange}
+                    />
+                    <span className="helper-text">
+                      {formData.images.length > 0 ? `${formData.images.length} image(s) selected` : 'PNG, JPG, JPEG up to 5 files'}
+                    </span>
+                  </div>
+
+                  <div className="form-group full-width">
+                    <label htmlFor="remarks">Additional Remarks</label>
+                    <textarea
+                      id="remarks"
+                      name="remarks"
+                      placeholder="Add any optional notes for the assigned team."
+                      rows={3}
+                      onChange={handleChange}
+                      value={formData.remarks}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="form-actions">
                 <button type="submit" className="submit-btn">Submit Issue</button>
               </div>
             </form>
-          </div>
+
+            <aside className="review-panel">
+              <h4>Submission Preview</h4>
+              <div className="review-item">
+                <span>Title</span>
+                <p>{summaryText.title}</p>
+              </div>
+              <div className="review-item">
+                <span>Category</span>
+                <p>{summaryText.category}</p>
+              </div>
+              <div className="review-item">
+                <span>Priority</span>
+                <p>{summaryText.priority}</p>
+              </div>
+              <div className="review-item">
+                <span>Address</span>
+                <p>{summaryText.address}</p>
+              </div>
+              <div className="review-item">
+                <span>Description</span>
+                <p>{summaryText.description}</p>
+              </div>
+              <div className="review-item">
+                <span>Images</span>
+                <p>{summaryText.images}</p>
+              </div>
+              <div className="note-box">
+                <p>System-managed fields like status, assignment, and timestamps are added after submission.</p>
+              </div>
+            </aside>
+          </section>
         </main>
       </div>
     </>

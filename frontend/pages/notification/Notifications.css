@@ -1,25 +1,18 @@
 :root {
-    --primary-color: #3a7bd5;
-    --secondary-color: #f4f7fa;
-    --text-color: #334155;
+    --primary-color: #2f6fd0;
+    --secondary-color: #eaf2ff;
+    --surface-color: #f3f8ff;
+    --card-color: #f8fbff;
+    --text-color: #1f3556;
     --text-light-color: #64748b;
-    --border-color: #e2e8f0;
+    --border-color: #c9daf5;
     --white-color: #fff;
-    --shadow-color: rgba(149, 157, 165, 0.1);
+    --shadow-color: rgba(20, 61, 120, 0.12);
     --unread-dot-color: #3b82f6;
 }
 
-/* --- Base Page Layout --- */
-.notifications-page {
-    display: flex;
-    min-height: 100vh;
+.notifications-content {
     background-color: var(--secondary-color);
-}
-
-.page-content {
-    flex-grow: 1;
-    padding: 0 2rem 2rem 2rem;
-    margin-left: 250px; /* Space for the sidebar */
 }
 
 /* --- Page Header --- */
@@ -27,7 +20,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2.5rem 0;
+    padding: 0 0 1.25rem;
     margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-color);
 }
@@ -42,7 +35,7 @@
     color: var(--text-light-color);
 }
 .btn-secondary {
-    background-color: var(--white-color);
+    background-color: var(--card-color);
     color: var(--text-light-color);
     border: 1px solid var(--border-color);
     padding: 0.75rem 1.5rem;
@@ -53,16 +46,15 @@
     transition: all 0.2s ease;
 }
 .btn-secondary:hover {
-    background-color: #f8fafc;
+    background-color: var(--surface-color);
     color: var(--text-color);
     border-color: #ced6e0;
 }
 
 /* --- Main Notifications Container --- */
 .notifications-container {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: var(--white-color);
+    width: 100%;
+    background-color: var(--card-color);
     border-radius: 12px;
     box-shadow: 0 8px 24px var(--shadow-color);
     border: 1px solid var(--border-color);
@@ -90,7 +82,7 @@
     color: var(--text-color);
 }
 .filter-tab.active {
-    background-color: #e9eff7;
+    background-color: #dce9ff;
     color: var(--primary-color);
 }
 
@@ -113,7 +105,7 @@
     border-bottom: none;
 }
 .notification-item:hover {
-    background-color: var(--secondary-color);
+    background-color: var(--surface-color);
 }
 
 .notification-item.unread::before {
@@ -179,15 +171,11 @@
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-    .page-content {
-        padding: 0 1rem 1rem 1rem;
-        margin-left: 0;
-    }
     .page-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
-        padding: 1.5rem 0;
+        padding: 0 0 1rem;
     }
     .notification-item {
         gap: 1rem;

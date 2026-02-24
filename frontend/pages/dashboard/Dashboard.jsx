@@ -1,12 +1,9 @@
 import React from 'react'
 import './Dashboard.css'
-import { useNavigate ,Link } from 'react-router-dom';
 
 import Sidebar from '../../components/Sidebar.jsx';
+import CommonHeader from '../../components/CommonHeader.jsx';
 function Dashboard() {
-    
-    const navigate = useNavigate();
-
   return (
     <>
           <div className="dashboard-container">
@@ -15,24 +12,15 @@ function Dashboard() {
 
         
         <main className="main-content">
-           
-            <header className="top-navbar">
-                <div className="navbar-title">
-                    <h2>Citizen Dashboard</h2>
-                </div>
-                <div className="navbar-right">
+            <CommonHeader
+                title="Citizen Dashboard"
+                extra={
                     <div className="search-bar">
-                        <input type="text" placeholder="Search..."/>
-                        <button>&#128269;</button>
+                        <input type="text" placeholder="Search..." />
+                        <button type="button">&#128269;</button>
                     </div>
-                    <div className="notification-bell">
-                        <span onClick={() => navigate('/notifications')} className="notification-icon">&#128276;</span>
-                    </div>
-                    <div onClick={() => navigate('/profile')} className="user-avatar">
-                        <img src="https://i.pravatar.cc/40" alt="User Avatar"/>
-                    </div>
-                </div>
-            </header>
+                }
+            />
 
             
             <section className="summary-cards">

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import './Logout.css'
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import CommonHeader from '../../components/CommonHeader';
 
 function Logout() {
 
@@ -21,19 +21,7 @@ function Logout() {
 
         
         <main className="main-content">
-            <header className="top-header">
-                <div className="header-left">
-                    <h2>Logout</h2>
-                    <nav className="breadcrumb">
-                        <Link to="/dashboard">Dashboard</Link> / <span>Logout</span>
-                    </nav>
-                </div>
-                <div className="header-right">
-                    <div className="user-avatar">
-                        <img src="https://i.pravatar.cc/40?u=a042581f4e29026704d" alt="User Avatar"/>
-                    </div>
-                </div>
-            </header>
+            <CommonHeader title="Logout" />
 
             
             <div className="logout-container">

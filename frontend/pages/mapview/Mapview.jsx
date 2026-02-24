@@ -1,7 +1,7 @@
 import React from 'react'
 import './Mapview.css'
 import Sidebar from '../../components/Sidebar'
-import { Link } from 'react-router-dom'
+import CommonHeader from '../../components/CommonHeader'
 
 function Mapview() {
   return (
@@ -12,20 +12,7 @@ function Mapview() {
 
         
         <main className="main-content">
-           
-            <header className="top-header">
-                <div className="header-left">
-                    <h2>Map View</h2>
-                    <nav className="breadcrumb">
-                        <Link to="/dashboard">Dashboard</Link> / <span>Map View</span>
-                    </nav>
-                </div>
-                <div className="header-right">
-                    <div className="user-avatar">
-                        <img src="https://i.pravatar.cc/40" alt="User Avatar" />
-                    </div>
-                </div>
-            </header>
+            <CommonHeader title="Map View" />
 
            
             <section className="map-view-container">

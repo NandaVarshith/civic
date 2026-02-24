@@ -1,14 +1,16 @@
 
 /* General Styles */
 :root {
-    --primary-color: #3a7bd5;
-    --secondary-color: #f2f2f2;
-    --text-color: #333;
+    --primary-color: #2f6fd0;
+    --secondary-color: #eaf2ff;
+    --surface-color: #f3f8ff;
+    --card-color: #f8fbff;
+    --text-color: #1f3556;
     --sidebar-bg: #2c3e50;
     --sidebar-text: #ecf0f1;
-    --sidebar-active: #3498db;
-    --border-color: #e0e0e0;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --sidebar-active: #2f6fd0;
+    --border-color: #c9daf5;
+    --shadow-color: rgba(20, 61, 120, 0.12);
     --status-pending: #95a5a6;
     --status-assigned: #3498db;
     --status-in-progress: #f39c12;
@@ -112,7 +114,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--card-color);
     padding: 10px 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--shadow-color);
@@ -174,7 +176,7 @@ body {
 }
 
 .card {
-    background-color: #fff;
+    background-color: var(--card-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--shadow-color);
     display: flex;
@@ -226,7 +228,7 @@ body {
 }
 
 .table-container {
-    background-color: #fff;
+    background-color: var(--card-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--shadow-color);
     overflow-x: auto;
@@ -244,7 +246,7 @@ th, td {
 }
 
 thead th {
-    background-color: #f9f9f9;
+    background-color: var(--surface-color);
     font-weight: bold;
 }
 
@@ -253,7 +255,7 @@ tbody tr:last-child td {
 }
 
 tbody tr:hover {
-    background-color: #f5f5f5;
+    background-color: #e9f2ff;
 }
 
 .status-badge {

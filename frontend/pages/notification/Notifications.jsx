@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Notifications.css';
 import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
+import CommonHeader from '../../components/CommonHeader';
 
 // Mock Data
 const notificationsData = [
@@ -42,12 +43,12 @@ function Notifications() {
 
   return (
     <>
-      <div className="notifications-page">
+      <div className="dashboard-container">
         <Sidebar />
-        <div className="page-content">
+        <main className="main-content notifications-content">
+          <CommonHeader title="Notifications" />
           <header className="page-header">
             <div className="header-content">
-              <h1>Notifications</h1>
               <p>Updates on your reported issues and community activity.</p>
             </div>
             <div className="header-actions">
@@ -55,7 +56,7 @@ function Notifications() {
             </div>
           </header>
 
-          <main className="notifications-container">
+          <section className="notifications-container">
             <div className="notification-filters">
               <button onClick={() => setFilter('All')} className={`filter-tab ${filter === 'All' ? 'active' : ''}`}>All</button>
               <button onClick={() => setFilter('Unread')} className={`filter-tab ${filter === 'Unread' ? 'active' : ''}`}>Unread</button>
@@ -85,8 +86,8 @@ function Notifications() {
                 </div>
               )}
             </div>
-          </main>
-        </div>
+          </section>
+        </main>
       </div>
     </>
   )

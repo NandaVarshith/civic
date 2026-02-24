@@ -1,10 +1,10 @@
 /* Reusing variables from styles.css */
 :root {
-    --btn-confirm-bg: linear-gradient(135deg, #3a7bd5, #2962a4);
-    --btn-confirm-hover-bg: linear-gradient(135deg, #2962a4, #3a7bd5);
-    --btn-cancel-color: #555;
-    --btn-cancel-border: #ccc;
-    --btn-cancel-hover-bg: #f8f9fa;
+    --btn-confirm-bg: linear-gradient(135deg, #2f6fd0, #5a95e4);
+    --btn-confirm-hover-bg: linear-gradient(135deg, #255bb0, #2f6fd0);
+    --btn-cancel-color: #3e5e8f;
+    --btn-cancel-border: #b9ceef;
+    --btn-cancel-hover-bg: #eef5ff;
 }
 
 /* Header and Breadcrumb from mapview.css (for consistency) */
@@ -31,7 +31,7 @@
 }
 
 .logout-card {
-    background-color: #fff;
+    background-color: var(--card-color);
     border-radius: 12px;
     box-shadow: 0 8px 24px var(--shadow-color);
     padding: 40px;
@@ -56,7 +56,7 @@
 .logout-card p {
     margin-top: 0;
     margin-bottom: 32px;
-    color: #555;
+    color: #5d77a2;
     font-size: 1rem;
 }
 
@@ -89,14 +89,14 @@
 }
 
 .btn-cancel {
-    background-color: #fff;
+    background-color: var(--card-color);
     color: var(--btn-cancel-color);
     border: 1px solid var(--btn-cancel-border);
 }
 
 .btn-cancel:hover {
     background-color: var(--btn-cancel-hover-bg);
-    border-color: #aaa;
+    border-color: #9eb8e2;
 }
 
 .btn:focus {

@@ -2,74 +2,122 @@ import React, { useEffect, useState } from 'react';
 import './Profile.css';
 import Sidebar from '../../components/Sidebar';
 import CommonHeader from '../../components/CommonHeader';
+import axios from 'axios';
 
-const roleMeta = {
+// It's good practice to define constants outside the component if they don't depend on props or state.
+const ROLES_CONFIG = {
   user: {
-    label: 'Citizen User',
-    accentClass: 'role-user',
-    capabilities: ['Report issues', 'Track issue status', 'Receive notifications'],
+    label: 'User',
+    accentClass: 'accent-user',
+    capabilities: ['Raise new issues', 'View own issues', 'Receive notifications'],
   },
   worker: {
-    label: 'Field Worker',
-    accentClass: 'role-worker',
-    capabilities: ['View assigned issues', 'Update progress', 'Add field notes'],
+    label: 'Worker',
+    accentClass: 'accent-worker',
+    capabilities: ['View assigned issues', 'Update issue status', 'View map'],
   },
   admin: {
-    label: 'Platform Admin',
-    accentClass: 'role-admin',
-    capabilities: ['Manage users', 'Assign workers', 'Monitor analytics'],
+    label: 'Administrator',
+    accentClass: 'accent-admin',
+    capabilities: ['Manage users', 'View all issues', 'System analytics'],
   },
 };
 
 function Profile() {
-  const userData = {
+  const [userData, setUserData] = useState({
     name: 'Alex Doe',
     email: 'alex.doe@email.com',
     role: 'user',
     phone: '+1 (555) 123-4567',
     profileImage: 'https://i.pravatar.cc/180?u=alex-user',
     isActive: true,
-  };
-  const [uploadedImageFile, setUploadedImageFile] = useState(null);
-  const [profileImageSrc, setProfileImageSrc] = useState(userData.profileImage);
-  const roleData = roleMeta[userData.role];
-
-  const handleProfileSave = (event) => {
-    event.preventDefault();
-  };
-
-  const handleSecuritySave = (event) => {
-    event.preventDefault();
-  };
-
-  const handleProfileImageChange = (event) => {
-    const selectedFile = event.target.files?.[0] || null;
-    setUploadedImageFile(selectedFile);
+  });
+  
+  const getUserData = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}api/user`, { withCredentials: true });
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
   };
 
   useEffect(() => {
-    if (!uploadedImageFile) {
-      setProfileImageSrc(userData.profileImage);
-      return undefined;
-    }
+    getUserData();
+  }, []);
 
-    const nextObjectUrl = URL.createObjectURL(uploadedImageFile);
-    setProfileImageSrc(nextObjectUrl);
+  // Derive role-specific data from userData using useMemo for performance
+  const roleData = React.useMemo(() => {
+    return ROLES_CONFIG[userData.role] || ROLES_CONFIG.user;
+  }, [userData.role]);
 
-    return () => {
-      URL.revokeObjectURL(nextObjectUrl);
+  // --- Event Handlers ---
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    const keyMap = {
+      'full-name': 'name',
+      'email': 'email',
+      'phone': 'phone',
     };
-  }, [uploadedImageFile, userData.profileImage]);
+    const stateKey = keyMap[id];
+    if (stateKey) {
+      setUserData(prev => ({ ...prev, [stateKey]: value }));
+    }
+  };
+
+  const handleProfileSave = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}api/user/updateprofile`, {
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        profileImage: userData.profileImage,
+      }, { withCredentials: true });
+      console.log('Profile update response:', response);
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+    }
+  };
+
+  const handleProfileImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setUserData(prev => ({ ...prev, profileImage: URL.createObjectURL(file) }));
+    }
+  };
+
+  const handleSecuritySave = async (e) => {
+    e.preventDefault();
+    console.log('Updating password...');
+    try {
+    const response = await axios.put(`${import.meta.env.VITE_API_URL}api/user/password`, {
+      oldPassword: password.current,
+      newPassword: password.new,
+    }, { withCredentials: true });
+    console.log('Password update response:', response);
+    setPassword({ current: '', new: '' }); // Clear password fields after update
+  } catch (error) {
+    console.error('Failed to update password:', error);
+  }
+  };
+
+  const [password, setPassword] = useState({
+    current: '',
+    new: '',
+  });
+
+
 
   return (
     <div className="dashboard-container">
       <Sidebar />
       <main className="main-content profile-page">
         <CommonHeader title="Profile" />
-
         <section className={`profile-hero ${roleData.accentClass}`}>
           <div className="hero-left">
-            <img src={profileImageSrc} alt={`${userData.name} avatar`} className="profile-avatar" />
+            <img src={userData.profileImage} alt={`${userData.name} avatar`} className="profile-avatar" />
             <div className="hero-identity">
               <h3>{userData.name}</h3>
               <p>{userData.email}</p>
@@ -86,7 +134,6 @@ function Profile() {
             <p className="fixed-role-text">{roleData.label}</p>
           </div>
         </section>
-
         <div className="profile-content-grid">
           <section className="profile-card">
             <div className="card-head">
@@ -97,17 +144,17 @@ function Profile() {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="full-name">Full Name</label>
-                  <input id="full-name" defaultValue={userData.name} />
+                  <input id="full-name" value={userData.name} onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email Address</label>
-                  <input id="email" type="email" defaultValue={userData.email} />
+                  <input id="email" type="email" value={userData.email} onChange={handleInputChange} />
                 </div>
               </div>
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="phone">Phone</label>
-                  <input id="phone" type="tel" defaultValue={userData.phone} />
+                  <input id="phone" type="tel" value={userData.phone} onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="profile-image">Profile Image</label>
@@ -124,7 +171,6 @@ function Profile() {
               </div>
             </form>
           </section>
-
           <aside className="profile-side-column">
             <section className="profile-card">
               <div className="card-head">
@@ -139,7 +185,6 @@ function Profile() {
                 </ul>
               </div>
             </section>
-
             <section className="profile-card">
               <div className="card-head">
                 <h4>Security</h4>
@@ -147,11 +192,11 @@ function Profile() {
               <form className="card-body" onSubmit={handleSecuritySave}>
                 <div className="form-group">
                   <label htmlFor="current-password">Current Password</label>
-                  <input id="current-password" type="password" placeholder="Enter current password" />
+                  <input id="current-password" type="password"  value={password.current} onChange={(e) => setPassword({ ...password, current: e.target.value })} placeholder="Enter current password" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="new-password">New Password</label>
-                  <input id="new-password" type="password" placeholder="Enter new password" />
+                  <input id="new-password" type="password" value={password.new} onChange={(e) => setPassword({ ...password, new: e.target.value })} placeholder="Enter new password" />
                 </div>
                 <div className="form-actions">
                   <button type="submit" className="btn-primary">Update Password</button>

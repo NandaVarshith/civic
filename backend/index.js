@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
  
 const {config}  = require('dotenv') 
 const {connectDB} = require('./dbconnection.js')
@@ -11,7 +12,7 @@ const {auth} = require('./middlewares/authentication.js');
 const user = require('./routes/user.js');
 const issue = require('./routes/issues');
  
-config()
+config({ path: path.join(__dirname, '.env') })
 
 const app = express();
 

@@ -9,6 +9,7 @@ const {logout} = require('./routes/logout.js')
 const cookieParser = require('cookie-parser');
 const {auth} = require('./middlewares/authentication.js');
 const user = require('./routes/user.js');
+const issue = require('./routes/issues');
  
 config()
 
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use("/api/user", UserRouter);
 app.use("/api/login", login);
 app.use("/api/logout", auth, logout);
+app.use("/api/issues",issue);
 
 
 

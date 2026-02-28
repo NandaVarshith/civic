@@ -25,7 +25,7 @@ const issueSchema = new Schema({
     },
     category:{
         type: String,
-        enum: ['Plumbing', 'Electrical', 'Carpentry', 'Cleaning', 'Other'],
+        enum: ['Road Damage', 'Street Light', 'Water Leakage', 'Drainage', 'Garbage', 'Public Safety', 'Other'],
         required: true,
     },
     priority:{

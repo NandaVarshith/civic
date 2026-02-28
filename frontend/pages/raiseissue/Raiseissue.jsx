@@ -3,6 +3,9 @@ import './Raiseissue.css';
 import Sidebar from '../../components/Sidebar';
 import toast, { Toaster } from 'react-hot-toast';
 import CommonHeader from '../../components/CommonHeader';
+import axios from 'axios';
+
+
 
 function Raiseissue() {
   const [formData, setFormData] = useState({
@@ -39,13 +42,35 @@ function Raiseissue() {
     setFormData((prev) => ({ ...prev, images: files }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (!formData.title || !formData.category || !formData.priority || !formData.description || !formData.address) {
       toast.error('Please fill out all required fields.');
       return;
     }
-    toast.success('Issue submitted successfully!');
+
+    const payload = {
+      title: formData.title,
+      category: formData.category,
+      priority: formData.priority,
+      description: formData.description,
+      address: formData.address,
+      latitude: formData.latitude,
+      longitude: formData.longitude,
+      remarks: formData.remarks,
+      images: [], // File upload endpoint is not implemented yet.
+    };
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}api/issues`, payload, { withCredentials: true });
+      console.log(response);
+      toast.success('Issue submitted successfully!');
+    }
+    catch (error){
+      console.error('Error submitting issue:', error);
+      toast.error('An error occurred while submitting the issue. Please try again.');
+    }
+    
   };
 
   return (

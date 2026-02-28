@@ -1,0 +1,48 @@
+const express=require("express");
+const router = express.Router();
+const { auth } = require("../middlewares/authentication");
+const {Issue} = require("../models/Issue");
+
+router.post("/",auth, async (req,res)=>{
+    const userId = req.user.userId;
+    const {title, category, priority, description, address, latitude, longitude, remarks ,images} = req.body;
+
+    const parsedLatitude = latitude === "" || latitude === undefined ? undefined : Number(latitude);
+    const parsedLongitude = longitude === "" || longitude === undefined ? undefined : Number(longitude);
+
+    if (Number.isNaN(parsedLatitude) || Number.isNaN(parsedLongitude)) {
+        return res.status(400).json({ message: "Latitude/Longitude must be valid numbers" });
+    }
+
+    const normalizedRemarks = typeof remarks === "string" && remarks.trim()
+        ? [{ text: remarks.trim(), addedBy: userId }]
+        : [];
+
+    const normalizedImages = Array.isArray(images)
+        ? images.filter((image) => typeof image === "string" && image.trim())
+        : [];
+
+    const issue = new Issue({
+        title,
+        category,
+        priority,
+        description,
+        location: {
+            address,
+            latitude: parsedLatitude,
+            longitude: parsedLongitude,
+        },
+        remarks: normalizedRemarks,
+        images: normalizedImages,
+        reportedBy:userId
+    });
+    try {
+        const savedIssue = await issue.save();
+        res.status(201).json({ message: "Issue created successfully", issue: savedIssue });
+    } catch (err) {
+        console.error("Error creating issue:", err);
+        res.status(400).json({ message: "Failed to create issue", reason: err.message });
+    }
+    });
+
+module.exports = router;

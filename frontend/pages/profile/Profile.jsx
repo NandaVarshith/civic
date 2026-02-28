@@ -82,10 +82,18 @@ function Profile() {
   };
 
   const handleProfileImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setUserData(prev => ({ ...prev, profileImage: URL.createObjectURL(file) }));
+    if (!e.target.files || !e.target.files[0]) {
+      return;
     }
+
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setUserData((prev) => ({ ...prev, profileImage: reader.result }));
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handleSecuritySave = async (e) => {

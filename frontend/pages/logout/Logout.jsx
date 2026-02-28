@@ -10,8 +10,8 @@ function Logout() {
     const navigate = useNavigate();
 
     const logOut= async()=>{
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const response =  await axios.get(`${apiUrl}/api/logout`, { withCredentials: true });
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/';
+        const response =  await axios.get(`${apiUrl}api/logout`, { withCredentials: true });
         navigate('/login');
     }
   return (      

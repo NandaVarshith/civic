@@ -13,8 +13,8 @@ const issueSchema = new Schema({
     },
     status:{
         type: String,
-        enum: ['Open', 'In Progress', 'Closed'],
-        default: 'Open',
+        enum: ['Pending', 'Assigned', 'In Progress', 'Resolved', 'Closed'],
+        default: 'Pending',
         index: true, // for faster queries
     },
     reportedBy:{

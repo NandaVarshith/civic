@@ -15,6 +15,7 @@
     --status-assigned: #3498db;
     --status-in-progress: #f39c12;
     --status-resolved: #2ecc71;
+    --status-closed: #2c3e50;
 }
 
 *,
@@ -294,6 +295,7 @@ tbody tr:hover {
 .status-badge.assigned { background-color: var(--status-assigned); }
 .status-badge.in-progress { background-color: var(--status-in-progress); }
 .status-badge.resolved { background-color: var(--status-resolved); }
+.status-badge.closed { background-color: var(--status-closed); }
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -11,8 +11,10 @@
     --shadow-color: rgba(20, 61, 120, 0.12);
 
     --status-pending: #f59e0b; /* Amber */
+    --status-assigned: #6366f1; /* Indigo */
     --status-in-progress: #3b82f6; /* Blue */
     --status-resolved: #16a34a; /* Green */
+    --status-closed: #475569; /* Slate */
     --category-bg: #dce9ff;
     --category-text: #2459ab;
 }
@@ -163,8 +165,10 @@
     color: var(--white-color);
 }
 .badge.status-pending { background-color: var(--status-pending); }
+.badge.status-assigned { background-color: var(--status-assigned); }
 .badge.status-in-progress { background-color: var(--status-in-progress); }
 .badge.status-resolved { background-color: var(--status-resolved); }
+.badge.status-closed { background-color: var(--status-closed); }
 .badge.category {
     background-color: var(--category-bg);
     color: var(--category-text);

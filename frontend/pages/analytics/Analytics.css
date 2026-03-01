@@ -68,8 +68,8 @@
         var(--status-pending) 0% 15%,
         var(--status-assigned) 15% 25%,
         var(--status-in-progress) 25% 30%,
-        var(--status-resolved) 30% 95%,
-        var(--status-closed) 95% 100%
+        var(--status-resolved) 30% 85%,
+        var(--status-closed) 85% 100%
     );
 }
 

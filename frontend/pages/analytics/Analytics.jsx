@@ -30,8 +30,8 @@ function Analytics() {
                                 <li><span className="legend-dot pending"></span> Pending (15%)</li>
                                 <li><span className="legend-dot assigned"></span> Assigned (10%)</li>
                                 <li><span className="legend-dot in-progress"></span> In Progress (5%)</li>
-                                <li><span className="legend-dot resolved"></span> Resolved (65%)</li>
-                                <li><span className="legend-dot closed"></span> Closed (5%)</li>
+                                <li><span className="legend-dot resolved"></span> Resolved (55%)</li>
+                                <li><span className="legend-dot closed"></span> Closed (15%)</li>
                             </ul>
                         </div>
                     </div>

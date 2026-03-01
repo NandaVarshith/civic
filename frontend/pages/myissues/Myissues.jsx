@@ -8,9 +8,10 @@ function MyIssues({ issues }) {
   // Mock data for issues
   const issuesData = issues || [
     { id: '#7565', title: 'Waste Management Overflow', category: 'Garbage', date: '2026-01-27', status: 'In Progress' },
-    { id: '#7564', title: 'Streetlight Outage on 5th Ave', category: 'Street Light', date: '2026-01-27', status: 'In Progress' },
+    { id: '#7564', title: 'Streetlight Outage on 5th Ave', category: 'Street Light', date: '2026-01-27', status: 'Assigned' },
     { id: '#7563', title: 'Pothole on Market Street', category: 'Road Damage', date: '2026-01-28', status: 'Resolved' },
     { id: '#7566', title: 'Broken Sidewalk at Central Park', category: 'Road Damage', date: '2026-01-26', status: 'Pending' },
+    { id: '#7567', title: 'Drain Blockage near Lake Road', category: 'Drainage', date: '2026-01-25', status: 'Closed' },
   ];
 
   return (
@@ -40,18 +41,20 @@ function MyIssues({ issues }) {
                 <select defaultValue="">
                   <option value="" disabled>Status</option>
                   <option>Pending</option>
+                  <option>Assigned</option>
                   <option>In Progress</option>
                   <option>Resolved</option>
+                  <option>Closed</option>
                 </select>
               </div>
               <input type="text" placeholder="Search issues..." className="search-input" />
             </section>
 
             <div className="issue-cards-grid">
-              {issues.map(issue => (
-                <div key={issue.id} className={`issue-card status-${issue.status.toLowerCase().replace(' ', '-')}`}>
+              {issuesData.map(issue => (
+                <div key={issue._id || issue.id} className={`issue-card status-${issue.status.toLowerCase().replace(' ', '-')}`}>
                   <div className="issue-card-header">
-                    <span className="issue-card-id">{issue.id}</span>
+                    <span className="issue-card-id">{issue._id || issue.id}</span>
                     <span className={`badge status-${issue.status.toLowerCase().replace(' ', '-')}`}>{issue.status}</span>
                   </div>
                   <div className="issue-card-body">

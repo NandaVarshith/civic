@@ -37,6 +37,19 @@ function Dashboard( {issues} ) {
                             </tr>
                         </thead>
                         <tbody>
+
+                            {
+                                issues.map((issue)=>(
+                                    <tr key={issue._id}>
+                                        <td>{issue._id}</td>
+                                        <td>{issue.category}</td>
+                                        <td>{issue.location.address}</td>
+                                        <td>{issue.createdAt}</td>
+                                        <td><span className={`status-badge ${issue.status.toLowerCase().replace(' ', '-')}`}>{issue.status}</span></td>
+                                    </tr>
+                                ))
+                            }
+ 
                             <tr>
                                 <td>#7563</td>
                                 <td>Pothole</td>

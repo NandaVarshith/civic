@@ -13,8 +13,13 @@ function Statistics() {
 
     const getStatistics= async ()=>{
         try{
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}api/issues/statistics`);
-            setStatistics(response.data);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}api/issues/statistics`,{withCredentials:true});
+            setStatistics({
+                totalIssues: response.data.totalIssues,
+                pendingIssues: response.data.statusDistribution.find(item=>item._id==="Pending")?.count || 0,
+                inProgressIssues: response.data.statusDistribution.find(item=>item._id==="In Progress")?.count || 0,
+                resolvedIssues: response.data.statusDistribution.find(item=>item._id==="Resolved")?.count || 0
+            });
 
         }
         catch(error){

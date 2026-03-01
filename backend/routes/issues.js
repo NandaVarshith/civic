@@ -57,4 +57,23 @@ router.post("/",auth, async (req,res)=>{
     }
     });
 
+    router.get('/statistics', auth, async (req, res) => {
+    const userId = req.user.userId;
+    try{
+        const totalIssues = await Issue.countDocuments({ reportedBy: userId });
+        const statusDistribution = await Issue.aggregate([
+            { $match: { reportedBy: userId } },
+            { $group: { _id: "$status", count: { $sum: 1 } } }
+        ]);
+        const categoryDistribution = await Issue.aggregate([
+            { $match: { reportedBy: userId } },
+            { $group: { _id: "$category", count: { $sum: 1 } } }
+        ]);
+        res.status(200).json({ totalIssues, statusDistribution, categoryDistribution });
+    }
+    catch(error){
+        res.status(500).json({ message: "Failed to fetch statistics", reason: error.message });
+    }
+    });
+
 module.exports = router;

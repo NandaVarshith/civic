@@ -23,7 +23,7 @@ app.use(cors({
   credentials: true
 }))
  // Enable All CORS Requests
-app.use(express.json());
+app.use(express.json({ limit: "15mb" }));
 app.use(cookieParser());
 
 app.use("/api/user", UserRouter);

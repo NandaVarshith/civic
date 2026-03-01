@@ -42,11 +42,29 @@ function Raiseissue() {
     setFormData((prev) => ({ ...prev, images: files }));
   };
 
+  const fileToBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     if (!formData.title || !formData.category || !formData.priority || !formData.description || !formData.address) {
       toast.error('Please fill out all required fields.');
       return;
+    }
+
+    let base64Images = [];
+    if (formData.images.length > 0) {
+      try {
+        base64Images = await Promise.all(formData.images.map((file) => fileToBase64(file)));
+      } catch (conversionError) {
+        console.error('Image conversion failed:', conversionError);
+        toast.error('Failed to process selected images.');
+        return;
+      }
     }
 
     const payload = {
@@ -58,7 +76,7 @@ function Raiseissue() {
       latitude: formData.latitude,
       longitude: formData.longitude,
       remarks: formData.remarks,
-      images: [], // File upload endpoint is not implemented yet.
+      images: base64Images,
     };
 
     try {

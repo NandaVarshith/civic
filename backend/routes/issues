@@ -45,4 +45,16 @@ router.post("/",auth, async (req,res)=>{
     }
     });
 
+
+    router.get("/",auth, async (req,res)=>{
+    const userId = req.user.userId;
+    try {
+        const issues = await Issue.find({reportedBy:userId}).sort({ createdAt: -1 });
+        res.status(200).json( issues );
+        
+    }catch(error){
+        res.status(500).json({ message: "Failed to fetch issues", reason: error.message });
+    }
+    });
+
 module.exports = router;

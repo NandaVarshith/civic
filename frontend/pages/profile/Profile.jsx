@@ -54,16 +54,9 @@ function Profile() {
   // --- Event Handlers ---
 
   const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    const keyMap = {
-      'full-name': 'name',
-      'email': 'email',
-      'phone': 'phone',
-    };
-    const stateKey = keyMap[id];
-    if (stateKey) {
-      setUserData(prev => ({ ...prev, [stateKey]: value }));
-    }
+    const { name, value } = e.target;
+      setUserData(prev => ({ ...prev, [name]: value }));
+    
   };
 
   const handleProfileSave = async (e) => {
@@ -81,19 +74,19 @@ function Profile() {
     }
   };
 
-  const handleProfileImageChange = (e) => {
-    if (!e.target.files || !e.target.files[0]) {
-      return;
-    }
-
-    const file = e.target.files[0];
+  const fileToBase64 = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setUserData((prev) => ({ ...prev, profileImage: reader.result }));
-    };
-
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
     reader.readAsDataURL(file);
+  });
+
+  const handleProfileImageChange = async(e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const image = await fileToBase64(file);
+      setUserData(prev => ({ ...prev, profileImage: image }));
+    }
   };
 
   const handleSecuritySave = async (e) => {
@@ -152,17 +145,17 @@ function Profile() {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="full-name">Full Name</label>
-                  <input id="full-name" value={userData.name} onChange={handleInputChange} />
+                  <input id="full-name"name="name" value={userData.name} onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email Address</label>
-                  <input id="email" type="email" value={userData.email} onChange={handleInputChange} />
+                  <input id="email" name="email" type="email" value={userData.email} onChange={handleInputChange} />
                 </div>
               </div>
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="phone">Phone</label>
-                  <input id="phone" type="tel" value={userData.phone} onChange={handleInputChange} />
+                  <input id="phone" name="phone" type="tel" value={userData.phone} onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="profile-image">Profile Image</label>

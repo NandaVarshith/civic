@@ -2,6 +2,7 @@ import React from 'react'
 import './Analytics.css'
 import Sidebar from '../../components/Sidebar.jsx';
 import CommonHeader from '../../components/CommonHeader.jsx';
+import Statistics from '../../components/Statistics.jsx';
 
 function Analytics() {
   return (
@@ -17,36 +18,7 @@ function Analytics() {
             
             <div className="analytics-container">
                 
-                <section className="summary-cards">
-                    <div className="card">
-                        <div className="card-border-left blue"></div>
-                        <div className="card-content">
-                            <p className="card-title">Total Issues</p>
-                            <p className="card-number">1,250</p>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-border-left gray"></div>
-                        <div className="card-content">
-                            <p className="card-title">Pending Issues</p>
-                            <p className="card-number">50</p>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-border-left green"></div>
-                        <div className="card-content">
-                            <p className="card-title">Resolved Issues</p>
-                            <p className="card-number">1,188</p>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-border-left orange"></div>
-                        <div className="card-content">
-                            <p className="card-title">Avg. Resolution Time</p>
-                            <p className="card-number">3.2 Days</p>
-                        </div>
-                    </div>
-                </section>
+            <Statistics/>
 
                 <div className="analytics-grid">
                     

@@ -25,7 +25,7 @@ function Notifications() {
 
   const getNotifications = async() => {
     try {
-      const response = await axios.get('api/notifications', { withCredentials: true });
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}api/notifications`, { withCredentials: true });
       const payload = response.data;
       setNotifications(Array.isArray(payload) ? payload : []);
     } catch (error) {

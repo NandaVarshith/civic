@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const {auth} = require('./middlewares/authentication.js');
 const user = require('./routes/user.js');
 const issue = require('./routes/issues');
+const notification = require('./routes/notification');
  
 config({ path: path.join(__dirname, '.env') })
 
@@ -30,6 +31,7 @@ app.use("/api/user", UserRouter);
 app.use("/api/login", login);
 app.use("/api/logout", auth, logout);
 app.use("/api/issues",issue);
+app.use("/api/notifications", notification);
 
 
 

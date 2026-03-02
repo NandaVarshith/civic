@@ -9,7 +9,6 @@ function Register() {
     username: '',
     email: '',
     password: '',
-    role: 'user', // Default role value, matches the <option> value
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -24,12 +23,6 @@ function Register() {
     setLoading(true);
     setError('');
     setSuccess('');
-
-    if (!formData.role || formData.role === "") {
-      setError("Please select a role.");
-      setLoading(false);
-      return;
-    }
 
     try {
       
@@ -93,16 +86,6 @@ function Register() {
               onChange={handleChange}
               required
             />
-          </div>
-
-          <div className="field">
-            <label>Role</label>
-            <select name="role" value={formData.role} onChange={handleChange} required>
-              <option value="">Select role</option>
-              <option value="user">Citizen</option>
-              <option value="worker">Worker</option>
-              <option value="admin">Admin</option>
-            </select>
           </div>
 
           <button type="submit" disabled={loading}>

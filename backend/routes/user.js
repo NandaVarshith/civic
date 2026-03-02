@@ -8,7 +8,7 @@ const router = express.Router();
 /* REGISTER */
 router.post("/", async (req, res, next) => {
   try {
-    const { username, email, password, role } = req.body;
+    const { username, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
       username,
       email,
       password: hashedPassword,
-      role
+      role: "user",
     });
     await user.save();
 

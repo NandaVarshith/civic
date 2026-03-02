@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect , useState } from 'react';
 import './Notifications.css';
 import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import CommonHeader from '../../components/CommonHeader';
+import axios from 'axios';
 
-// Mock Data
-const notificationsData = [
-    { id: 1, type: 'assignment', issueId: '#7565', title: 'Waste Management Overflow', message: 'has been assigned to a worker', timestamp: '2 hours ago', unread: true },
-    { id: 2, type: 'status_update', issueId: '#7564', title: 'Streetlight Outage', message: 'status updated to In Progress', timestamp: '1 day ago', unread: true },
-    { id: 3, type: 'comment', issueId: '#7562', title: 'Graffiti on Wall', message: 'A new comment was added', timestamp: '2 days ago', unread: true },
-    { id: 4, type: 'resolution', issueId: '#7563', title: 'Pothole on Market Street', message: 'has been successfully Resolved', timestamp: '3 days ago', unread: false },
-    { id: 5, type: 'welcome', message: 'Welcome to UrbanPulse! Your reports help improve our city.', timestamp: '1 week ago', unread: false },
-];
 
 // A simple component to render an icon based on notification type
 const NotificationIcon = ({ type }) => {
@@ -27,17 +20,33 @@ const NotificationIcon = ({ type }) => {
 };
 
 function Notifications() {
-  const [notifications, setNotifications] = useState(notificationsData);
+
+  const [notifications, setNotifications] = useState([]);
+
+  const getNotifications = async() => {
+    try {
+      const response = await axios.get('api/notifications', { withCredentials: true });
+      const payload = response.data;
+      setNotifications(Array.isArray(payload) ? payload : []);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  };
+
+  useEffect(()=>{
+    getNotifications();
+  }, []);
+
   const [filter, setFilter] = useState('All');
 
   const markAllAsRead = () => {
     setNotifications(
-      notifications.map(n => ({ ...n, unread: false }))
+      (Array.isArray(notifications) ? notifications : []).map(n => ({ ...n, isRead: true }))
     );
   };
   
-  const filteredNotifications = notifications.filter(n => {
-      if (filter === 'Unread') return n.unread;
+  const filteredNotifications = (Array.isArray(notifications) ? notifications : []).filter(n => {
+      if (filter === 'Unread') return !n.isRead;
       return true;
   });
 
@@ -63,19 +72,20 @@ function Notifications() {
             </div>
 
             <div className="notifications-list">
-              {filteredNotifications.length > 0 ? (
+              {
+              filteredNotifications.length > 0 ? (
                 filteredNotifications.map(item => (
-                  <div key={item.id} className={`notification-item ${item.unread ? 'unread' : ''}`}>
+                  <div key={item._id} className={`notification-item ${item.isRead ? '' : 'unread'}`}>
                     <NotificationIcon type={item.type} />
                     <div className="notification-body">
                       <p className="notification-text">
-                        {item.issueId ? (
-                            <>Your issue <Link to="/myissues">{item.issueId}: {item.title}</Link> {item.message}.</>
+                        {item.issue?._id ? (
+                            <>Your issue <Link to="/myissues">{item.issue._id}: {item.issue.title}</Link> {item.message}.</>
                         ) : (
                            <>{item.message}</>
                         )}
                       </p>
-                      <span className="notification-timestamp">{item.timestamp}</span>
+                      <span className="notification-timestamp">{item.createdAt ? new Date(item.createdAt).toLocaleString() : ''}</span>
                     </div>
                   </div>
                 ))

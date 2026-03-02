@@ -2,8 +2,11 @@ const express=require("express");
 const router = express.Router();
 const { auth } = require("../middlewares/authentication");
 const {Issue} = require("../models/Issue");
+const Notification = require("../models/Notification");
+const mongoose = require("mongoose");
 
 router.post("/",auth, async (req,res)=>{
+
     const userId = req.user.userId;
     const {title, category, priority, description, address, latitude, longitude, remarks ,images} = req.body;
 
@@ -36,8 +39,15 @@ router.post("/",auth, async (req,res)=>{
         images: normalizedImages,
         reportedBy:userId
     });
+
+    const notification = new Notification({
+        recipient: process.env.ADMIN_ID, sender: userId, issue, type: "Issue created", message: `New issue reported: ${title}`
+    });
+
+
     try {
         const savedIssue = await issue.save();
+        await notification.save();
         res.status(201).json({ message: "Issue created successfully", issue: savedIssue });
     } catch (err) {
         console.error("Error creating issue:", err);
@@ -60,13 +70,14 @@ router.post("/",auth, async (req,res)=>{
     router.get('/statistics', auth, async (req, res) => {
     const userId = req.user.userId;
     try{
-        const totalIssues = await Issue.countDocuments({ reportedBy: userId });
+        const userObjectId = new mongoose.Types.ObjectId(userId);
+        const totalIssues = await Issue.countDocuments({ reportedBy: userObjectId });
         const statusDistribution = await Issue.aggregate([
-            { $match: { reportedBy: userId } },
+            { $match: { reportedBy:  userObjectId } },
             { $group: { _id: "$status", count: { $sum: 1 } } }
         ]);
         const categoryDistribution = await Issue.aggregate([
-            { $match: { reportedBy: userId } },
+            { $match: { reportedBy: userObjectId } },
             { $group: { _id: "$category", count: { $sum: 1 } } }
         ]);
         res.status(200).json({ totalIssues, statusDistribution, categoryDistribution });

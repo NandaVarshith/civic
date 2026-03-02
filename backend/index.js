@@ -9,9 +9,10 @@ const {login} = require('./routes/login.js')
 const {logout} = require('./routes/logout.js')
 const cookieParser = require('cookie-parser');
 const {auth} = require('./middlewares/authentication.js');
-const user = require('./routes/user.js');
-const issue = require('./routes/issues');
-const notification = require('./routes/notification');
+const {IssueRouter} = require('./routes/issues');
+const {NotificationRouter}   = require('./routes/notification');
+const {authorize} = require('./middlewares/authorize.js');
+const {RegisterRouter} = require('./routes/register.js'); 
  
 config({ path: path.join(__dirname, '.env') })
 
@@ -27,11 +28,12 @@ app.use(cors({
 app.use(express.json({ limit: "15mb" }));
 app.use(cookieParser());
 
-app.use("/api/user", UserRouter);
-app.use("/api/login", login);
-app.use("/api/logout", auth, logout);
-app.use("/api/issues",issue);
-app.use("/api/notifications", notification);
+app.use("/api/user",auth , UserRouter);
+app.use("/api/login",login);
+app.use("/api/logout", auth,authorize("user","admin","worker"), logout);
+app.use("/api/issues",auth,authorize("user","admin","worker"),IssueRouter);
+app.use("/api/notifications",auth,authorize("user","admin","worker"),NotificationRouter);
+app.use("/api/register",RegisterRouter);
 
 
 

@@ -5,7 +5,7 @@ const {Issue} = require("../models/Issue");
 const Notification = require("../models/Notification");
 const mongoose = require("mongoose");
 
-router.post("/",auth, async (req,res)=>{
+router.post("/", async (req,res)=>{
 
     const userId = req.user.userId;
     const {title, category, priority, description, address, latitude, longitude, remarks ,images} = req.body;
@@ -56,35 +56,78 @@ router.post("/",auth, async (req,res)=>{
     });
 
 
-    router.get("/",auth, async (req,res)=>{
+router.get("/", async (req,res)=>{
     const userId = req.user.userId;
+    const role = req.user.role;
+
     try {
-        const issues = await Issue.find({reportedBy:userId}).sort({ createdAt: -1 });
-        res.status(200).json( issues );
+        if (role === "user") {
+            const issues = await Issue.find({reportedBy:userId}).sort({ createdAt: -1 });
+            res.status(200).json( issues );
+        }
+        else if (role === "worker") {
+            const issues = await Issue.find({assignedTo:userId}).sort({ createdAt: -1 });
+            res.status(200).json( issues );
+        }
+        else if (role === "admin") {
+            const issues = await Issue.find({}).sort({ createdAt: -1 });
+            res.status(200).json( issues );
+        }
+        else {
+            return res.status(403).json({ message: "Forbidden" });
+        }
         
     }catch(error){
         res.status(500).json({ message: "Failed to fetch issues", reason: error.message });
     }
     });
 
-    router.get('/statistics', auth, async (req, res) => {
+router.get('/statistics', async (req, res) => {
     const userId = req.user.userId;
+    const role = req.user.role;
     try{
         const userObjectId = new mongoose.Types.ObjectId(userId);
-        const totalIssues = await Issue.countDocuments({ reportedBy: userObjectId });
-        const statusDistribution = await Issue.aggregate([
-            { $match: { reportedBy:  userObjectId } },
-            { $group: { _id: "$status", count: { $sum: 1 } } }
-        ]);
-        const categoryDistribution = await Issue.aggregate([
-            { $match: { reportedBy: userObjectId } },
-            { $group: { _id: "$category", count: { $sum: 1 } } }
-        ]);
-        res.status(200).json({ totalIssues, statusDistribution, categoryDistribution });
+        if(role==="user"){
+            const totalIssues = await Issue.countDocuments({ reportedBy: userObjectId });
+            const statusDistribution = await Issue.aggregate([
+                { $match: { reportedBy:  userObjectId } },
+                { $group: { _id: "$status", count: { $sum: 1 } } }
+            ]);
+            const categoryDistribution = await Issue.aggregate([
+                { $match: { reportedBy: userObjectId } },
+                { $group: { _id: "$category", count: { $sum: 1 } } }
+            ]);
+            res.status(200).json({ totalIssues, statusDistribution, categoryDistribution });
+        }
+        else if(role==="worker"){
+            const totalIssues = await Issue.countDocuments({ assignedTo: userObjectId });
+            const statusDistribution = await Issue.aggregate([
+                { $match: { assignedTo:  userObjectId } },
+                { $group: { _id: "$status", count: { $sum: 1 } } }
+            ]);
+            const categoryDistribution = await Issue.aggregate([
+                { $match: { assignedTo: userObjectId } },
+                { $group: { _id: "$category", count: { $sum: 1 } } }
+            ]);
+            res.status(200).json({ totalIssues, statusDistribution, categoryDistribution });
+        }
+        else if(role==="admin"){
+                const totalIssues = await Issue.countDocuments();
+            const statusDistribution = await Issue.aggregate([
+                { $group: { _id: "$status", count: { $sum: 1 } } }
+            ]);
+            const categoryDistribution = await Issue.aggregate([
+                { $group: { _id: "$category", count: { $sum: 1 } } }
+            ]);
+            res.status(200).json({ totalIssues, statusDistribution, categoryDistribution });
+        }
+        else{
+            res.status(403).json({ message: "Forbidden" });
+        }
     }
     catch(error){
         res.status(500).json({ message: "Failed to fetch statistics", reason: error.message });
     }
     });
 
-module.exports = router;
+module.exports = {IssueRouter: router};

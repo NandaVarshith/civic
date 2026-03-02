@@ -5,34 +5,9 @@ const { auth } = require("../middlewares/authentication");
 
 const router = express.Router();
 
-/* REGISTER */
-router.post("/", async (req, res, next) => {
-  try {
-    const { username, email, password } = req.body;
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User({
-      username,
-      email,
-      password: hashedPassword,
-      role: "user",
-    });
-    await user.save();
-
-    res.status(201).json({ message: "User registered successfully" });
-  } catch (err) {
-    next(err);
-  }
-});
-
-
 
 /**profile **/
-router.get('/',auth,async(req,res)=>{
+router.get('/',async(req,res)=>{
   const user = req.user; // Assuming user is attached to req by auth middleware  
   const userData = await User.findById(user.userId).select('-password'); // Fetch user data without password
   res.status(200).json({
@@ -45,7 +20,8 @@ router.get('/',auth,async(req,res)=>{
   });
 });
 
-router.put('/password',auth,(req,res)=>{
+//update password
+router.put('/password',(req,res)=>{
   const {oldPassword, newPassword} = req.body;
   const userId = req.user.userId;
   User.findById(userId).select('+password').then((user)=>{
@@ -72,7 +48,7 @@ router.put('/password',auth,(req,res)=>{
 
 
 //update profile
-router.put('/updateprofile',auth,(req,res)=>{
+router.put('/updateprofile',(req,res)=>{
   const {name, email, phone, profileImage} = req.body;
   const userId = req.user.userId;
   User.findByIdAndUpdate(userId, {username: name, email, phone, profileImage}, {new: true})
@@ -88,7 +64,7 @@ router.put('/updateprofile',auth,(req,res)=>{
 
 
 //delete profile
-router.delete('/',auth,(req,res)=>{
+router.delete('/',(req,res)=>{
   const userId = req.user.userId;
   User.findByIdAndDelete(userId)
     .then(deletedUser => {

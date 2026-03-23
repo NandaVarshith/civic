@@ -103,6 +103,13 @@ function MyIssues({ issues }) {
                           Assign
                         </Link>
                       )}
+                      {
+                        segment === 'worker' && (
+                        <Link to={`/worker/issues/${issue._id || issue.id}`} className="btn-primary">
+                          Edit
+                        </Link>
+                      )
+                      }
                   </div>
                 </div>
               ))}

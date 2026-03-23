@@ -105,75 +105,75 @@ function IssueDetails() {
   return (
     <div className="dashboard-container">
       <Sidebar />
-      <main className="main-content issue-details-page">
+      <main className="main-content wid-page">
         <CommonHeader title="Issue Details" />
 
-        {loading && <div className="loading">Loading issue...</div>}
+        {loading && <div className="wid-loading">Loading issue...</div>}
 
         {!loading && issue && (
-          <div className="issue-details-layout">
-            <section className="card detail-card">
-              <div className="card-header">
+          <div className="wid-layout">
+            <section className="wid-card">
+              <div className="wid-card-header">
                 <div>
-                  <p className="label">Title</p>
-                  <h2 className="title-text">{issue.title}</h2>
-                  <p className="muted">{issue.category}</p>
+                  <p className="wid-label">Title</p>
+                  <h2 className="wid-title">{issue.title}</h2>
+                  <p className="wid-muted">{issue.category}</p>
                 </div>
-                <div className="pill-col">
-                  <span className={`pill priority priority-${priorityTone}`}>{issue.priority}</span>
-                  <span className={`pill status status-${issue.status?.toLowerCase().replace(/\s+/g, '-')}`}>
+                <div className="wid-pill-col">
+                  <span className={`wid-pill wid-priority-${priorityTone}`}>{issue.priority}</span>
+                  <span className={`wid-pill wid-status-${issue.status?.toLowerCase().replace(/\s+/g, '-')}`}>
                     {issue.status}
                   </span>
                 </div>
               </div>
 
-              <div className="stepper">
+              <div className="wid-stepper">
                 {statusFlow.map((step, idx) => (
-                  <div key={step} className="step">
-                    <div className={`step-dot ${idx <= currentStep ? 'active' : ''}`} />
-                    <span className={`step-label ${idx <= currentStep ? 'active' : ''}`}>{step}</span>
-                    {idx < statusFlow.length - 1 && <div className={`step-line ${idx < currentStep ? 'active' : ''}`} />}
+                  <div key={step} className="wid-step">
+                    <div className={`wid-step-dot ${idx <= currentStep ? 'active' : ''}`} />
+                    <span className={`wid-step-label ${idx <= currentStep ? 'active' : ''}`}>{step}</span>
+                    {idx < statusFlow.length - 1 && <div className={`wid-step-line ${idx < currentStep ? 'active' : ''}`} />}
                   </div>
                 ))}
               </div>
 
-              <div className="detail-grid">
+              <div className="wid-detail-grid">
                 <div>
-                  <p className="label">Category</p>
+                  <p className="wid-label">Category</p>
                   <p>{issue.category}</p>
                 </div>
                 <div>
-                  <p className="label">Assigned Date</p>
+                  <p className="wid-label">Assigned Date</p>
                   <p>{issue.createdAt ? new Date(issue.createdAt).toLocaleDateString() : 'N/A'}</p>
                 </div>
-                <div className="full-row">
-                  <p className="label">Address</p>
+                <div className="wid-full">
+                  <p className="wid-label">Address</p>
                   <p>{issue.location?.address}</p>
                 </div>
-                <div className="full-row">
-                  <p className="label">Description</p>
-                  <p className="muted-box">{issue.description}</p>
+                <div className="wid-full">
+                  <p className="wid-label">Description</p>
+                  <p className="wid-box">{issue.description}</p>
                 </div>
                 {issue.instructions && (
-                  <div className="full-row">
-                    <p className="label">Admin Instructions</p>
-                    <p className="muted-box">{issue.instructions}</p>
+                  <div className="wid-full">
+                    <p className="wid-label">Admin Instructions</p>
+                    <p className="wid-box">{issue.instructions}</p>
                   </div>
                 )}
                 {issue.proofImage && (
-                  <div className="full-row">
-                    <p className="label">Existing Proof</p>
-                    <img src={issue.proofImage} alt="proof" className="preview existing" />
+                  <div className="wid-full">
+                    <p className="wid-label">Existing Proof</p>
+                    <img src={issue.proofImage} alt="proof" className="wid-preview wid-existing" />
                   </div>
                 )}
               </div>
             </section>
 
-            <section className="card update-card">
+            <section className="wid-card wid-update-card">
               <h3>Update Status</h3>
-              <p className="muted small">Advance the issue, add a note, and attach proof if available.</p>
-              <form onSubmit={handleSubmit} className="update-form">
-                <label className="label" htmlFor="status">Status</label>
+              <p className="wid-muted wid-small">Advance the issue, add a note, and attach proof if available.</p>
+              <form onSubmit={handleSubmit} className="wid-update-form">
+                <label className="wid-label" htmlFor="status">Status</label>
                 <select
                   id="status"
                   value={status}
@@ -187,7 +187,7 @@ function IssueDetails() {
                   ))}
                 </select>
 
-                <label className="label" htmlFor="notes">Notes</label>
+                <label className="wid-label" htmlFor="notes">Notes</label>
                 <textarea
                   id="notes"
                   rows={4}
@@ -197,22 +197,22 @@ function IssueDetails() {
                   disabled={submitting}
                 />
 
-                <label className="label" htmlFor="proof">Proof Image (optional)</label>
-                <div className="file-row">
+                <label className="wid-label" htmlFor="proof">Proof Image (optional)</label>
+                <div className="wid-file-row">
                   <input id="proof" type="file" accept="image/*" onChange={handleFileChange} disabled={submitting} />
                   {file && (
                     <button
                       type="button"
-                      className="ghost-btn compact"
+                      className="wid-btn-ghost wid-compact"
                       onClick={() => { setFile(null); setPreview(''); }}
                     >
                       Remove
                     </button>
                   )}
                 </div>
-                {preview && <img src={preview} alt="preview" className="preview" />}
+                {preview && <img src={preview} alt="preview" className="wid-preview" />}
 
-                <button type="submit" className="assign-btn" disabled={submitting || loadingUpload}>
+                <button type="submit" className="wid-btn-primary" disabled={submitting || loadingUpload}>
                   {submitting ? 'Updating...' : 'Update Issue'}
                 </button>
               </form>
@@ -222,21 +222,21 @@ function IssueDetails() {
       </main>
 
       {toast.open && (
-        <div className={`toast ${toast.type === 'error' ? 'toast-error' : ''}`} role="status">
+        <div className={`wid-toast ${toast.type === 'error' ? 'wid-error' : ''}`} role="status">
           {toast.text}
         </div>
       )}
 
       {confirmOpen && (
-        <div className="modal-backdrop" role="presentation">
-          <div className="modal-card" role="dialog" aria-modal="true">
+        <div className="wid-modal-backdrop" role="presentation">
+          <div className="wid-modal-card" role="dialog" aria-modal="true">
             <h3>Mark as completed?</h3>
             <p>This will set the issue status to Completed.</p>
-            <div className="modal-actions">
-              <button type="button" className="ghost-btn" onClick={() => setConfirmOpen(false)} disabled={submitting}>
+            <div className="wid-modal-actions">
+              <button type="button" className="wid-btn-ghost" onClick={() => setConfirmOpen(false)} disabled={submitting}>
                 Cancel
               </button>
-              <button type="button" className="assign-btn" onClick={submitUpdate} disabled={submitting}>
+              <button type="button" className="wid-btn-primary" onClick={submitUpdate} disabled={submitting}>
                 Confirm
               </button>
             </div>

@@ -11,6 +11,8 @@ import Raiseissue from '../pages/raiseissue/Raiseissue'
 import Register from  '../pages/authentication/Register'
 import Login from  '../pages/authentication/Login'
 import Assignissue from '../pages/assignissues/assignissue'
+import IssueDetails from '../pages/worker/IssueDetails'
+
 import axios from 'axios'
 import {useState , useEffect} from 'react'
 
@@ -96,13 +98,15 @@ const roleHome = loading
 
         <Route element={<RoleRoute user={user} allowedRoles={["worker"]} />}>
           <Route path="/worker/dashboard" element={<Dashboard issues={issues} />} />
-          <Route path="/worker/analytics" element={<Analytics />} />
-          <Route path="/worker/logout" element={<Logout />} />
-          <Route path="/worker/mapview" element={<Mapview />} />
-          <Route path="/worker/myissues" element={<Myissues issues={issues} />} />
-          <Route path="/worker/notifications" element={<Notifications />} />
-          <Route path="/worker/profile" element={<Profile />} />
-        </Route>
+        <Route path="/worker/analytics" element={<Analytics />} />
+        <Route path="/worker/logout" element={<Logout />} />
+        <Route path="/worker/mapview" element={<Mapview />} />
+        <Route path="/worker/myissues" element={<Myissues issues={issues} />} />
+        <Route path="/worker/issues/:id" element={<IssueDetails />} />
+        
+        <Route path="/worker/notifications" element={<Notifications />} />
+        <Route path="/worker/profile" element={<Profile />} />
+      </Route>
       </Route>
 
       <Route path="/" element={roleHome} />

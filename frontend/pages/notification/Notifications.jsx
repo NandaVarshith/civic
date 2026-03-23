@@ -1,6 +1,6 @@
 import React, { useEffect , useState } from 'react';
 import './Notifications.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 import CommonHeader from '../../components/CommonHeader';
 import axios from 'axios';
@@ -20,6 +20,9 @@ const NotificationIcon = ({ type }) => {
 };
 
 function Notifications() {
+  const location = useLocation();
+  const segment = location.pathname.split('/')[1];
+  const roleBase = ['user', 'admin', 'worker'].includes(segment) ? `/${segment}` : '/user';
 
   const [notifications, setNotifications] = useState([]);
 
@@ -80,7 +83,7 @@ function Notifications() {
                     <div className="notification-body">
                       <p className="notification-text">
                         {item.issue?._id ? (
-                            <>Your issue <Link to="/myissues">{item.issue._id}: {item.issue.title}</Link> {item.message}.</>
+                            <>Your issue <Link to={`${roleBase}/myissues`}>{item.issue._id}: {item.issue.title}</Link> {item.message}.</>
                         ) : (
                            <>{item.message}</>
                         )}

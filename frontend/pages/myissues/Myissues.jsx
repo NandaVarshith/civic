@@ -1,10 +1,13 @@
 import React , {useState, useEffect} from 'react'
 import './Myissues.css'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Sidebar from '../../components/Sidebar'
 import CommonHeader from '../../components/CommonHeader'
 
 function MyIssues({ issues }) {
+  const location = useLocation();
+  const segment = location.pathname.split('/')[1];
+  const roleBase = ['user', 'admin', 'worker'].includes(segment) ? `/${segment}` : '/user';
   const [allIssues, setAllIssues] = useState(issues || []);
   const [filteredIssues, setFilteredIssues] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +53,7 @@ function MyIssues({ issues }) {
               <p>Track the status of issues you've reported and see updates from the community.</p>
             </div>
             <div className="header-actions">
-              <Link to="/raiseissue" className="btn-primary">Report New Issue</Link>
+              {segment === 'user' && <Link to={`${roleBase}/raiseissue`} className="btn-primary">Report New Issue</Link>}
             </div>
           </header>
 

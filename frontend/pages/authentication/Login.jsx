@@ -25,13 +25,12 @@ function Login() {
     try {
       const apiUrl = import.meta.env.VITE_API_URL ;
       // Assuming the API expects a POST request with email and password
-      const response = await axios.post(`${apiUrl}api/login`, formData,{withCredentials: true});
+      const response = await axios.post(`${apiUrl}api/login`, formData,{withCredentials: true}).then();
 
       // TODO: Handle successful login, e.g., store token, user data in context/local storage
-      console.log(response.data); // Log success message or user data
-
-      // Redirect to dashboard
-      navigate('/dashboard');
+      console.log(response.data);
+      window.location.href='/'
+      
     } catch (err) {
       const errorMessage = err.response?.data?.message || "There was an error logging in!";
       setError(errorMessage);

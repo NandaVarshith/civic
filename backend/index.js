@@ -13,6 +13,7 @@ const {IssueRouter} = require('./routes/issues');
 const {NotificationRouter}   = require('./routes/notification');
 const {authorize} = require('./middlewares/authorize.js');
 const {RegisterRouter} = require('./routes/register.js'); 
+
  
 config({ path: path.join(__dirname, '.env') })
 
@@ -34,6 +35,9 @@ app.use("/api/logout", auth,authorize("user","admin","worker"), logout);
 app.use("/api/issues",auth,authorize("user","admin","worker"),IssueRouter);
 app.use("/api/notifications",auth,authorize("user","admin","worker"),NotificationRouter);
 app.use("/api/register",RegisterRouter);
+app.use("/api/me",auth,(req,res)=>{
+  res.json({user:req.user});
+});
 
 
 

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { FiBell } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './CommonHeader.css';
 
 function CommonHeader({ title}) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const segment = location.pathname.split('/')[1];
+  const roleBase = ['user', 'admin', 'worker'].includes(segment) ? `/${segment}` : '/user';
 
   const [userData, setUserData] = useState(null);
 
@@ -35,7 +38,7 @@ function CommonHeader({ title}) {
           type="button"
           className="header-icon-button"
           aria-label="Open notifications"
-          onClick={() => navigate('/notifications')}
+          onClick={() => navigate(`${roleBase}/notifications`)}
         >
           <FiBell />
         </button>
@@ -43,7 +46,7 @@ function CommonHeader({ title}) {
           type="button"
           className="header-avatar-button"
           aria-label="Open profile"
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate(`${roleBase}/profile`)}
         >
           {userData && <img src={userData.profileImage} alt="User avatar" />}
         </button>

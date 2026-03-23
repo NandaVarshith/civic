@@ -130,4 +130,32 @@ router.get('/statistics', async (req, res) => {
     }
     });
 
+router.get('/:issueId', async (req, res) => {
+    const { issueId } = req.params;
+    const userId = req.user.userId;
+    const role = req.user.role;
+
+    if (!mongoose.Types.ObjectId.isValid(issueId)) {
+        return res.status(400).json({ message: "Invalid issue id" });
+    }
+
+    try{
+        const issue = await Issue.findById(issueId);
+        if(!issue){
+            return res.status(404).json({ message: "Issue not found" });
+        }
+
+        if(role === "user" && issue.reportedBy.toString() !== userId){
+            return res.status(403).json({ message: "Forbidden" });
+        }
+        if(role === "worker" && issue.assignedTo?.toString() !== userId){
+            return res.status(403).json({ message: "Forbidden" });
+        }
+
+        res.status(200).json(issue);
+    }catch(error){
+        res.status(500).json({ message: "Failed to fetch issue", reason: error.message });
+    }
+});
+
 module.exports = {IssueRouter: router};

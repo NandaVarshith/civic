@@ -86,12 +86,12 @@ const roleHome = loading
         <Route element={<RoleRoute user={user} allowedRoles={["admin"]} />}>
           <Route path="/admin/dashboard" element={<Dashboard issues={issues} />} />
           <Route path="/admin/analytics" element={<Analytics />} />
-          <Route path="/admin/logout" element={<Logout />} />
-          <Route path="/admin/mapview" element={<Mapview />} />
-          <Route path="/admin/myissues" element={<Myissues issues={issues} />} />
-          <Route path="/admin/notifications" element={<Notifications />} />
-          <Route path="/admin/profile" element={<Profile />} />
-          <Route path="/admin/assignissue" element={<Assignissue />} />
+        <Route path="/admin/logout" element={<Logout />} />
+        <Route path="/admin/mapview" element={<Mapview />} />
+        <Route path="/admin/myissues" element={<Myissues issues={issues} />} />
+        <Route path="/admin/notifications" element={<Notifications />} />
+        <Route path="/admin/profile" element={<Profile />} />
+        <Route path="/admin/assign/:id" element={<Assignissue />} />
         </Route>
 
         <Route element={<RoleRoute user={user} allowedRoles={["worker"]} />}>

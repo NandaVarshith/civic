@@ -11,6 +11,10 @@ const issueSchema = new Schema({
         required: true,
         trim: true,
     },
+    instructions: {
+        type: String,
+        trim: true,
+    },
     status:{
         type: String,
         enum: ['Pending', 'Assigned', 'In Progress', 'Resolved', 'Closed'],

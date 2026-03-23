@@ -9,6 +9,7 @@ function Register() {
     username: '',
     email: '',
     password: '',
+    role: 'user',
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -74,6 +75,21 @@ function Register() {
               onChange={handleChange}
               required
             />
+          </div>
+
+          <div className="field">
+            <label>Account Type</label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              required
+            >
+              <option value="user">Citizen</option>
+              <option value="worker">Worker</option>
+             
+            </select>
+            <small style={{ color: '#475569' }}>Choose worker to register field staff.</small>
           </div>
 
           <div className="field">

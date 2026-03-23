@@ -98,6 +98,11 @@ function MyIssues({ issues }) {
                   <div className="issue-card-footer">
                       <span className="badge category">{issue.category}</span>
                       <span className="issue-card-date">{issue.createdAt ? new Date(issue.createdAt).toLocaleString() : ''}</span>
+                      {segment === 'admin' && (
+                        <Link to={`/admin/assign/${issue._id || issue.id}`} className="btn-primary">
+                          Assign
+                        </Link>
+                      )}
                   </div>
                 </div>
               ))}

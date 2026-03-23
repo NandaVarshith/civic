@@ -1,259 +1,307 @@
-﻿import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import './Assignissue.css';
 import Sidebar from '../../components/Sidebar';
 import CommonHeader from '../../components/CommonHeader';
 
-const statusOptions = ['Pending', 'Assigned', 'In Progress', 'Resolved', 'Closed'];
-const priorityOptions = ['Low', 'Medium', 'High'];
-
-const mockIssues = [
-  {
-    id: 'ISS-3012',
-    title: 'Streetlight outage near MG Road',
-    category: 'Street Light',
-    priority: 'High',
-    status: 'Pending',
-    area: 'MG Road',
-    reportedBy: 'Aarav',
-    createdAt: '2026-03-01T10:30:00.000Z',
-    description: 'Three consecutive poles are not working near the bus stop.',
-  },
-  {
-    id: 'ISS-3013',
-    title: 'Water leakage from main pipeline',
-    category: 'Water Leakage',
-    priority: 'Medium',
-    status: 'Pending',
-    area: 'BTM Layout',
-    reportedBy: 'Nisha',
-    createdAt: '2026-03-02T08:15:00.000Z',
-    description: 'Water has been leaking since last night and flooding the road edge.',
-  },
-  {
-    id: 'ISS-3014',
-    title: 'Garbage overflow near market lane',
-    category: 'Garbage',
-    priority: 'Low',
-    status: 'Assigned',
-    area: 'Jayanagar',
-    reportedBy: 'Rohit',
-    createdAt: '2026-03-02T14:45:00.000Z',
-    description: 'Bins are overflowing and waste is scattered around the corner.',
-  },
+const PRIORITY_OPTIONS = [
+  { value: 'Low', label: 'Low', tone: 'success' },
+  { value: 'Medium', label: 'Medium', tone: 'warning' },
+  { value: 'High', label: 'High', tone: 'danger' },
 ];
 
 function Assignissue() {
-  const [issues] = useState(mockIssues);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('Pending');
-  const [selectedIssueId, setSelectedIssueId] = useState(mockIssues[0]?.id || '');
+  const { id: issueId } = useParams();
+  const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
-  const [assignForm, setAssignForm] = useState({
-    assigneeId: '',
-    team: '',
-    dueDate: '',
-    priority: '',
-    note: '',
+  const [issue, setIssue] = useState(null);
+  const [workers, setWorkers] = useState([]);
+  const [loadingIssue, setLoadingIssue] = useState(true);
+  const [loadingWorkers, setLoadingWorkers] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    workerId: '',
+    instructions: '',
+    priority: 'Medium',
   });
+  const [message, setMessage] = useState({ type: '', text: '' });
+  const [fieldError, setFieldError] = useState('');
+  const [toast, setToast] = useState({ text: '', type: 'success', open: false });
 
-  const filteredIssues = useMemo(() => {
-    return issues.filter((issue) => {
-      const matchStatus = selectedStatus ? issue.status === selectedStatus : true;
-      const q = searchTerm.trim().toLowerCase();
-      const matchQuery =
-        q.length === 0 ||
-        issue.id.toLowerCase().includes(q) ||
-        issue.title.toLowerCase().includes(q) ||
-        issue.area.toLowerCase().includes(q);
+  const loadIssue = useCallback(async () => {
+    setLoadingIssue(true);
+    try {
+      const res = await axios.get(`${apiUrl}api/issues/${issueId}`, { withCredentials: true });
+      setIssue(res.data);
+      setForm((prev) => ({ ...prev, priority: res.data?.priority || 'Medium' }));
+    } catch (error) {
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Unable to load issue' });
+    } finally {
+      setLoadingIssue(false);
+    }
+  }, [apiUrl, issueId]);
 
-      return matchStatus && matchQuery;
-    });
-  }, [issues, selectedStatus, searchTerm]);
+  const loadWorkers = useCallback(async () => {
+    setLoadingWorkers(true);
+    try {
+      const res = await axios.get(`${apiUrl}api/admin/workers`, { withCredentials: true });
+      setWorkers(res.data || []);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Unable to load workers' });
+    } finally {
+      setLoadingWorkers(false);
+    }
+  }, [apiUrl]);
 
-  const selectedIssue = useMemo(() => {
-    return issues.find((issue) => issue.id === selectedIssueId) || null;
-  }, [issues, selectedIssueId]);
+  useEffect(() => {
+    loadIssue();
+    loadWorkers();
+  }, [loadIssue, loadWorkers]);
 
-  const handleAssignChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setAssignForm((prev) => ({ ...prev, [name]: value }));
+    setFieldError('');
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAssignSubmit = (e) => {
+  const showToast = (text, type = 'success') => {
+    setToast({ text, type, open: true });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedIssue) return;
+    setMessage({ type: '', text: '' });
+    setFieldError('');
 
-    // Placeholder: integrate API call in your next step.
-    console.log('Assign payload:', {
-      issueId: selectedIssue.id,
-      ...assignForm,
-    });
+    if (!form.workerId) {
+      setFieldError('workerId');
+      setMessage({ type: 'error', text: 'Please select a worker.' });
+      return;
+    }
+    if (form.instructions.length > 600) {
+      setFieldError('instructions');
+      setMessage({ type: 'error', text: 'Instructions should be under 600 characters.' });
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await axios.put(
+        `${apiUrl}api/admin/assign/${issueId}`,
+        {
+          workerId: form.workerId,
+          instructions: form.instructions,
+          priority: form.priority,
+        },
+        { withCredentials: true }
+      );
+
+      setMessage({ type: 'success', text: 'Issue assigned successfully' });
+      showToast('Assigned to worker', 'success');
+      setTimeout(() => navigate('/admin/myissues'), 900);
+    } catch (error) {
+      const text = error.response?.data?.message || 'Failed to assign issue';
+      setMessage({ type: 'error', text });
+      showToast(text, 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  useEffect(() => {
+    if (!toast.open) return;
+    const timer = setTimeout(() => setToast((prev) => ({ ...prev, open: false })), 2500);
+    return () => clearTimeout(timer);
+  }, [toast.open]);
+
+  const isLoading = loadingIssue || loadingWorkers;
+  const disabledSubmit = submitting || isLoading || !form.workerId || workers.length === 0;
+  const selectedWorker = useMemo(
+    () => workers.find((w) => w._id === form.workerId),
+    [form.workerId, workers]
+  );
+  const selectedPriorityTone = useMemo(
+    () => PRIORITY_OPTIONS.find((p) => p.value === form.priority)?.tone || 'warning',
+    [form.priority]
+  );
 
   return (
     <div className="dashboard-container">
       <Sidebar />
       <main className="main-content assign-page">
-        <CommonHeader title="Assign Issues" />
+        <CommonHeader title="Assign Issue" />
 
-        <section className="assign-layout">
-          <div className="queue-panel card">
-            <div className="panel-header">
-              <h3>Issue Queue</h3>
-              <p>Pick an issue and assign it to a worker or team.</p>
-            </div>
-
-            <div className="queue-filters">
-              <input
-                type="text"
-                placeholder="Search by id, title, or area"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <select value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)}>
-                <option value="">All Statuses</option>
-                {statusOptions.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="queue-list">
-              {filteredIssues.length === 0 && <p className="empty-state">No issues match current filters.</p>}
-
-              {filteredIssues.map((issue) => (
-                <button
-                  key={issue.id}
-                  type="button"
-                  className={`queue-item ${selectedIssueId === issue.id ? 'active' : ''}`}
-                  onClick={() => setSelectedIssueId(issue.id)}
-                >
-                  <div className="queue-top">
-                    <span className="issue-id">{issue.id}</span>
-                    <span className={`status-pill status-${issue.status.toLowerCase().replace(/\s+/g, '-')}`}>
-                      {issue.status}
-                    </span>
-                  </div>
-                  <h4>{issue.title}</h4>
-                  <p>{issue.area}</p>
-                </button>
-              ))}
-            </div>
+        {isLoading && (
+          <div className="loading-bar" role="status" aria-live="polite">
+            <div className="spinner" aria-hidden="true" />
+            <span>Loading issue details...</span>
           </div>
+        )}
 
-          <div className="assign-panel card">
-            <div className="panel-header">
-              <h3>Assignment Details</h3>
-              <p>Review selected issue and fill assignment info.</p>
-            </div>
-
-            {!selectedIssue && <p className="empty-state">Select an issue from the queue.</p>}
-
-            {selectedIssue && (
-              <>
-                <div className="issue-summary">
-                  <div>
-                    <span>Issue ID</span>
-                    <p>{selectedIssue.id}</p>
-                  </div>
-                  <div>
-                    <span>Category</span>
-                    <p>{selectedIssue.category}</p>
-                  </div>
-                  <div>
-                    <span>Reported By</span>
-                    <p>{selectedIssue.reportedBy}</p>
-                  </div>
-                  <div>
-                    <span>Priority</span>
-                    <p>{selectedIssue.priority}</p>
-                  </div>
-                  <div className="summary-full">
-                    <span>Description</span>
-                    <p>{selectedIssue.description}</p>
-                  </div>
+        {!isLoading && (
+          <section className="assign-shell">
+            <div className="assign-layout">
+              <div className="queue-panel card elevate">
+                <div className="panel-header">
+                  <h3>Issue</h3>
+                  <p>ID: {issue?._id}</p>
                 </div>
 
-                <form className="assign-form" onSubmit={handleAssignSubmit}>
+                {issue && (
+                  <div className="issue-summary">
+                    <div>
+                      <span>Title</span>
+                      <p>{issue.title}</p>
+                    </div>
+                    <div>
+                      <span>Status</span>
+                      <p>{issue.status}</p>
+                    </div>
+                    <div>
+                      <span>Category</span>
+                      <p>{issue.category}</p>
+                    </div>
+                    <div>
+                      <span>Priority</span>
+                      <p>{issue.priority}</p>
+                    </div>
+                    <div className="summary-full">
+                      <span>Description</span>
+                      <p>{issue.description}</p>
+                    </div>
+                    {issue.location?.address && (
+                      <div className="summary-full">
+                        <span>Address</span>
+                        <p>{issue.location.address}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="assign-panel card elevate">
+                <div className="panel-header">
+                  <h3>Assign to Worker</h3>
+                  <p>Select a worker, set priority, and add clear instructions.</p>
+                </div>
+
+                {message.text && (
+                  <div
+                    className={`banner ${message.type === 'error' ? 'banner-error' : 'banner-success'}`}
+                    role="alert"
+                  >
+                    {message.text}
+                  </div>
+                )}
+
+                <form className="assign-form" onSubmit={handleSubmit}>
                   <div className="form-grid">
                     <div className="form-group">
-                      <label htmlFor="assigneeId">Assignee ID</label>
-                      <input
-                        id="assigneeId"
-                        name="assigneeId"
-                        type="text"
-                        placeholder="e.g., WRK-102"
-                        value={assignForm.assigneeId}
-                        onChange={handleAssignChange}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="team">Team</label>
-                      <input
-                        id="team"
-                        name="team"
-                        type="text"
-                        placeholder="e.g., Zone-A Ops"
-                        value={assignForm.team}
-                        onChange={handleAssignChange}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="dueDate">Due Date</label>
-                      <input
-                        id="dueDate"
-                        name="dueDate"
-                        type="date"
-                        value={assignForm.dueDate}
-                        onChange={handleAssignChange}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="priority">Set Priority</label>
+                      <label htmlFor="workerId">
+                        Worker <span className="required">*</span>
+                      </label>
                       <select
-                        id="priority"
-                        name="priority"
-                        value={assignForm.priority}
-                        onChange={handleAssignChange}
+                        id="workerId"
+                        name="workerId"
+                        value={form.workerId}
+                        onChange={handleChange}
+                        disabled={loadingWorkers}
+                        className={fieldError === 'workerId' ? 'error-border' : ''}
                       >
-                        <option value="">Keep original</option>
-                        {priorityOptions.map((priority) => (
-                          <option key={priority} value={priority}>
-                            {priority}
+                        <option value="">Select worker</option>
+                        {workers.map((worker) => (
+                          <option key={worker._id} value={worker._id}>
+                            {worker.username} ({worker.email})
                           </option>
                         ))}
                       </select>
+                      {selectedWorker && (
+                        <p className="helper-text">Assigning to: {selectedWorker.username}</p>
+                      )}
+                      {!loadingWorkers && workers.length === 0 && (
+                        <p className="helper-text warning">No workers available. Please add workers first.</p>
+                      )}
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="priority">Priority</label>
+                      <div className={`priority-chip tone-${selectedPriorityTone}`}>
+                        <select id="priority" name="priority" value={form.priority} onChange={handleChange}>
+                          {PRIORITY_OPTIONS.map((priority) => (
+                            <option key={priority.value} value={priority.value}>
+                              {priority.label}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="chip-dot" aria-hidden />
+                      </div>
                     </div>
 
                     <div className="form-group full-width">
-                      <label htmlFor="note">Assignment Note</label>
+                      <label htmlFor="instructions">Instructions</label>
                       <textarea
-                        id="note"
-                        name="note"
+                        id="instructions"
+                        name="instructions"
                         rows={4}
-                        placeholder="Instructions for assigned worker/team"
-                        value={assignForm.note}
-                        onChange={handleAssignChange}
+                        placeholder="Add instructions for the worker"
+                        value={form.instructions}
+                        onChange={handleChange}
+                        className={fieldError === 'instructions' ? 'error-border' : ''}
                       />
+                      <p className="helper-text">Be concise and action-focused. Max 600 characters.</p>
                     </div>
                   </div>
 
                   <div className="form-actions">
-                    <button type="submit" className="assign-btn">
-                      Assign Issue
+                    <button type="submit" className="assign-btn" disabled={disabledSubmit}>
+                      {submitting ? 'Assigning...' : 'Assign Issue'}
+                    </button>
+                    <button
+                      type="button"
+                      className="ghost-btn"
+                      onClick={() => navigate(-1)}
+                      disabled={submitting}
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      className="ghost-btn"
+                      onClick={() => {
+                        loadIssue();
+                        loadWorkers();
+                      }}
+                      disabled={submitting}
+                    >
+                      Refresh
                     </button>
                   </div>
                 </form>
-              </>
-            )}
-          </div>
-        </section>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
+      {toast.open && (
+        <div
+          className={`toast ${toast.type === 'error' ? 'toast-error' : 'toast-success'}`}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="toast-text">{toast.text}</span>
+          <button
+            type="button"
+            className="toast-close"
+            aria-label="Dismiss notification"
+            onClick={() => setToast((prev) => ({ ...prev, open: false }))}
+          >
+            ×
+          </button>
+          {toast.text}
+        </div>
+      )}
     </div>
   );
 }

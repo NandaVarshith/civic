@@ -8,7 +8,9 @@ const {User} = require('../models/User');
 /* REGISTER */
 router.post("/", async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
+    const allowedRoles = ["user", "worker"];
+    const normalizedRole = allowedRoles.includes(role) ? role : "user";
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -19,11 +21,11 @@ router.post("/", async (req, res, next) => {
       username,
       email,
       password: hashedPassword,
-      role: "user",
+      role: normalizedRole,
     });
     await user.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ message: "User registered successfully", role: user.role });
   } catch (err) {
     next(err);
   }

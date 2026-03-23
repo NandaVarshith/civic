@@ -94,7 +94,7 @@ function MyIssues({ issues }) {
                   </div>
                   <div className="issue-card-footer">
                       <span className="badge category">{issue.category}</span>
-                      <span className="issue-card-date">{issue.date}</span>
+                      <span className="issue-card-date">{issue.createdAt ? new Date(issue.createdAt).toLocaleString() : ''}</span>
                   </div>
                 </div>
               ))}

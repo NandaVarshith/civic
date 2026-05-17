@@ -45,7 +45,8 @@ function Register() {
 
   return (
     <>
-      <div className="auth-container">
+      <div className="auth-page">
+        <div className="auth-container">
         <h1 className="logo">UrbanPulse</h1>
         <p className="tagline">Create an account</p>
 
@@ -113,6 +114,7 @@ function Register() {
           Already have an account?
           <Link to="/login">Login</Link>
         </p>
+        </div>
       </div>
     </>
   )

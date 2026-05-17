@@ -1,19 +1,20 @@
-* {
+.auth-page,
+.auth-page * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
 }
 
-body {
-  height: 100vh;
+.auth-page {
+  min-height: 100vh;
   background: linear-gradient(135deg, #1d3557, #457b9d);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.auth-container {
+.auth-page .auth-container {
   background: #ffffff;
   width: 360px;
   padding: 30px;
@@ -22,29 +23,29 @@ body {
   text-align: center;
 }
 
-.logo {
+.auth-page .logo {
   font-size: 28px;
   color: #1d3557;
   margin-bottom: 5px;
 }
 
-.tagline {
+.auth-page .tagline {
   color: #666;
   margin-bottom: 20px;
 }
 
-.auth-form .field {
+.auth-page .auth-form .field {
   margin-bottom: 15px;
   text-align: left;
 }
 
-.auth-form label {
+.auth-page .auth-form label {
   font-size: 14px;
   color: #333;
 }
 
-.auth-form input,
-.auth-form select {
+.auth-page .auth-form input,
+.auth-page .auth-form select {
   width: 100%;
   padding: 10px;
   margin-top: 6px;
@@ -52,7 +53,7 @@ body {
   border-radius: 6px;
 }
 
-button {
+.auth-page button {
   width: 100%;
   padding: 10px;
   background: #1d3557;
@@ -64,16 +65,16 @@ button {
   margin-top: 10px;
 }
 
-button:hover {
+.auth-page button:hover {
   background: #457b9d;
 }
 
-.switch {
+.auth-page .switch {
   margin-top: 15px;
   font-size: 14px;
 }
 
-.switch a {
+.auth-page .switch a {
   color: #1d3557;
   font-weight: 600;
   text-decoration: none;

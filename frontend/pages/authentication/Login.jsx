@@ -42,7 +42,8 @@ function Login() {
 
   return (
     <>
-      <div className="auth-container">
+      <div className="auth-page">
+        <div className="auth-container">
         <h1 className="logo">UrbanPulse</h1>
         <p className="tagline">Smart Civic Platform</p>
 
@@ -77,6 +78,7 @@ function Login() {
           Don’t have an account?
           <Link to="/register">Register</Link>
         </p>
+        </div>
       </div>
     </>
   )

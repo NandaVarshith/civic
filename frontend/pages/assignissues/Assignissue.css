@@ -294,7 +294,7 @@
   font-weight: 600;
   min-width: 200px;
   z-index: 1000;
-  animation: fade-in 0.25s ease;
+  animation: fade-in 0.5s ease;
 }
 
 .toast-success {

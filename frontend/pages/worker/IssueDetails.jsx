@@ -5,7 +5,7 @@ import Sidebar from '../../components/Sidebar';
 import CommonHeader from '../../components/CommonHeader';
 import './IssueDetails.css';
 
-const statusFlow = ['Assigned', 'In Progress', 'Completed'];
+const statusFlow = ['Assigned', 'In Progress', 'Resolved'];
 
 function IssueDetails() {
   const { id: issueId } = useParams();
@@ -42,8 +42,8 @@ function IssueDetails() {
     if (!issue) return ['Assigned'];
     const current = issue.status;
     if (current === 'Assigned') return ['Assigned', 'In Progress'];
-    if (current === 'In Progress') return ['In Progress', 'Completed'];
-    if (current === 'Completed') return ['Completed'];
+    if (current === 'In Progress') return ['In Progress', 'Resolved'];
+    if (current === 'Resolved') return ['Resolved'];
     return [current];
   }, [issue]);
 
@@ -86,7 +86,7 @@ function IssueDetails() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (status === 'Completed' && !confirmOpen) {
+    if (status === 'Resolved' && !confirmOpen) {
       setConfirmOpen(true);
       return;
     }
@@ -230,8 +230,8 @@ function IssueDetails() {
       {confirmOpen && (
         <div className="wid-modal-backdrop" role="presentation">
           <div className="wid-modal-card" role="dialog" aria-modal="true">
-            <h3>Mark as completed?</h3>
-            <p>This will set the issue status to Completed.</p>
+            <h3>Mark as resolved?</h3>
+            <p>This will set the issue status to Resolved.</p>
             <div className="wid-modal-actions">
               <button type="button" className="wid-btn-ghost" onClick={() => setConfirmOpen(false)} disabled={submitting}>
                 Cancel

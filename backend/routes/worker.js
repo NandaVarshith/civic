@@ -47,8 +47,7 @@ router.put('/update/:issueId', upload.single('image'), async (req, res, next) =>
     const current = issue.status;
     const allowedTransitions = {
       Assigned: ['In Progress'],
-      'In Progress': ['Completed'],
-      Completed: [],
+      'In Progress': ['Resolved'],
       Resolved: [],
       Closed: [],
       Pending: ['Assigned', 'In Progress'],
@@ -63,7 +62,7 @@ router.put('/update/:issueId', upload.single('image'), async (req, res, next) =>
     }
 
     if (notes) {
-      issue.notes.push({ text: notes, addedBy: workerId });
+      issue.remarks.push({ text: notes, addedBy: workerId });
     }
 
     if (req.file) {

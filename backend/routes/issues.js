@@ -5,16 +5,63 @@ const {Issue} = require("../models/Issue");
 const Notification = require("../models/Notification");
 const mongoose = require("mongoose");
 
+const geocodeAddress = async (address) => {
+    const query = encodeURIComponent(address);
+    const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
+
+    const response = await fetch(url, {
+        headers: {
+            "User-Agent": "UrbanPulse/1.0 (Civic issue geocoding)"
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error("Geocoding request failed");
+    }
+
+    const data = await response.json();
+    if (!Array.isArray(data) || data.length === 0) {
+        return null;
+    }
+
+    const lat = Number(data[0].lat);
+    const lon = Number(data[0].lon);
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        return null;
+    }
+
+    return { latitude: lat, longitude: lon };
+};
+
 router.post("/", async (req,res)=>{
 
     const userId = req.user.userId;
     const {title, category, priority, description, address, latitude, longitude, remarks ,images} = req.body;
 
-    const parsedLatitude = latitude === "" || latitude === undefined ? undefined : Number(latitude);
-    const parsedLongitude = longitude === "" || longitude === undefined ? undefined : Number(longitude);
+    let parsedLatitude = latitude === "" || latitude === undefined ? undefined : Number(latitude);
+    let parsedLongitude = longitude === "" || longitude === undefined ? undefined : Number(longitude);
 
     if (Number.isNaN(parsedLatitude) || Number.isNaN(parsedLongitude)) {
         return res.status(400).json({ message: "Latitude/Longitude must be valid numbers" });
+    }
+
+    if (parsedLatitude === undefined || parsedLongitude === undefined) {
+        try {
+            const geocoded = await geocodeAddress(address);
+            if (!geocoded) {
+                return res.status(400).json({
+                    message: "Unable to determine coordinates from the address. Please provide a clearer address or add latitude/longitude."
+                });
+            }
+            parsedLatitude = geocoded.latitude;
+            parsedLongitude = geocoded.longitude;
+        } catch (error) {
+            return res.status(500).json({
+                message: "Failed to geocode address",
+                reason: error.message
+            });
+        }
     }
 
     const normalizedRemarks = typeof remarks === "string" && remarks.trim()

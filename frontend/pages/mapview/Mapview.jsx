@@ -1,105 +1,193 @@
-import React from 'react'
-import './Mapview.css'
-import Sidebar from '../../components/Sidebar'
-import CommonHeader from '../../components/CommonHeader'
+import React, { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
+import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import './Mapview.css';
+import Sidebar from '../../components/Sidebar';
+import CommonHeader from '../../components/CommonHeader';
+
+const DEFAULT_CENTER = [20.5937, 78.9629];
+const DEFAULT_ZOOM = 5;
+const statusStyles = {
+  Pending: { fillColor: '#f59e0b', color: '#ffffff' },
+  Assigned: { fillColor: '#2563eb', color: '#ffffff' },
+  'In Progress': { fillColor: '#ea580c', color: '#ffffff' },
+  Resolved: { fillColor: '#16a34a', color: '#ffffff' },
+  Closed: { fillColor: '#334155', color: '#ffffff' },
+};
 
 function Mapview() {
+  const [issues, setIssues] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}api/issues`, {
+          withCredentials: true,
+        });
+        const payload = Array.isArray(response.data) ? response.data : [];
+        setIssues(payload);
+      } catch (error) {
+        console.error('Error loading map issues:', error);
+        setIssues([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIssues();
+  }, []);
+
+  const validMapIssues = useMemo(
+    () =>
+      issues.filter((issue) => {
+        const lat = Number(issue?.location?.latitude);
+        const lng = Number(issue?.location?.longitude);
+        return Number.isFinite(lat) && Number.isFinite(lng);
+      }),
+    [issues]
+  );
+
+  const categories = useMemo(() => {
+    const all = validMapIssues.map((issue) => issue.category).filter(Boolean);
+    return ['All', ...new Set(all)];
+  }, [validMapIssues]);
+
+  const statuses = ['All', 'Pending', 'Assigned', 'In Progress', 'Resolved', 'Closed'];
+
+  const filteredIssues = useMemo(
+    () =>
+      validMapIssues.filter((issue) => {
+        const statusMatch = selectedStatus === 'All' || issue.status === selectedStatus;
+        const categoryMatch = selectedCategory === 'All' || issue.category === selectedCategory;
+        return statusMatch && categoryMatch;
+      }),
+    [validMapIssues, selectedStatus, selectedCategory]
+  );
+
+  const center = useMemo(() => {
+    if (filteredIssues.length > 0) {
+      const first = filteredIssues[0];
+      return [Number(first.location.latitude), Number(first.location.longitude)];
+    }
+    if (validMapIssues.length > 0) {
+      const first = validMapIssues[0];
+      return [Number(first.location.latitude), Number(first.location.longitude)];
+    }
+    return DEFAULT_CENTER;
+  }, [filteredIssues, validMapIssues]);
+
+  const legendItems = [
+    { label: 'Pending', color: '#f59e0b' },
+    { label: 'Assigned', color: '#2563eb' },
+    { label: 'In Progress', color: '#ea580c' },
+    { label: 'Resolved', color: '#16a34a' },
+    { label: 'Closed', color: '#334155' },
+  ];
+
   return (
-    <>
-        <div className="dashboard-container">
-       
-        <Sidebar/>
+    <div className="dashboard-container">
+      <Sidebar />
+      <main className="main-content">
+        <CommonHeader title="Map View" />
+        <section className="map-view-container">
+          <div className="map-card">
+            <div className="map-filters">
+              <div className="filter-group">
+                <label htmlFor="status-filter">Status</label>
+                <select
+                  id="status-filter"
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                  {statuses.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="filter-group">
+                <label htmlFor="category-filter">Category</label>
+                <select
+                  id="category-filter"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-        
-        <main className="main-content">
-            <CommonHeader title="Map View" />
+            <div className="map-wrapper">
+              {loading ? (
+                <div className="map-empty">Loading map data...</div>
+              ) : (
+                <MapContainer
+                  center={center}
+                  zoom={DEFAULT_ZOOM}
+                  scrollWheelZoom
+                  wheelDebounceTime={120}
+                  wheelPxPerZoomLevel={180}
+                  className="leaflet-map"
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  {filteredIssues.map((issue) => {
+                    const markerStyle = statusStyles[issue.status] || { fillColor: '#475569', color: '#ffffff' };
+                    return (
+                    <CircleMarker
+                      key={issue._id}
+                      center={[Number(issue.location.latitude), Number(issue.location.longitude)]}
+                      radius={6}
+                      pathOptions={{
+                        color: markerStyle.color,
+                        fillColor: markerStyle.fillColor,
+                        fillOpacity: 0.9,
+                        weight: 2,
+                      }}
+                    >
+                      <Popup>
+                        <strong>{issue.title}</strong>
+                        <br />
+                        Status: {issue.status}
+                        <br />
+                        Category: {issue.category}
+                        <br />
+                        Address: {issue.location?.address || 'N/A'}
+                      </Popup>
+                    </CircleMarker>
+                  )})}
+                </MapContainer>
+              )}
+            </div>
 
-           
-            <section className="map-view-container">
-                <div className="map-card">
-                   
-                    <div className="map-filters">
-                        <div className="filter-group">
-                            <label htmlFor="status-filter">Status</label>
-                            <select id="status-filter">
-                                <option>All</option>
-                                <option>Pending</option>
-                                <option>Assigned</option>
-                                <option>In Progress</option>
-                                <option>Resolved</option>
-                                <option>Closed</option>
-                            </select>
-                        </div>
-                        <div className="filter-group">
-                            <label htmlFor="category-filter">Category</label>
-                            <select id="category-filter">
-                                <option>All</option>
-                                <option>Pothole</option>
-                                <option>Streetlight Outage</option>
-                                <option>Waste Management</option>
-                                <option>Broken Sidewalk</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                   
-                    <div className="map-placeholder">
-                        
-                        <div className="map-pin pending" style={{top: '20%', left: '30%'}}>
-                            <div className="pin-dot"></div>
-                            <div className="pin-popup">
-                                <strong>Pothole</strong><br />Status: Pending<br />Category: Road
-                            </div>
-                        </div>
-                        <div className="map-pin assigned" style={{top: '50%', left: '50%'}}>
-                            <div className="pin-dot"></div>
-                             <div className="pin-popup">
-                                <strong>Broken Sidewalk</strong><br />Status: Assigned<br />Category: Infrastructure
-                            </div>
-                        </div>
-                        <div className="map-pin in-progress" style={{top: '65%', left: '25%'}}>
-                            <div className="pin-dot"></div>
-                             <div className="pin-popup">
-                                <strong>Streetlight Outage</strong><br />Status: In Progress<br />Category: Electrical
-                            </div>
-                        </div>
-                        <div className="map-pin resolved" style={{top: '35%', left: '70%'}}>
-                            <div className="pin-dot"></div>
-                             <div className="pin-popup">
-                                <strong>Graffiti</strong><br />Status: Resolved<br />Category: Vandalism
-                            </div>
-                        </div>
-                         <div className="map-pin closed" style={{top: '80%', left: '60%'}}>
-                            <div className="pin-dot"></div>
-                             <div className="pin-popup">
-                                <strong>Waste Management</strong><br />Status: Closed<br />Category: Sanitation
-                            </div>
-                        </div>
-                    </div>
-
-                   
-                    <div className="map-legend">
-                        <h4>Legend</h4>
-                        <ul>
-                            <li><span className="legend-dot pending"></span> Pending</li>
-                            <li><span className="legend-dot assigned"></span> Assigned</li>
-                            <li><span className="legend-dot in-progress"></span> In Progress</li>
-                            <li><span className="legend-dot resolved"></span> Resolved</li>
-                            <li><span className="legend-dot closed"></span> Closed</li>
-                        </ul>
-                    </div>
-
-                    
-                    <div className="map-controls">
-                        <button className="zoom-btn" aria-label="Zoom In">+</button>
-                        <button className="zoom-btn" aria-label="Zoom Out">-</button>
-                    </div>
-                </div>
-            </section>
-        </main>
+            <div className="map-legend">
+              <h4>Legend</h4>
+              <ul>
+                {legendItems.map((item) => (
+                  <li key={item.label}>
+                    <span className="map-legend-dot" style={{ backgroundColor: item.color }} />
+                    {item.label}
+                  </li>
+                ))}
+              </ul>
+              <p className="map-count">Showing {filteredIssues.length} mapped issues</p>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
-    </>
-  )
+  );
 }
 
-export default Mapview
+export default Mapview;

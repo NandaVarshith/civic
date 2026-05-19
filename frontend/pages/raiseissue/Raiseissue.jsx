@@ -179,6 +179,7 @@ function Raiseissue() {
                       onChange={handleChange}
                       value={formData.address}
                     />
+                    <span className="helper-text">Coordinates are auto-detected from address if left blank.</span>
                   </div>
 
                   <div className="form-group">

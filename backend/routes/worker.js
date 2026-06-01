@@ -2,7 +2,6 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const mongoose = require('mongoose');
 const { Issue } = require('../models/Issue');
 const { User } = require('../models/User');
 const Notification = require('../models/Notification');
@@ -80,19 +79,18 @@ router.put('/update/:issueId', upload.single('image'), async (req, res, next) =>
 
     const content = buildStatusUpdatedContent(issue, current, notes);
     const notificationType = content.type;
+    const admins = await User.find({ role: 'admin', isActive: true }).select('_id email username');
     const notifications = [];
 
-    if (mongoose.Types.ObjectId.isValid(process.env.ADMIN_ID)) {
-      notifications.push(
-        new Notification({
-          recipient: process.env.ADMIN_ID,
+    notifications.push(
+      ...admins.map((admin) => new Notification({
+          recipient: admin._id,
           sender: workerId,
           issue: issue._id,
           type: notificationType,
           message: content.adminNotification,
-        })
-      );
-    }
+        }))
+    );
 
     if (statusChanged && issue.reportedBy) {
       notifications.push(
@@ -108,15 +106,24 @@ router.put('/update/:issueId', upload.single('image'), async (req, res, next) =>
 
     await Promise.all(notifications.map((notification) => notification.save()));
 
+    const emailTasks = admins.map((admin) => sendNotificationEmail({
+      to: admin.email,
+      subject: `Worker updated issue: ${issue.title}`,
+      message: content.adminNotification,
+      html: content.html,
+    }));
+
     if (statusChanged && issue.reportedBy) {
       const citizen = await User.findById(issue.reportedBy).select('email username');
-      await sendNotificationEmail({
+      emailTasks.push(sendNotificationEmail({
         to: citizen?.email,
         subject: content.subject,
         message: content.message,
         html: content.html,
-      });
+      }));
     }
+
+    await Promise.all(emailTasks);
 
     res.status(200).json({ message: 'Issue updated successfully', issue });
   } catch (error) {

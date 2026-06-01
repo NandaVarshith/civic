@@ -4,7 +4,6 @@ const { auth } = require("../middlewares/authentication");
 const {Issue} = require("../models/Issue");
 const { User } = require("../models/User");
 const Notification = require("../models/Notification");
-const mongoose = require("mongoose");
 const { sendNotificationEmail } = require("../utils/mailer");
 const { buildIssueCreatedContent } = require("../utils/notificationContent");
 
@@ -92,7 +91,10 @@ router.post("/", async (req,res)=>{
 
     try {
         const savedIssue = await issue.save();
-        const reporter = await User.findById(userId).select("email username");
+        const [reporter, admins] = await Promise.all([
+            User.findById(userId).select("email username"),
+            User.find({ role: "admin", isActive: true }).select("_id email username"),
+        ]);
         const content = buildIssueCreatedContent(savedIssue);
         const notifications = [
             new Notification({
@@ -104,23 +106,29 @@ router.post("/", async (req,res)=>{
             })
         ];
 
-        if (mongoose.Types.ObjectId.isValid(process.env.ADMIN_ID)) {
-            notifications.push(new Notification({
-                recipient: process.env.ADMIN_ID,
+        notifications.push(...admins.map((admin) => new Notification({
+                recipient: admin._id,
                 sender: userId,
                 issue: savedIssue._id,
                 type: "Issue created",
                 message: content.adminNotification
-            }));
-        }
+            })));
 
         await Promise.all(notifications.map((notification) => notification.save()));
-        await sendNotificationEmail({
-            to: reporter?.email,
-            subject: content.subject,
-            message: content.message,
-            html: content.html,
-        });
+        await Promise.all([
+            sendNotificationEmail({
+                to: reporter?.email,
+                subject: content.subject,
+                message: content.message,
+                html: content.html,
+            }),
+            ...admins.map((admin) => sendNotificationEmail({
+                to: admin.email,
+                subject: `New civic issue reported: ${savedIssue.title}`,
+                message: content.adminNotification,
+                html: content.html,
+            })),
+        ]);
         res.status(201).json({ message: "Issue created successfully", issue: savedIssue });
     } catch (err) {
         console.error("Error creating issue:", err);

@@ -28,6 +28,15 @@ lerna-debug.log*
 .env
 .env*.local
 *.env
+.env.*
+!.env.example
+
+# User uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Test output
+coverage/
 
 # Temporary files
 /tmp

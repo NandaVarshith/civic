@@ -3,7 +3,7 @@ import './authentication.css'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom';
 
-function Login() {
+function Login({ onLoginSuccess }) {
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -27,9 +27,11 @@ function Login() {
       // Assuming the API expects a POST request with email and password
       const response = await axios.post(`${apiUrl}api/login`, formData,{withCredentials: true}).then();
 
-      // TODO: Handle successful login, e.g., store token, user data in context/local storage
       console.log(response.data);
-      window.location.href='/'
+      if (onLoginSuccess) {
+        await onLoginSuccess();
+      }
+      navigate('/')
       
     } catch (err) {
       const errorMessage = err.response?.data?.message || "There was an error logging in!";

@@ -37,22 +37,25 @@ const [issues, setIssues] = useState([]);
 const [user, setUser] = useState(null);
 const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const bootstrap = async () => {
-    try {
-      const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/me`, { withCredentials: true });
-      setUser(userResponse.data?.user || null);
-      const issuesResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/issues`, { withCredentials: true });
-      setIssues(Array.isArray(issuesResponse.data) ? issuesResponse.data : []);
-    } catch (error) {
-      setUser(null);
-      setIssues([]);
-      console.log("Error bootstrapping app:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+const bootstrap = async () => {
+  setLoading(true);
+  try {
+    const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/me`, { withCredentials: true });
+    setUser(userResponse.data?.user || null);
+    const issuesResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/issues`, { withCredentials: true });
+    setIssues(Array.isArray(issuesResponse.data) ? issuesResponse.data : []);
+    return userResponse.data?.user || null;
+  } catch (error) {
+    setUser(null);
+    setIssues([]);
+    console.log("Error bootstrapping app:", error);
+    return null;
+  } finally {
+    setLoading(false);
+  }
+};
 
+useEffect(() => {
   bootstrap();
 }, []);
 
@@ -69,7 +72,7 @@ const roleHome = loading
   return (
     <Routes>
       <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login onLoginSuccess={bootstrap} />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
       <Route element={<ProtectedRoute user={user} loading={loading} />}>

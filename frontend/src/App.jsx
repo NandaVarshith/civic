@@ -10,7 +10,7 @@ import Profile  from '../pages/profile/Profile'
 import Raiseissue from '../pages/raiseissue/Raiseissue' 
 import Register from  '../pages/authentication/Register'
 import Login from  '../pages/authentication/Login'
-import Assignissue from '../pages/assignissues/assignissue'
+import Assignissue from '../pages/assignissues/Assignissue'
 import IssueDetails from '../pages/worker/IssueDetails'
 
 import axios from 'axios'

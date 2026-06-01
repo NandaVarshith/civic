@@ -34,10 +34,10 @@ router.post("/", async (req, res, next) => {
 
     // Set the token in a secure, httpOnly cookie.
     res.cookie("token", token, {
-      httpOnly: true, 
-      secure: process.env.NODE_ENV === "production", 
-      sameSite: "lax",
-      maxAge: 3600000, 
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 3600000,
     });
 
     res.status(200).json({ message: "Login successful" });

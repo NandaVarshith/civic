@@ -1,184 +1,251 @@
-/* Reusing variables from styles.css */
-:root {
-    --status-pending: #95a5a6;
-    --status-assigned: #3498db;
-    --status-in-progress: #f39c12;
-    --status-resolved: #2ecc71;
-    --status-closed: #2c3e50;
+.analytics-container {
+  text-align: left;
 }
 
-/* Header and Breadcrumb from mapview.css (for consistency) */
-.top-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-    margin-bottom: 24px;
-}
-.header-left h2 { margin: 0; font-size: 1.8rem; }
-.breadcrumb { font-size: 0.9rem; color: #777; }
-.breadcrumb a { color: var(--primary-color); text-decoration: none; }
-.breadcrumb a:hover { text-decoration: underline; }
-.header-right .user-avatar img { width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
-
-
-/* Analytics Layout */
 .analytics-container .summary-cards {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .analytics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 20px;
 }
 
-.chart-card,
-.table-card {
-    background-color: var(--card-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    padding: 24px;
-    height: 380px;
-    display: flex;
+.analytics-card {
+  min-height: 330px;
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.analytics-card-wide {
+  grid-column: span 2;
+}
+
+.analytics-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.analytics-card-header h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-color);
+}
+
+.analytics-card-header span {
+  color: #64748b;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.status-stack {
+  width: 100%;
+  height: 18px;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+  background: #e2e8f0;
+  margin-bottom: 22px;
+}
+
+.status-stack-segment {
+  min-width: 0;
+  height: 100%;
+}
+
+.status-list {
+  display: grid;
+  gap: 12px;
+}
+
+.status-row {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.status-row:last-child {
+  border-bottom: none;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-dot.pending,
+.status-stack-segment.pending {
+  background-color: #64748b;
+}
+
+.status-dot.assigned,
+.status-stack-segment.assigned {
+  background-color: #2563eb;
+}
+
+.status-dot.in-progress,
+.status-stack-segment.in-progress {
+  background-color: #f59e0b;
+}
+
+.status-dot.resolved,
+.status-stack-segment.resolved {
+  background-color: #16a34a;
+}
+
+.status-dot.closed,
+.status-stack-segment.closed {
+  background-color: #334155;
+}
+
+.category-bars {
+  display: grid;
+  gap: 14px;
+}
+
+.category-row {
+  display: grid;
+  gap: 7px;
+}
+
+.category-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.92rem;
+}
+
+.category-label span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.category-track {
+  width: 100%;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.category-fill {
+  height: 100%;
+  min-width: 8px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2f6fd0, #14b8a6);
+}
+
+.trend-chart {
+  width: 100%;
+  min-height: 260px;
+  flex: 1;
+}
+
+.trend-chart svg {
+  width: 100%;
+  height: 260px;
+  display: block;
+}
+
+.trend-area {
+  fill: rgba(47, 111, 208, 0.16);
+}
+
+.trend-line {
+  fill: none;
+  stroke: #2f6fd0;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trend-point {
+  fill: #ffffff;
+  stroke: #2f6fd0;
+  stroke-width: 3;
+}
+
+.trend-value {
+  fill: var(--text-color);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.trend-label {
+  fill: #64748b;
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.analytics-map {
+  height: 360px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+}
+
+.analytics-leaflet-map {
+  height: 100%;
+  width: 100%;
+}
+
+.empty-state {
+  min-height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  background: var(--surface-color);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+}
+
+@media (max-width: 1100px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-card-wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .analytics-card {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .analytics-card-header {
+    align-items: flex-start;
     flex-direction: column;
-}
+    gap: 6px;
+  }
 
-.chart-card h4,
-.table-card h4 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-}
+  .trend-chart,
+  .trend-chart svg {
+    height: 230px;
+    min-height: 230px;
+  }
 
-/* Pie Chart Placeholder */
-.pie-chart-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    flex-grow: 1;
-}
-.pie-chart-placeholder {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background: conic-gradient(
-        var(--status-pending) 0% 15%,
-        var(--status-assigned) 15% 25%,
-        var(--status-in-progress) 25% 30%,
-        var(--status-resolved) 30% 85%,
-        var(--status-closed) 85% 100%
-    );
-}
-
-.chart-legend {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.chart-legend li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-}
-.legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-.legend-dot.pending { background-color: var(--status-pending); }
-.legend-dot.assigned { background-color: var(--status-assigned); }
-.legend-dot.in-progress { background-color: var(--status-in-progress); }
-.legend-dot.resolved { background-color: var(--status-resolved); }
-.legend-dot.closed { background-color: var(--status-closed); }
-
-
-/* Bar Chart Placeholder */
-.bar-chart-placeholder {
-    flex-grow: 1;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    gap: 12px;
-    border-bottom: 2px solid var(--border-color);
-    padding: 0 10px;
-}
-.bar-item {
-    background-color: var(--primary-color);
-    width: 30px;
-    border-radius: 4px 4px 0 0;
-    position: relative;
-    text-align: center;
-    transition: background-color 0.2s;
-}
-.bar-item:hover {
-    background-color: var(--primary-hover-color);
-}
-.bar-label {
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.8rem;
-    color: #555;
-}
-
-
-/* Table Card */
-.table-card {
-    grid-column: span 2; /* Make table take full width on larger screens */
-}
-.table-card .table-container {
-    overflow-x: auto;
-    flex-grow: 1;
-}
-.table-card table {
-    width: 100%;
-    border-collapse: collapse;
-}
-.table-card th, .table-card td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-.table-card thead th {
-    background-color: var(--surface-color);
-}
-.table-card tbody tr:hover {
-    background-color: #e9f2ff;
-}
-
-
-/* Map Placeholder */
-.map-placeholder {
-    flex-grow: 1;
-    background-color: #e7f1ff;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-}
-.heatmap-dot {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(243, 156, 18, 0.5); /* Semi-transparent orange */
-    filter: blur(5px);
-    transform: translate(-50%, -50%);
-}
-
-/* Responsive */
-@media (max-width: 1200px) {
-    .table-card {
-        grid-column: span 1;
-    }
-}
-@media (max-width: 768px) {
-    .pie-chart-container {
-        flex-direction: column;
-    }
+  .analytics-map {
+    height: 300px;
+  }
 }

@@ -21,6 +21,7 @@ router.get('/', async(req,res)=>{
     const userId = req.user.userId;
     try{
         const notifications = await Notification.find({recipient: userId})
+        .sort({ createdAt: -1 })
         .populate('sender', 'username email')
         .populate('issue', 'title');
         res.status(200).json(notifications);

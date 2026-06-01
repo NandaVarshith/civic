@@ -2,8 +2,11 @@ const express=require("express");
 const router = express.Router();
 const { auth } = require("../middlewares/authentication");
 const {Issue} = require("../models/Issue");
+const { User } = require("../models/User");
 const Notification = require("../models/Notification");
 const mongoose = require("mongoose");
+const { sendNotificationEmail } = require("../utils/mailer");
+const { buildIssueCreatedContent } = require("../utils/notificationContent");
 
 const geocodeAddress = async (address) => {
     const query = encodeURIComponent(address);
@@ -87,14 +90,37 @@ router.post("/", async (req,res)=>{
         reportedBy:userId
     });
 
-    const notification = new Notification({
-        recipient: process.env.ADMIN_ID, sender: userId, issue, type: "Issue created", message: `New issue reported: ${title}`
-    });
-
-
     try {
         const savedIssue = await issue.save();
-        await notification.save();
+        const reporter = await User.findById(userId).select("email username");
+        const content = buildIssueCreatedContent(savedIssue);
+        const notifications = [
+            new Notification({
+                recipient: userId,
+                sender: userId,
+                issue: savedIssue._id,
+                type: "Issue created",
+                message: content.notification
+            })
+        ];
+
+        if (mongoose.Types.ObjectId.isValid(process.env.ADMIN_ID)) {
+            notifications.push(new Notification({
+                recipient: process.env.ADMIN_ID,
+                sender: userId,
+                issue: savedIssue._id,
+                type: "Issue created",
+                message: content.adminNotification
+            }));
+        }
+
+        await Promise.all(notifications.map((notification) => notification.save()));
+        await sendNotificationEmail({
+            to: reporter?.email,
+            subject: content.subject,
+            message: content.message,
+            html: content.html,
+        });
         res.status(201).json({ message: "Issue created successfully", issue: savedIssue });
     } catch (err) {
         console.error("Error creating issue:", err);

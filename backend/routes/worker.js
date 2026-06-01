@@ -2,8 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
 const { Issue } = require('../models/Issue');
+const { User } = require('../models/User');
 const Notification = require('../models/Notification');
+const { sendNotificationEmail } = require('../utils/mailer');
+const { buildStatusUpdatedContent } = require('../utils/notificationContent');
 
 const router = express.Router();
 
@@ -53,12 +57,15 @@ router.put('/update/:issueId', upload.single('image'), async (req, res, next) =>
       Pending: ['Assigned', 'In Progress'],
     };
 
+    let statusChanged = false;
+
     if (status && status !== current) {
       const allowedNext = allowedTransitions[current] || [];
       if (!allowedNext.includes(status)) {
         return res.status(400).json({ message: 'Invalid status transition' });
       }
       issue.status = status;
+      statusChanged = true;
     }
 
     if (notes) {
@@ -71,15 +78,45 @@ router.put('/update/:issueId', upload.single('image'), async (req, res, next) =>
 
     await issue.save();
 
-    // Optional notification to admin
-    const notification = new Notification({
-      recipient: process.env.ADMIN_ID,
-      sender: workerId,
-      issue: issue._id,
-      type: 'Issue Status Updated',
-      message: `Worker updated issue ${issue.title} to ${issue.status}`,
-    });
-    await notification.save();
+    const content = buildStatusUpdatedContent(issue, current, notes);
+    const notificationType = content.type;
+    const notifications = [];
+
+    if (mongoose.Types.ObjectId.isValid(process.env.ADMIN_ID)) {
+      notifications.push(
+        new Notification({
+          recipient: process.env.ADMIN_ID,
+          sender: workerId,
+          issue: issue._id,
+          type: notificationType,
+          message: content.adminNotification,
+        })
+      );
+    }
+
+    if (statusChanged && issue.reportedBy) {
+      notifications.push(
+        new Notification({
+          recipient: issue.reportedBy,
+          sender: workerId,
+          issue: issue._id,
+          type: notificationType,
+          message: content.citizenNotification,
+        })
+      );
+    }
+
+    await Promise.all(notifications.map((notification) => notification.save()));
+
+    if (statusChanged && issue.reportedBy) {
+      const citizen = await User.findById(issue.reportedBy).select('email username');
+      await sendNotificationEmail({
+        to: citizen?.email,
+        subject: content.subject,
+        message: content.message,
+        html: content.html,
+      });
+    }
 
     res.status(200).json({ message: 'Issue updated successfully', issue });
   } catch (error) {

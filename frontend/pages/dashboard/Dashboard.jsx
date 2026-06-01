@@ -5,6 +5,17 @@ import Sidebar from '../../components/Sidebar.jsx';
 import CommonHeader from '../../components/CommonHeader.jsx';
 import Statistics from '../../components/Statistics.jsx';
 function Dashboard( {issues} ) {
+  const formatIssueDate = (value) => {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
   return (
     <>
           <div className="dashboard-container">
@@ -44,7 +55,7 @@ function Dashboard( {issues} ) {
                                         <td>{issue._id}</td>
                                         <td>{issue.category}</td>
                                         <td>{issue.location.address}</td>
-                                        <td>{issue.createdAt}</td>
+                                        <td>{formatIssueDate(issue.createdAt)}</td>
                                         <td><span className={`status-badge ${issue.status.toLowerCase().replace(' ', '-')}`}>{issue.status}</span></td>
                                     </tr>
                                 ))

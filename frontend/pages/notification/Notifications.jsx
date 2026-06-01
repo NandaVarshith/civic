@@ -25,6 +25,8 @@ const getIssuePath = (roleBase, issueId) => {
 };
 
 const getNotificationText = (item, roleBase) => {
+  if (item?.message) return item.message;
+
   const issueTitle = item?.issue?.title || 'an issue';
 
   if (roleBase === '/admin') {

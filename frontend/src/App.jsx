@@ -76,7 +76,7 @@ const roleHome = loading
 
         <Route element={<RoleRoute user={user} allowedRoles={["user"]} />}>
           <Route path="/user/dashboard" element={<Dashboard issues={issues} />} />
-          <Route path="/user/analytics" element={<Analytics />} />
+          <Route path="/user/analytics" element={<Analytics issues={issues} />} />
           <Route path="/user/logout" element={<Logout />} />
           <Route path="/user/mapview" element={<Mapview />} />
           <Route path="/user/myissues" element={<Myissues issues={issues} />} />
@@ -87,7 +87,7 @@ const roleHome = loading
 
         <Route element={<RoleRoute user={user} allowedRoles={["admin"]} />}>
           <Route path="/admin/dashboard" element={<Dashboard issues={issues} />} />
-          <Route path="/admin/analytics" element={<Analytics />} />
+          <Route path="/admin/analytics" element={<Analytics issues={issues} />} />
         <Route path="/admin/logout" element={<Logout />} />
         <Route path="/admin/mapview" element={<Mapview />} />
         <Route path="/admin/myissues" element={<Myissues issues={issues} />} />
@@ -98,7 +98,7 @@ const roleHome = loading
 
         <Route element={<RoleRoute user={user} allowedRoles={["worker"]} />}>
           <Route path="/worker/dashboard" element={<Dashboard issues={issues} />} />
-        <Route path="/worker/analytics" element={<Analytics />} />
+        <Route path="/worker/analytics" element={<Analytics issues={issues} />} />
         <Route path="/worker/logout" element={<Logout />} />
         <Route path="/worker/mapview" element={<Mapview />} />
         <Route path="/worker/myissues" element={<Myissues issues={issues} />} />

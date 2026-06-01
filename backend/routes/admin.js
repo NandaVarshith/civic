@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const { User } = require("../models/User");
 const { Issue } = require("../models/Issue");
 const Notification = require("../models/Notification");
+const { sendNotificationEmail } = require("../utils/mailer");
+const { buildIssueAssignedContent } = require("../utils/notificationContent");
 
 const router = express.Router();
 
@@ -47,14 +49,40 @@ router.put("/assign/:issueId", async (req, res, next) => {
 
     await issue.save();
 
+    const citizen = await User.findById(issue.reportedBy).select("email username");
+    const content = buildIssueAssignedContent(issue, worker, instructions);
+
     const notification = new Notification({
       recipient: workerId,
       sender: req.user.userId,
       issue: issue._id,
       type: "Issue Assigned",
-      message: "New issue assigned to you",
+      message: content.workerNotification,
     });
-    await notification.save();
+
+    const citizenNotification = new Notification({
+      recipient: issue.reportedBy,
+      sender: req.user.userId,
+      issue: issue._id,
+      type: "Issue Assigned",
+      message: content.citizenNotification,
+    });
+
+    await Promise.all([notification.save(), citizenNotification.save()]);
+    await Promise.all([
+      sendNotificationEmail({
+        to: worker.email,
+        subject: content.workerSubject,
+        message: content.workerMessage,
+        html: content.workerHtml,
+      }),
+      sendNotificationEmail({
+        to: citizen?.email,
+        subject: content.citizenSubject,
+        message: content.citizenMessage,
+        html: content.citizenHtml,
+      }),
+    ]);
 
     res.status(200).json({ message: "Issue assigned successfully", issue });
   } catch (error) {

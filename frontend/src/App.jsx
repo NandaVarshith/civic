@@ -4,6 +4,11 @@ import { lazy, Suspense } from 'react'
 import axios from 'axios'
 import {useState , useEffect} from 'react'
 
+// Direct imports for public pages (no lazy loading)
+import Register from '../pages/authentication/Register'
+import Login from '../pages/authentication/Login'
+
+// Lazy load only protected/dashboard pages
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
 const Analytics = lazy(() => import('../pages/analytics/Analytics'))
 const Logout = lazy(() => import('../pages/logout/Logout'))
@@ -12,8 +17,6 @@ const Myissues = lazy(() => import('../pages/myissues/Myissues'))
 const Notifications = lazy(() => import('../pages/notification/Notifications'))
 const Profile = lazy(() => import('../pages/profile/Profile'))
 const Raiseissue = lazy(() => import('../pages/raiseissue/Raiseissue'))
-const Register = lazy(() => import('../pages/authentication/Register'))
-const Login = lazy(() => import('../pages/authentication/Login'))
 const Assignissue = lazy(() => import('../pages/assignissues/Assignissue'))
 const IssueDetails = lazy(() => import('../pages/worker/IssueDetails'))
 
@@ -74,8 +77,8 @@ const roleHome = loading
 
   return (
     <Routes>
-      <Route path="/register" element={<Suspense fallback={<LoadingSpinner />}><Register /></Suspense>} />
-      <Route path="/login" element={<Suspense fallback={<LoadingSpinner />}><Login onLoginSuccess={bootstrap} /></Suspense>} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login onLoginSuccess={bootstrap} />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
       <Route element={<ProtectedRoute user={user} loading={loading} />}>

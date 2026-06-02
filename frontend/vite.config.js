@@ -12,11 +12,7 @@ export default defineConfig({
         }
       }
     },
-    minify: 'terser',
     sourcemap: false,
     chunkSizeWarningLimit: 600
-  },
-  server: {
-    middlewareMode: true
   }
 })

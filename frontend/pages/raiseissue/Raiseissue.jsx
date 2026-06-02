@@ -80,14 +80,21 @@ function Raiseissue() {
     };
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}api/issues`, payload, { withCredentials: true });
-      
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}api/issues`, payload, {
+        withCredentials: true,
+        timeout: 30000
+      });
+
       console.log(response);
       toast.success('Issue submitted successfully!');
     }
     catch (error){
       console.error('Error submitting issue:', error);
-      toast.error('An error occurred while submitting the issue. Please try again.');
+      if (error.code === 'ECONNABORTED') {
+        toast.error('Request timed out. Please check your connection and try again.');
+      } else {
+        toast.error('An error occurred while submitting the issue. Please try again.');
+      }
     }
     
   };

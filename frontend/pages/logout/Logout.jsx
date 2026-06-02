@@ -4,6 +4,7 @@ import './Logout.css'
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import CommonHeader from '../../components/CommonHeader';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Logout() {
 
@@ -11,11 +12,20 @@ function Logout() {
 
     const logOut= async()=>{
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/';
-        const response =  await axios.get(`${apiUrl}api/logout`, { withCredentials: true });
-        navigate('/login');
+        try {
+            const response =  await axios.get(`${apiUrl}api/logout`, {
+                withCredentials: true,
+                timeout: 10000
+            });
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout error:', error);
+            toast.error('Failed to logout. Please try again.');
+        }
     }
-  return (      
+  return (
    <>
+       <Toaster />
        <div className="dashboard-container">
         <Sidebar />
 

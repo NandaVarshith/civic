@@ -12,29 +12,43 @@ const geocodeAddress = async (address) => {
     const query = encodeURIComponent(address);
     const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
 
-    const response = await fetch(url, {
-        headers: {
-            "User-Agent": "UrbanPulse/1.0 (Civic issue geocoding)"
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+
+    try {
+        const response = await fetch(url, {
+            headers: {
+                "User-Agent": "UrbanPulse/1.0 (Civic issue geocoding)"
+            },
+            signal: controller.signal
+        });
+
+        clearTimeout(timeout);
+
+        if (!response.ok) {
+            throw new Error("Geocoding request failed");
         }
-    });
 
-    if (!response.ok) {
-        throw new Error("Geocoding request failed");
+        const data = await response.json();
+        if (!Array.isArray(data) || data.length === 0) {
+            return null;
+        }
+
+        const lat = Number(data[0].lat);
+        const lon = Number(data[0].lon);
+
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+            return null;
+        }
+
+        return { latitude: lat, longitude: lon };
+    } catch (error) {
+        clearTimeout(timeout);
+        if (error.name === 'AbortError') {
+            throw new Error("Geocoding request timed out");
+        }
+        throw error;
     }
-
-    const data = await response.json();
-    if (!Array.isArray(data) || data.length === 0) {
-        return null;
-    }
-
-    const lat = Number(data[0].lat);
-    const lon = Number(data[0].lon);
-
-    if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-        return null;
-    }
-
-    return { latitude: lat, longitude: lon };
 };
 
 router.post("/", async (req,res)=>{
@@ -116,7 +130,11 @@ router.post("/", async (req,res)=>{
             })));
 
         await Promise.all(notifications.map((notification) => notification.save()));
-        await Promise.all([
+
+        res.status(201).json({ message: "Issue created successfully", issue: savedIssue });
+
+        // Send emails asynchronously (non-blocking)
+        Promise.all([
             sendNotificationEmail({
                 to: reporter?.email,
                 subject: content.subject,
@@ -129,8 +147,7 @@ router.post("/", async (req,res)=>{
                 message: content.adminNotification,
                 html: content.html,
             })),
-        ]);
-        res.status(201).json({ message: "Issue created successfully", issue: savedIssue });
+        ]).catch((err) => console.error("Error sending emails:", err));
     } catch (err) {
         console.error("Error creating issue:", err);
         res.status(400).json({ message: "Failed to create issue", reason: err.message });

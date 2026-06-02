@@ -12,7 +12,10 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use(
   response => response,
   error => {
-    if (error.response?.status === 401) {
+    const publicAuthPages = ['/login', '/register'];
+    const isPublicAuthPage = publicAuthPages.includes(window.location.pathname);
+
+    if (error.response?.status === 401 && !error.config?.skipAuthRedirect && !isPublicAuthPage) {
       // Unauthorized - clear auth and redirect to login
       window.location.href = '/login';
     }

@@ -31,7 +31,10 @@ const retryRequest = async (config, retries = 3, delay = 1000) => {
 apiClient.interceptors.response.use(
   response => response,
   error => {
-    if (error.response?.status === 401) {
+    const publicAuthPages = ['/login', '/register'];
+    const isPublicAuthPage = publicAuthPages.includes(window.location.pathname);
+
+    if (error.response?.status === 401 && !error.config?.skipAuthRedirect && !isPublicAuthPage) {
       window.location.href = '/login';
     }
 

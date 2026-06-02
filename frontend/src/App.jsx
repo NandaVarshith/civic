@@ -41,7 +41,10 @@ const [loading, setLoading] = useState(true);
 const bootstrap = async () => {
   setLoading(true);
   try {
-    const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/me`, { withCredentials: true });
+    const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/me`, {
+      withCredentials: true,
+      skipAuthRedirect: true,
+    });
     setUser(userResponse.data?.user || null);
     const issuesResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/issues`, { withCredentials: true });
     setIssues(Array.isArray(issuesResponse.data) ? issuesResponse.data : []);

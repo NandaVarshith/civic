@@ -11,7 +11,7 @@ const PRIORITY_OPTIONS = [
   { value: 'High', label: 'High', tone: 'danger' },
 ];
 
-function Assignissue() {
+function Assignissue({ onIssueChange }) {
   const { id: issueId } = useParams();
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -100,6 +100,7 @@ function Assignissue() {
 
       setMessage({ type: 'success', text: 'Issue assigned successfully' });
       showToast('Assigned to worker', 'success');
+      await onIssueChange?.();
       setTimeout(() => navigate('/admin/myissues'), 900);
     } catch (error) {
       const text = error.response?.data?.message || 'Failed to assign issue';

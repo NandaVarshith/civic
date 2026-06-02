@@ -7,7 +7,7 @@ import axios from 'axios';
 
 
 
-function Raiseissue() {
+function Raiseissue({ onIssueChange }) {
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -114,6 +114,13 @@ function Raiseissue() {
         remarks: '',
         images: [],
       });
+
+      try {
+        await onIssueChange?.(response.data?.issue);
+      } catch (syncError) {
+        console.error('Issue created, but failed to refresh issue list:', syncError);
+        toast.error('Issue saved, but the list did not refresh. Please reload once.');
+      }
     }
     catch (error) {
       console.error('Error submitting issue:', error);

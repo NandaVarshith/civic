@@ -7,7 +7,7 @@ import './IssueDetails.css';
 
 const statusFlow = ['Assigned', 'In Progress', 'Resolved'];
 
-function IssueDetails() {
+function IssueDetails({ onIssueChange }) {
   const { id: issueId } = useParams();
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -74,6 +74,7 @@ function IssueDetails() {
       setIssue(res.data.issue);
       setStatus(res.data.issue.status);
       setToast({ text: 'Status updated successfully', type: 'success', open: true });
+      await onIssueChange?.();
       setTimeout(() => navigate('/worker/issues'), 1000);
     } catch (error) {
       setToast({ text: error.response?.data?.message || 'Update failed', type: 'error', open: true });

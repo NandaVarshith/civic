@@ -1,35 +1,18 @@
-import React, { useState ,useEffect } from 'react'
-import axios from 'axios'
+import React, { useMemo } from 'react'
 
 
-function Statistics() {
+function Statistics({ issues = [] }) {
 
-    const [statistics, setStatistics] = useState({
-        totalIssues: 0,
-        pendingIssues: 0,
-        inProgressIssues: 0,
-        resolvedIssues: 0
-    });
+    const statistics = useMemo(() => {
+        const safeIssues = Array.isArray(issues) ? issues : [];
 
-    const getStatistics= async ()=>{
-        try{
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}api/issues/statistics`,{withCredentials:true});
-            setStatistics({
-                totalIssues: response.data.totalIssues,
-                pendingIssues: response.data.statusDistribution.find(item=>item._id==="Pending")?.count || 0,
-                inProgressIssues: response.data.statusDistribution.find(item=>item._id==="In Progress")?.count || 0,
-                resolvedIssues: response.data.statusDistribution.find(item=>item._id==="Resolved")?.count || 0
-            });
-
-        }
-        catch(error){
-            console.log("error to get statistics data",error.message);
-        }
-    };
-
-    useEffect(()=>{
-        getStatistics();
-    },[]);
+        return {
+            totalIssues: safeIssues.length,
+            pendingIssues: safeIssues.filter((issue) => issue.status === "Pending").length,
+            inProgressIssues: safeIssues.filter((issue) => issue.status === "In Progress").length,
+            resolvedIssues: safeIssues.filter((issue) => issue.status === "Resolved").length
+        };
+    }, [issues]);
 
   return (
     <>

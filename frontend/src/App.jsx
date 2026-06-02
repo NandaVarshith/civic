@@ -1,7 +1,7 @@
 import './App.css'
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import axios from 'axios'
-import {useState , useEffect} from 'react'
+import {useState , useEffect, useCallback} from 'react'
 
 // Direct imports - no lazy loading
 import Dashboard from '../pages/dashboard/Dashboard'
@@ -38,7 +38,25 @@ const [issues, setIssues] = useState([]);
 const [user, setUser] = useState(null);
 const [loading, setLoading] = useState(true);
 
-const bootstrap = async () => {
+const refreshIssues = useCallback(async () => {
+  const issuesResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/issues`, { withCredentials: true });
+  const nextIssues = Array.isArray(issuesResponse.data) ? issuesResponse.data : [];
+  setIssues(nextIssues);
+  return nextIssues;
+}, []);
+
+const handleIssueCreated = useCallback(async (createdIssue) => {
+  if (createdIssue?._id) {
+    setIssues((prevIssues) => [
+      createdIssue,
+      ...prevIssues.filter((issue) => issue._id !== createdIssue._id),
+    ]);
+  }
+
+  return refreshIssues();
+}, [refreshIssues]);
+
+const bootstrap = useCallback(async () => {
   setLoading(true);
   try {
     const userResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/me`, {
@@ -46,8 +64,7 @@ const bootstrap = async () => {
       skipAuthRedirect: true,
     });
     setUser(userResponse.data?.user || null);
-    const issuesResponse = await axios.get(`${import.meta.env.VITE_API_URL}api/issues`, { withCredentials: true });
-    setIssues(Array.isArray(issuesResponse.data) ? issuesResponse.data : []);
+    await refreshIssues();
     return userResponse.data?.user || null;
   } catch (error) {
     setUser(null);
@@ -57,11 +74,11 @@ const bootstrap = async () => {
   } finally {
     setLoading(false);
   }
-};
+}, [refreshIssues]);
 
 useEffect(() => {
   bootstrap();
-}, []);
+}, [bootstrap]);
 
 const roleHome = loading
   ? <div>Loading...</div>
@@ -89,7 +106,7 @@ const roleHome = loading
           <Route path="/user/myissues" element={<Myissues issues={issues} />} />
           <Route path="/user/notifications" element={<Notifications />} />
           <Route path="/user/profile" element={<Profile />} />
-          <Route path="/user/raiseissue" element={<Raiseissue />} />
+          <Route path="/user/raiseissue" element={<Raiseissue onIssueChange={handleIssueCreated} />} />
         </Route>
 
         <Route element={<RoleRoute user={user} allowedRoles={["admin"]} />}>
@@ -100,7 +117,7 @@ const roleHome = loading
           <Route path="/admin/myissues" element={<Myissues issues={issues} />} />
           <Route path="/admin/notifications" element={<Notifications />} />
           <Route path="/admin/profile" element={<Profile />} />
-          <Route path="/admin/assign/:id" element={<Assignissue />} />
+          <Route path="/admin/assign/:id" element={<Assignissue onIssueChange={refreshIssues} />} />
         </Route>
 
         <Route element={<RoleRoute user={user} allowedRoles={["worker"]} />}>
@@ -109,7 +126,7 @@ const roleHome = loading
           <Route path="/worker/logout" element={<Logout />} />
           <Route path="/worker/mapview" element={<Mapview />} />
           <Route path="/worker/myissues" element={<Myissues issues={issues} />} />
-          <Route path="/worker/issues/:id" element={<IssueDetails />} />
+          <Route path="/worker/issues/:id" element={<IssueDetails onIssueChange={refreshIssues} />} />
           <Route path="/worker/notifications" element={<Notifications />} />
           <Route path="/worker/profile" element={<Profile />} />
         </Route>

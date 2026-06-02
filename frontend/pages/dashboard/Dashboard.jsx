@@ -33,7 +33,7 @@ function Dashboard( {issues} ) {
                     </div>
                 }
             />
-            <Statistics/>
+            <Statistics issues={issues} />
             <section className="recent-issues">
                 <h2>Recent Issues</h2>
                 <div className="table-container">

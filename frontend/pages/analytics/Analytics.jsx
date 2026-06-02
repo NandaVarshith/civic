@@ -127,7 +127,7 @@ function Analytics({ issues = [] }) {
         <CommonHeader title="Analytics" />
 
         <div className="analytics-container">
-          <Statistics />
+          <Statistics issues={issues} />
 
           <div className="analytics-grid">
             <section className="analytics-card">

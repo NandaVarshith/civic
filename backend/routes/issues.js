@@ -68,15 +68,23 @@ router.post("/", async (req,res)=>{
             const geocoded = await geocodeAddress(address);
             if (!geocoded) {
                 return res.status(400).json({
-                    message: "Unable to determine coordinates from the address. Please provide a clearer address or add latitude/longitude."
+                    message: "Location Error",
+                    reason: "Unable to determine coordinates from the provided address. Please provide a clearer address (e.g., street address with city) or manually enter latitude/longitude."
                 });
             }
             parsedLatitude = geocoded.latitude;
             parsedLongitude = geocoded.longitude;
         } catch (error) {
+            console.error("Geocoding error:", error.message);
+            if (error.message.includes("timed out")) {
+                return res.status(504).json({
+                    message: "Location service unavailable",
+                    reason: "Address lookup service is temporarily slow. Please provide coordinates manually or try again."
+                });
+            }
             return res.status(500).json({
-                message: "Failed to geocode address",
-                reason: error.message
+                message: "Location lookup failed",
+                reason: "Could not process your address. Please manually enter latitude/longitude or try a different address format."
             });
         }
     }
@@ -150,7 +158,18 @@ router.post("/", async (req,res)=>{
         ]).catch((err) => console.error("Error sending emails:", err));
     } catch (err) {
         console.error("Error creating issue:", err);
-        res.status(400).json({ message: "Failed to create issue", reason: err.message });
+
+        if (err.message.includes("timed out")) {
+            return res.status(504).json({
+                message: "Request timeout",
+                reason: "The request took too long. Please try again or provide coordinates manually."
+            });
+        }
+
+        res.status(400).json({
+            message: "Failed to create issue",
+            reason: err.message
+        });
     }
     });
 

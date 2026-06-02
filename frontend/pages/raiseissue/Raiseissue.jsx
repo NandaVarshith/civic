@@ -39,6 +39,21 @@ function Raiseissue() {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files || []);
+
+    // Validate file count
+    if (files.length > 5) {
+      toast.error('Maximum 5 images allowed');
+      return;
+    }
+
+    // Validate file sizes (max 5MB per file)
+    const maxSize = 5 * 1024 * 1024;
+    const oversizedFiles = files.filter(f => f.size > maxSize);
+    if (oversizedFiles.length > 0) {
+      toast.error(`Files must be smaller than 5MB. Found: ${oversizedFiles.map(f => f.name).join(', ')}`);
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, images: files }));
   };
 
@@ -87,11 +102,35 @@ function Raiseissue() {
 
       console.log(response);
       toast.success('Issue submitted successfully!');
+      // Reset form
+      setFormData({
+        title: '',
+        category: '',
+        priority: '',
+        description: '',
+        address: '',
+        latitude: '',
+        longitude: '',
+        remarks: '',
+        images: [],
+      });
     }
-    catch (error){
+    catch (error) {
       console.error('Error submitting issue:', error);
+
       if (error.code === 'ECONNABORTED') {
-        toast.error('Request timed out. Please check your connection and try again.');
+        toast.error('Request timed out. Please check your connection or try again.');
+      } else if (error.response?.status === 400) {
+        const reason = error.response?.data?.reason;
+        if (reason?.includes('coordinates') || reason?.includes('address')) {
+          toast.error(`Location Error: ${reason}`);
+        } else {
+          toast.error(error.response?.data?.message || 'Invalid input. Please check your details.');
+        }
+      } else if (error.response?.status === 504) {
+        toast.error('Service temporarily unavailable. Please try again.');
+      } else if (!error.response) {
+        toast.error('Network error. Please check your connection.');
       } else {
         toast.error('An error occurred while submitting the issue. Please try again.');
       }

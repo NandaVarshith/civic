@@ -1,20 +1,23 @@
 import './App.css'
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
-import Dashboard from '../pages/dashboard/Dashboard'
-import Analytics from '../pages/analytics/Analytics'
-import Logout from '../pages/logout/Logout'
-import Mapview from '../pages/mapview/Mapview'
-import Myissues from '../pages/myissues/Myissues'
-import Notifications from '../pages/notification/Notifications'
-import Profile  from '../pages/profile/Profile'
-import Raiseissue from '../pages/raiseissue/Raiseissue' 
-import Register from  '../pages/authentication/Register'
-import Login from  '../pages/authentication/Login'
-import Assignissue from '../pages/assignissues/Assignissue'
-import IssueDetails from '../pages/worker/IssueDetails'
-
+import { lazy, Suspense } from 'react'
 import axios from 'axios'
 import {useState , useEffect} from 'react'
+
+const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
+const Analytics = lazy(() => import('../pages/analytics/Analytics'))
+const Logout = lazy(() => import('../pages/logout/Logout'))
+const Mapview = lazy(() => import('../pages/mapview/Mapview'))
+const Myissues = lazy(() => import('../pages/myissues/Myissues'))
+const Notifications = lazy(() => import('../pages/notification/Notifications'))
+const Profile = lazy(() => import('../pages/profile/Profile'))
+const Raiseissue = lazy(() => import('../pages/raiseissue/Raiseissue'))
+const Register = lazy(() => import('../pages/authentication/Register'))
+const Login = lazy(() => import('../pages/authentication/Login'))
+const Assignissue = lazy(() => import('../pages/assignissues/Assignissue'))
+const IssueDetails = lazy(() => import('../pages/worker/IssueDetails'))
+
+const LoadingSpinner = () => <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>;
 
 function ProtectedRoute({ user, loading }) {
   if (loading) return <div>Loading...</div>;
@@ -71,44 +74,44 @@ const roleHome = loading
 
   return (
     <Routes>
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login onLoginSuccess={bootstrap} />} />
+      <Route path="/register" element={<Suspense fallback={<LoadingSpinner />}><Register /></Suspense>} />
+      <Route path="/login" element={<Suspense fallback={<LoadingSpinner />}><Login onLoginSuccess={bootstrap} /></Suspense>} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
       <Route element={<ProtectedRoute user={user} loading={loading} />}>
 
         <Route element={<RoleRoute user={user} allowedRoles={["user"]} />}>
-          <Route path="/user/dashboard" element={<Dashboard issues={issues} />} />
-          <Route path="/user/analytics" element={<Analytics issues={issues} />} />
-          <Route path="/user/logout" element={<Logout />} />
-          <Route path="/user/mapview" element={<Mapview />} />
-          <Route path="/user/myissues" element={<Myissues issues={issues} />} />
-          <Route path="/user/notifications" element={<Notifications />} />
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/user/raiseissue" element={<Raiseissue />} />
+          <Route path="/user/dashboard" element={<Suspense fallback={<LoadingSpinner />}><Dashboard issues={issues} /></Suspense>} />
+          <Route path="/user/analytics" element={<Suspense fallback={<LoadingSpinner />}><Analytics issues={issues} /></Suspense>} />
+          <Route path="/user/logout" element={<Suspense fallback={<LoadingSpinner />}><Logout /></Suspense>} />
+          <Route path="/user/mapview" element={<Suspense fallback={<LoadingSpinner />}><Mapview /></Suspense>} />
+          <Route path="/user/myissues" element={<Suspense fallback={<LoadingSpinner />}><Myissues issues={issues} /></Suspense>} />
+          <Route path="/user/notifications" element={<Suspense fallback={<LoadingSpinner />}><Notifications /></Suspense>} />
+          <Route path="/user/profile" element={<Suspense fallback={<LoadingSpinner />}><Profile /></Suspense>} />
+          <Route path="/user/raiseissue" element={<Suspense fallback={<LoadingSpinner />}><Raiseissue /></Suspense>} />
         </Route>
 
         <Route element={<RoleRoute user={user} allowedRoles={["admin"]} />}>
-          <Route path="/admin/dashboard" element={<Dashboard issues={issues} />} />
-          <Route path="/admin/analytics" element={<Analytics issues={issues} />} />
-        <Route path="/admin/logout" element={<Logout />} />
-        <Route path="/admin/mapview" element={<Mapview />} />
-        <Route path="/admin/myissues" element={<Myissues issues={issues} />} />
-        <Route path="/admin/notifications" element={<Notifications />} />
-        <Route path="/admin/profile" element={<Profile />} />
-        <Route path="/admin/assign/:id" element={<Assignissue />} />
+          <Route path="/admin/dashboard" element={<Suspense fallback={<LoadingSpinner />}><Dashboard issues={issues} /></Suspense>} />
+          <Route path="/admin/analytics" element={<Suspense fallback={<LoadingSpinner />}><Analytics issues={issues} /></Suspense>} />
+        <Route path="/admin/logout" element={<Suspense fallback={<LoadingSpinner />}><Logout /></Suspense>} />
+        <Route path="/admin/mapview" element={<Suspense fallback={<LoadingSpinner />}><Mapview /></Suspense>} />
+        <Route path="/admin/myissues" element={<Suspense fallback={<LoadingSpinner />}><Myissues issues={issues} /></Suspense>} />
+        <Route path="/admin/notifications" element={<Suspense fallback={<LoadingSpinner />}><Notifications /></Suspense>} />
+        <Route path="/admin/profile" element={<Suspense fallback={<LoadingSpinner />}><Profile /></Suspense>} />
+        <Route path="/admin/assign/:id" element={<Suspense fallback={<LoadingSpinner />}><Assignissue /></Suspense>} />
         </Route>
 
         <Route element={<RoleRoute user={user} allowedRoles={["worker"]} />}>
-          <Route path="/worker/dashboard" element={<Dashboard issues={issues} />} />
-        <Route path="/worker/analytics" element={<Analytics issues={issues} />} />
-        <Route path="/worker/logout" element={<Logout />} />
-        <Route path="/worker/mapview" element={<Mapview />} />
-        <Route path="/worker/myissues" element={<Myissues issues={issues} />} />
-        <Route path="/worker/issues/:id" element={<IssueDetails />} />
-        
-        <Route path="/worker/notifications" element={<Notifications />} />
-        <Route path="/worker/profile" element={<Profile />} />
+          <Route path="/worker/dashboard" element={<Suspense fallback={<LoadingSpinner />}><Dashboard issues={issues} /></Suspense>} />
+        <Route path="/worker/analytics" element={<Suspense fallback={<LoadingSpinner />}><Analytics issues={issues} /></Suspense>} />
+        <Route path="/worker/logout" element={<Suspense fallback={<LoadingSpinner />}><Logout /></Suspense>} />
+        <Route path="/worker/mapview" element={<Suspense fallback={<LoadingSpinner />}><Mapview /></Suspense>} />
+        <Route path="/worker/myissues" element={<Suspense fallback={<LoadingSpinner />}><Myissues issues={issues} /></Suspense>} />
+        <Route path="/worker/issues/:id" element={<Suspense fallback={<LoadingSpinner />}><IssueDetails /></Suspense>} />
+
+        <Route path="/worker/notifications" element={<Suspense fallback={<LoadingSpinner />}><Notifications /></Suspense>} />
+        <Route path="/worker/profile" element={<Suspense fallback={<LoadingSpinner />}><Profile /></Suspense>} />
       </Route>
       </Route>
 
